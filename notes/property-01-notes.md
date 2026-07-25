@@ -1,9 +1,10 @@
 # Sample Property #1 — Notes
 
-## Basic selection notes
+## Basic selection notes from Zillow
 - Address: 7863 Niagara Ave #1921, Tampa, FL 33617
-- County: Hillsborough County, Florida
+- County: Hillsborough County, Florida 
 - Reason chosen: Older Florida condo stock with likely building/association diligence complexity and good fit for the condo-risk screening thesis.
+
 
 ## Core facts
 - Subdivision / Condo: River Oaks Condominium II, Phase 3, Building 19, Unit 1921
@@ -52,3 +53,34 @@
 - Confirm association legal entity and public filing details
 - Check building/association records for reserve, milestone, or structural risk signals
 - Check whether any public records indicate litigation, notices, or recorded condo documents relevant to diligence
+
+## Verified county identity
+- Address: 7863 Niagara Ave, Unit 1921, Tampa, FL 33617
+- Folio: 039053-0332
+- PIN: U-28-28-19-1KZ-000019-01921.0
+- Property use: 0400 Condominium
+- Subdivision: River Oaks Condominium II
+- Tax district: Unincorporated Hillsborough County
+
+## Tax status
+
+- Real estate account: A0390530332 (Hillsborough County)
+- Owner on tax roll: Robert Jimenez
+- Status: account paid in full, no amount due
+- Most recent payment: $1,811.99 on 11/03/2025 for the 2025 annual bill
+- Recent annual taxes:
+  - 2025: $1,811.99 (paid)
+  - 2024: $1,703.53 (paid; $68.14 refund in 2025)
+  - 2023: $1,525.58 (paid)
+  - 2022: $1,314.85 (paid)
+  - 2021: $1,112.99 (paid)
+  - 2020: $1,059.93 (paid)
+  - 2019: $934.16 (paid)
+  - 2018: $893.88 (paid)
+  - 2017: $774.39 (paid)
+  - 2016: $688.45 (paid)
+  - 2015: $644.49 (paid)
+  - 2014: $575.49 (paid)
+  - 2013: $601.39 (paid)
+  - 2012: $560.52 (paid)
+  - 2011: $558.26 (paid)
