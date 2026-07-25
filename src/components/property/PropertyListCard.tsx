@@ -1,0 +1,75 @@
+import Link from "next/link";
+import type { PropertyScreen } from "@/types/property";
+import { formatMoney } from "@/lib/format";
+import {
+  countMissingDiligenceItems,
+  labelForProvisionalStatus,
+  summarizeSources,
+  toneForProvisionalStatus,
+} from "@/lib/property-metrics";
+import { StatusPill } from "./StatusPill";
+
+type PropertyListCardProps = {
+  property: PropertyScreen;
+};
+
+export function PropertyListCard({ property }: PropertyListCardProps) {
+  const recommendation =
+    property.status?.currentRecommendation ??
+    labelForProvisionalStatus(property.status?.provisionalStatus);
+  const tone = toneForProvisionalStatus(property.status?.provisionalStatus);
+  const missingCount = countMissingDiligenceItems(property);
+  const sources = summarizeSources(property.sources);
+
+  return (
+    <Link href={`/properties/${property.id}`} className="property-list-card">
+      <div className="property-list-card__top">
+        <div>
+          <h2>{property.address}</h2>
+          <p className="property-list-card__meta">
+            {property.city}, {property.state} {property.zip}
+          </p>
+        </div>
+        <StatusPill label={recommendation} tone={tone} />
+      </div>
+
+      <p className="property-list-card__community">
+        {property.community ?? property.propertyType ?? "Property"}
+      </p>
+
+      <dl className="property-list-card__stats">
+        <div>
+          <dt style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>
+            List price
+          </dt>
+          <dd style={{ margin: 0, fontWeight: 600 }}>
+            {formatMoney(property.pricing?.listingPrice)}
+          </dd>
+        </div>
+        <div>
+          <dt style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>
+            Year built
+          </dt>
+          <dd style={{ margin: 0, fontWeight: 600 }}>
+            {property.yearBuilt ?? "—"}
+          </dd>
+        </div>
+        <div>
+          <dt style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>
+            Beds / baths
+          </dt>
+          <dd style={{ margin: 0, fontWeight: 600 }}>
+            {property.unitConfiguration ?? "—"}
+          </dd>
+        </div>
+      </dl>
+
+      <div className="property-list-card__footer">
+        <span>
+          {missingCount} open diligence item{missingCount === 1 ? "" : "s"}
+        </span>
+        <span>{sources.completenessLabel}</span>
+      </div>
+    </Link>
+  );
+}
