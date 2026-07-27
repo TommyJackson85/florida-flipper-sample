@@ -2,12 +2,13 @@ import type { PropertyScreen } from "@/types/property";
 import { property7863Niagara1921 } from "./7863-niagara-1921";
 
 /**
- * How to add another property
- * ---------------------------
- * 1. Copy `_template.ts` to `<id>.ts`, or paste a stub from `/intake`.
- * 2. Fill verified facts only. Leave null / "unknown" when unsure.
- * 3. Import below and append to the `properties` array.
- * 4. Keep narrative research in `memos/`, `notes/`, and `sources/`.
+ * Register properties here (file-based only — no DB).
+ *
+ * Add a second property:
+ * 1. Create `src/data/properties/<id>.ts` via /intake stub or by copying `_template.ts`.
+ * 2. Export a `PropertyScreen` object. Fill verified identity only; leave null/"unknown".
+ * 3. Import it below and append to `properties`.
+ * 4. Confirm `/properties` lists it and `/properties/<id>` loads.
  *
  * Example:
  *   import { propertyExample } from "./example-id";
@@ -16,7 +17,7 @@ import { property7863Niagara1921 } from "./7863-niagara-1921";
  *     propertyExample,
  *   ];
  *
- * Do not import `_template.ts` into this array.
+ * Never import `_template.ts` into this array.
  */
 
 export const properties: PropertyScreen[] = [property7863Niagara1921];

@@ -1,11 +1,20 @@
 import type { PropertyScreen } from "@/types/property";
 
 /**
- * Copy this file to `<kebab-case-id>.ts`, fill verified facts only,
- * then register the export in `index.ts`.
- * Leave underwriting values null / unknown until confirmed.
+ * Full blank PropertyScreen for a new deal.
+ *
+ * Steps:
+ * 1. Copy this file to `<kebab-case-id>.ts` (example: `123-main-st-33617.ts`).
+ * 2. Rename `propertyTemplate` → `property123MainSt33617` (match your id).
+ * 3. Replace the identity fields marked REQUIRED below with verified facts only.
+ * 4. Leave proForma null and condoRiskFlags "unknown" until you have evidence.
+ * 5. Register the export in `index.ts` (do not import this `_template.ts` file).
+ *
+ * Tip: use `/intake` to generate identity + default flags, then merge into this shape
+ * when you need association / tax / identifier sections.
  */
 export const propertyTemplate: PropertyScreen = {
+  // REQUIRED — must match filename and URL /properties/<id>
   id: "property-id",
   title: "Deal Screen — Address",
   address: "Street address",
@@ -13,6 +22,7 @@ export const propertyTemplate: PropertyScreen = {
   state: "FL",
   zip: "00000",
 
+  // Optional identity / listing
   community: undefined,
   county: undefined,
   propertyType: "Condominium",
@@ -86,6 +96,7 @@ export const propertyTemplate: PropertyScreen = {
 
   missingDiligence: [],
 
+  // Keep all unknown until researched. Use "open" only when a known gap exists.
   condoRiskFlags: {
     milestoneInspection: {
       status: "unknown",
@@ -136,5 +147,6 @@ export const propertyTemplate: PropertyScreen = {
 
   sources: [],
 
+  // Example: "notes/property-02-notes.md"
   referencePaths: [],
 };
