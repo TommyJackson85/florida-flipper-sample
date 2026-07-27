@@ -206,7 +206,7 @@ export const property7863Niagara1921: PropertyScreen = {
     },
     hoaDues: {
       status: "open",
-      label: "HOA dues",
+      label: "HOA dues (unverified)",
       note: "Listing figures conflict (~$499 vs ~$376/month). Leave proForma.hoaMonthly null until verified.",
     },
     insurance: {

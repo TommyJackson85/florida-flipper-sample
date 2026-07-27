@@ -32,6 +32,28 @@ Do not invent underwriting numbers. If HOA, rent, insurance, or returns are unve
 ## Scripts
 
 ```bash
+npm run dev        # start local app
+npm run build      # production build check
+npm run clean      # delete .next cache only
+npm run dev:clean  # clear .next, then start dev
+```
+
+## Troubleshooting local runtime errors
+
+If localhost shows something like `Cannot find module './59.js'` (or another missing `.next` chunk):
+
+1. Stop the dev server (`Ctrl+C`).
+2. Run `npm run clean` (or `rm -rf .next`).
+3. Start again with `npm run dev` (or one-shot: `npm run dev:clean`).
+
+This usually happens after switching branches, interrupting a build, or running `npm run build` while `npm run dev` is still open — stale or overwritten compiled chunks, not an app logic bug.
+
+Habit: stop the dev server before `npm run build`, or use `npm run dev:clean` afterward.
+
+If it still fails after a clean restart:
+
+```bash
+rm -rf node_modules .next
+npm ci
 npm run dev
-npm run build
 ```

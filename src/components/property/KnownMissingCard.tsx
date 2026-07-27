@@ -41,7 +41,7 @@ export function KnownMissingCard({ property }: KnownMissingCardProps) {
         </div>
 
         <div className="split-panel__col">
-          <h3>Still missing</h3>
+          <h3>Still missing (work queue)</h3>
           {missingGroups.length ? (
             <div style={{ display: "grid", gap: 14 }}>
               {missingGroups.map((group) => (

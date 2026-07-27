@@ -35,7 +35,7 @@ export function RiskFlagsCard({ property }: RiskFlagsCardProps) {
   return (
     <SectionCard
       title="Florida condo risk flags"
-      subtitle="Quick scan of building / association diligence gates. Unknown = not researched; Open = known gap; Clear = verified for this screen."
+      subtitle="Unknown = not researched yet · Open = researched enough to know it’s still unresolved · Clear = verified for this screen (not a final buy signal)."
     >
       <ul className="risk-flag-list">
         {FLAG_ORDER.map((key) => {
