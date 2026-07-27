@@ -14,6 +14,7 @@ type PropertyListCardProps = {
 };
 
 export function PropertyListCard({ property }: PropertyListCardProps) {
+  const isSample = Boolean(property.isSample);
   const recommendation =
     property.status?.currentRecommendation ??
     labelForProvisionalStatus(property.status?.provisionalStatus);
@@ -30,11 +31,20 @@ export function PropertyListCard({ property }: PropertyListCardProps) {
             {property.city}, {property.state} {property.zip}
           </p>
         </div>
-        <StatusPill label={recommendation} tone={tone} />
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          {isSample ? <StatusPill label="Sample" tone="warn" /> : null}
+          {!isSample ? (
+            <StatusPill label={recommendation} tone={tone} />
+          ) : (
+            <StatusPill label="Practice shell" tone="neutral" />
+          )}
+        </div>
       </div>
 
       <p className="property-list-card__community">
-        {property.community ?? property.propertyType ?? "Property"}
+        {isSample
+          ? property.sampleNote ?? "Workflow-practice sample"
+          : property.community ?? property.propertyType ?? "Property"}
       </p>
 
       <dl className="property-list-card__stats">
@@ -65,10 +75,17 @@ export function PropertyListCard({ property }: PropertyListCardProps) {
       </dl>
 
       <div className="property-list-card__footer">
-        <span>
-          {missingCount} open diligence item{missingCount === 1 ? "" : "s"}
-        </span>
-        <span>{sources.completenessLabel}</span>
+        {isSample ? (
+          <span>Identity shell — underwriting fields unset</span>
+        ) : (
+          <>
+            <span>
+              {missingCount} open diligence item
+              {missingCount === 1 ? "" : "s"}
+            </span>
+            <span>{sources.completenessLabel}</span>
+          </>
+        )}
       </div>
     </Link>
   );

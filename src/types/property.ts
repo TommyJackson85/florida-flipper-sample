@@ -57,6 +57,11 @@ export type PropertyScreen = {
   state: string;
   zip: string;
 
+  /** Demo / workflow-practice record — not a live underwriting file */
+  isSample?: boolean;
+  /** Short disclaimer shown on list/detail when isSample is true */
+  sampleNote?: string;
+
   community?: string;
   county?: string;
   propertyType?: string;

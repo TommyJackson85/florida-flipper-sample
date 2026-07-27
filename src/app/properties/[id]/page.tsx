@@ -31,6 +31,8 @@ export default async function PropertyDetailPage({
     notFound();
   }
 
+  const isSample = Boolean(property.isSample);
+
   return (
     <main className="page-stack">
       <Link href="/properties" className="back-link">
@@ -39,9 +41,15 @@ export default async function PropertyDetailPage({
 
       <PropertyHeader property={property} />
       <RecommendationBanner property={property} />
-      <RiskFlagsCard property={property} />
 
-      <SectionCard title="Snapshot">
+      {isSample ? null : <RiskFlagsCard property={property} />}
+
+      <SectionCard
+        title="Snapshot"
+        subtitle={
+          isSample ? "Identity fields only for this sample shell." : undefined
+        }
+      >
         <DetailList
           items={[
             { label: "Community", value: property.community },
@@ -86,30 +94,49 @@ export default async function PropertyDetailPage({
         />
       </SectionCard>
 
+      {isSample ? (
+        <SectionCard
+          title="Identity shell"
+          subtitle="Underwriting panels are hidden while this record is marked as a sample."
+        >
+          <p className="muted-note">
+            Tax history, association, screening checklist, risk-flag board,
+            strengths/risks, and sources stay unset for this workflow-practice
+            file. Convert to a real screen only after verified public-record and
+            association inputs exist — then clear <code>isSample</code>.
+          </p>
+        </SectionCard>
+      ) : null}
+
       <KnownMissingCard property={property} />
-      <ScreeningCard property={property} />
 
-      <div className="split-panel">
-        <SectionCard title="Strengths">
-          <ul>
-            {(property.summary?.strengths ?? []).map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </SectionCard>
+      {isSample ? null : (
+        <>
+          <ScreeningCard property={property} />
 
-        <SectionCard title="Risks">
-          <ul>
-            {(property.summary?.risks ?? []).map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </SectionCard>
-      </div>
+          <div className="split-panel">
+            <SectionCard title="Strengths">
+              <ul>
+                {(property.summary?.strengths ?? []).map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </SectionCard>
 
-      <TaxHistoryCard property={property} />
-      <AssociationCard property={property} />
-      <SourcesCard property={property} />
+            <SectionCard title="Risks">
+              <ul>
+                {(property.summary?.risks ?? []).map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </SectionCard>
+          </div>
+
+          <TaxHistoryCard property={property} />
+          <AssociationCard property={property} />
+          <SourcesCard property={property} />
+        </>
+      )}
     </main>
   );
 }

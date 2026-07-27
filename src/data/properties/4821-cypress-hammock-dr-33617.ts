@@ -1,16 +1,20 @@
 import type { PropertyScreen } from "@/types/property";
 
 /**
- * Identity-only shell from user-provided address.
- * Do not add tax/HOA/association/pro forma values until verified.
+ * Identity-only SAMPLE shell for workflow practice.
+ * Do not add tax/HOA/association/pro forma values unless converting to a real screen.
  */
 export const property4821CypressHammockDr33617: PropertyScreen = {
   id: "4821-cypress-hammock-dr-33617",
-  title: "Deal Screen — 4821 Cypress Hammock Dr",
+  title: "SAMPLE — 4821 Cypress Hammock Dr",
   address: "4821 Cypress Hammock Dr",
   city: "Tampa",
   state: "FL",
   zip: "33617",
+
+  isSample: true,
+  sampleNote:
+    "Workflow-practice sample only. Not a live underwriting file — identity fields only; do not treat as a buy/pass decision.",
 
   community: undefined,
   county: undefined,
@@ -54,7 +58,7 @@ export const property4821CypressHammockDr33617: PropertyScreen = {
 
   summary: {
     purpose:
-      "Identity shell for initial screening. Public-record, association, and underwriting inputs are not filled yet.",
+      "Sample identity shell for practicing the second-property workflow. Public-record, association, and underwriting inputs are intentionally unset.",
     whatIsKnown: [
       "Address provided: 4821 Cypress Hammock Dr, Tampa, FL 33617.",
     ],

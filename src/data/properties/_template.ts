@@ -8,7 +8,8 @@ import type { PropertyScreen } from "@/types/property";
  * 2. Rename `propertyTemplate` → `property123MainSt33617` (match your id).
  * 3. Replace the identity fields marked REQUIRED below with verified facts only.
  * 4. Leave proForma null and condoRiskFlags "unknown" until you have evidence.
- * 5. Register the export in `index.ts` (do not import this `_template.ts` file).
+ * 5. Demo/workflow-practice records: set isSample: true and a short sampleNote.
+ * 6. Register the export in `index.ts` (do not import this `_template.ts` file).
  *
  * Tip: use `/intake` to generate identity + default flags, then merge into this shape
  * when you need association / tax / identifier sections.
@@ -21,6 +22,10 @@ export const propertyTemplate: PropertyScreen = {
   city: "City",
   state: "FL",
   zip: "00000",
+
+  // Demo records only — leave false/undefined for real underwriting files
+  isSample: false,
+  sampleNote: undefined,
 
   // Optional identity / listing
   community: undefined,

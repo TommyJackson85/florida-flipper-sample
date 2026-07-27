@@ -11,6 +11,10 @@ type RecommendationBannerProps = {
 };
 
 function framingForStatus(property: PropertyScreen): string {
+  if (property.isSample) {
+    return "Sample / workflow-practice record. This is not a live underwriting decision — use it to practice intake and registration only.";
+  }
+
   switch (property.status?.provisionalStatus) {
     case "buy-candidate":
       return "Current screen leans positive, pending confirmation that open diligence items do not change the thesis.";
@@ -26,16 +30,20 @@ function framingForStatus(property: PropertyScreen): string {
 }
 
 export function RecommendationBanner({ property }: RecommendationBannerProps) {
-  const recommendation =
-    property.status?.currentRecommendation ??
-    labelForProvisionalStatus(property.status?.provisionalStatus);
-  const tone = toneForProvisionalStatus(property.status?.provisionalStatus);
+  const isSample = Boolean(property.isSample);
+  const recommendation = isSample
+    ? "Sample — not underwritten"
+    : property.status?.currentRecommendation ??
+      labelForProvisionalStatus(property.status?.provisionalStatus);
+  const tone = isSample
+    ? "warn"
+    : toneForProvisionalStatus(property.status?.provisionalStatus);
 
   return (
     <section className="recommendation-banner">
       <div className="recommendation-banner__top">
         <div>
-          <h2>Screen outcome</h2>
+          <h2>{isSample ? "Sample status" : "Screen outcome"}</h2>
           <p className="recommendation-banner__lede">
             {framingForStatus(property)}
           </p>
@@ -44,7 +52,11 @@ export function RecommendationBanner({ property }: RecommendationBannerProps) {
       </div>
 
       <div className="recommendation-banner__meta">
-        <span>Tax: {property.status?.taxStatus ?? "—"}</span>
+        {isSample ? (
+          <span>Underwriting sections intentionally unset</span>
+        ) : (
+          <span>Tax: {property.status?.taxStatus ?? "—"}</span>
+        )}
         <span>
           Last reviewed: {formatDate(property.status?.lastReviewedAt)}
         </span>
