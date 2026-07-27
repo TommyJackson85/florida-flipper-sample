@@ -32,6 +32,23 @@ export type ProvisionalStatus =
 
 export type TriState = "yes" | "no" | "unknown";
 
+export type RiskFlagStatus = "unknown" | "open" | "clear";
+
+export type RiskFlag = {
+  status: RiskFlagStatus;
+  label: string;
+  note?: string;
+};
+
+export type CondoRiskFlags = {
+  milestoneInspection: RiskFlag;
+  sirsReserves: RiskFlag;
+  specialAssessments: RiskFlag;
+  hoaDues: RiskFlag;
+  insurance: RiskFlag;
+  litigationOrRecords: RiskFlag;
+};
+
 export type PropertyScreen = {
   id: string;
   title: string;
@@ -114,6 +131,9 @@ export type PropertyScreen = {
   };
 
   missingDiligence?: MissingItemGroup[];
+
+  /** Florida condo / building risk flags for quick underwriting scan */
+  condoRiskFlags?: CondoRiskFlags;
 
   screening?: {
     targetCashOnCash?: string | null;

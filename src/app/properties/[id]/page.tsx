@@ -5,6 +5,7 @@ import { DetailList } from "@/components/property/DetailList";
 import { KnownMissingCard } from "@/components/property/KnownMissingCard";
 import { PropertyHeader } from "@/components/property/PropertyHeader";
 import { RecommendationBanner } from "@/components/property/RecommendationBanner";
+import { RiskFlagsCard } from "@/components/property/RiskFlagsCard";
 import { ScreeningCard } from "@/components/property/ScreeningCard";
 import { SectionCard } from "@/components/property/SectionCard";
 import { SourcesCard } from "@/components/property/SourcesCard";
@@ -38,6 +39,7 @@ export default async function PropertyDetailPage({
 
       <PropertyHeader property={property} />
       <RecommendationBanner property={property} />
+      <RiskFlagsCard property={property} />
 
       <SectionCard title="Snapshot">
         <DetailList

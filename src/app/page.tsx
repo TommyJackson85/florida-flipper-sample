@@ -15,13 +15,17 @@ export default function HomePage() {
       <section className="home-cta">
         <h2>Start here</h2>
         <p>
-          Browse screened properties, open a detail page, and review snapshot,
-          known vs missing items, taxes, association signals, and screen
-          outcome.
+          Browse screened properties, review Florida condo risk flags, or
+          generate a stub for the next address.
         </p>
-        <Link href="/properties" className="button-primary">
-          View properties
-        </Link>
+        <div className="home-cta__actions">
+          <Link href="/properties" className="button-primary">
+            View properties
+          </Link>
+          <Link href="/intake" className="button-secondary">
+            New property intake
+          </Link>
+        </div>
       </section>
     </main>
   );

@@ -1,0 +1,226 @@
+"use client";
+
+import { useMemo, useState } from "react";
+
+type IntakeForm = {
+  title: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  county: string;
+  notes: string;
+};
+
+function slugify(value: string): string {
+  const slug = value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return slug || "new-property";
+}
+
+function escapeTsString(value: string): string {
+  return value.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
+function buildStub(form: IntakeForm): string {
+  const id = slugify(`${form.address}-${form.zip}`);
+  const title =
+    form.title.trim() ||
+    `Deal Screen — ${form.address.trim() || "Address"}`;
+  const whatIsKnown = form.notes.trim()
+    ? `[\n      "${escapeTsString(form.notes.trim())}",\n    ]`
+    : "[]";
+
+  return `import type { PropertyScreen } from "@/types/property";
+
+export const property${id
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join("")}: PropertyScreen = {
+  id: "${id}",
+  title: "${escapeTsString(title)}",
+  address: "${escapeTsString(form.address.trim() || "Street address")}",
+  city: "${escapeTsString(form.city.trim() || "City")}",
+  state: "${escapeTsString(form.state.trim() || "FL")}",
+  zip: "${escapeTsString(form.zip.trim() || "00000")}",
+  county: ${form.county.trim() ? `"${escapeTsString(form.county.trim())}"` : "undefined"},
+  propertyType: "Condominium",
+  status: {
+    currentRecommendation: "Need More Information",
+    provisionalStatus: "need-more-information",
+  },
+  summary: {
+    whatIsKnown: ${whatIsKnown},
+    publicRiskSignals: [],
+    strengths: [],
+    risks: [],
+  },
+  taxes: {
+    annualHistory: [],
+  },
+  missingDiligence: [],
+  condoRiskFlags: {
+    milestoneInspection: { status: "unknown", label: "Milestone inspection", note: "Not yet reviewed." },
+    sirsReserves: { status: "unknown", label: "SIRS / reserves", note: "Not yet reviewed." },
+    specialAssessments: { status: "unknown", label: "Special assessments", note: "Not yet reviewed." },
+    hoaDues: { status: "unknown", label: "HOA dues", note: "Not yet verified." },
+    insurance: { status: "unknown", label: "Insurance", note: "Not yet researched." },
+    litigationOrRecords: { status: "unknown", label: "Litigation / records", note: "Not yet reviewed." },
+  },
+  screening: {
+    targetCashOnCash: null,
+    hardNoRedFlag: "unknown",
+    rentSupportable: "unknown",
+    associationRiskNormal: "unknown",
+  },
+  proForma: {
+    expectedMarketRentMonthly: null,
+    hoaMonthly: null,
+    insuranceAnnual: null,
+    repairsAnnual: null,
+    vacancyRate: null,
+  },
+  sources: [],
+  referencePaths: [],
+};
+`;
+}
+
+export default function IntakePage() {
+  const [form, setForm] = useState<IntakeForm>({
+    title: "",
+    address: "",
+    city: "",
+    state: "FL",
+    zip: "",
+    county: "",
+    notes: "",
+  });
+  const [copied, setCopied] = useState(false);
+
+  const stub = useMemo(() => buildStub(form), [form]);
+  const suggestedPath = `src/data/properties/${slugify(`${form.address}-${form.zip}`)}.ts`;
+
+  function updateField<K extends keyof IntakeForm>(key: K, value: IntakeForm[K]) {
+    setForm((current) => ({ ...current, [key]: value }));
+    setCopied(false);
+  }
+
+  async function copyStub() {
+    await navigator.clipboard.writeText(stub);
+    setCopied(true);
+  }
+
+  return (
+    <main className="page-stack">
+      <section className="page-intro">
+        <h1>Property intake</h1>
+        <p>
+          Enter a new address to generate a TypeScript stub. This does not save
+          anything — paste the output into a new file under{" "}
+          <code>src/data/properties</code>, then register it in{" "}
+          <code>index.ts</code>.
+        </p>
+      </section>
+
+      <section className="section-card">
+        <h2>Address details</h2>
+        <div className="section-card__body">
+          <form
+            className="intake-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void copyStub();
+            }}
+          >
+            <label>
+              Title (optional)
+              <input
+                value={form.title}
+                onChange={(event) => updateField("title", event.target.value)}
+                placeholder="Florida Deal Screen — 123 Main St #1"
+              />
+            </label>
+            <label>
+              Address
+              <input
+                required
+                value={form.address}
+                onChange={(event) => updateField("address", event.target.value)}
+                placeholder="7863 Niagara Ave #1921"
+              />
+            </label>
+            <div className="intake-form__row">
+              <label>
+                City
+                <input
+                  required
+                  value={form.city}
+                  onChange={(event) => updateField("city", event.target.value)}
+                  placeholder="Tampa"
+                />
+              </label>
+              <label>
+                State
+                <input
+                  required
+                  value={form.state}
+                  onChange={(event) => updateField("state", event.target.value)}
+                  placeholder="FL"
+                />
+              </label>
+              <label>
+                ZIP
+                <input
+                  required
+                  value={form.zip}
+                  onChange={(event) => updateField("zip", event.target.value)}
+                  placeholder="33617"
+                />
+              </label>
+            </div>
+            <label>
+              County (optional)
+              <input
+                value={form.county}
+                onChange={(event) => updateField("county", event.target.value)}
+                placeholder="Hillsborough County"
+              />
+            </label>
+            <label>
+              Notes (optional)
+              <textarea
+                rows={3}
+                value={form.notes}
+                onChange={(event) => updateField("notes", event.target.value)}
+                placeholder="Why this deal was selected / first diligence notes"
+              />
+            </label>
+            <div className="intake-form__actions">
+              <button type="submit" className="button-primary">
+                {copied ? "Copied" : "Copy TypeScript stub"}
+              </button>
+              <span className="muted-note">
+                Suggested file: <code>{suggestedPath}</code>
+              </span>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section className="section-card">
+        <h2>Generated stub</h2>
+        <p className="section-card__subtitle">
+          Paste into the suggested file, then add the export to{" "}
+          <code>src/data/properties/index.ts</code>. Or start from{" "}
+          <code>_template.ts</code> if you prefer a fuller blank shape.
+        </p>
+        <div className="section-card__body">
+          <pre className="intake-stub">{stub}</pre>
+        </div>
+      </section>
+    </main>
+  );
+}

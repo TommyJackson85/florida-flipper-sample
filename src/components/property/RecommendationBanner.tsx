@@ -1,11 +1,9 @@
 import type { PropertyScreen } from "@/types/property";
 import { formatDate } from "@/lib/format";
 import {
-  countUnsetProFormaFields,
   labelForProvisionalStatus,
   toneForProvisionalStatus,
 } from "@/lib/property-metrics";
-import { DetailList } from "./DetailList";
 import { StatusPill } from "./StatusPill";
 
 type RecommendationBannerProps = {
@@ -21,7 +19,7 @@ function framingForStatus(property: PropertyScreen): string {
     case "track":
       return "Keep in the pipeline. Core public facts are usable, but association and operating inputs still gate a decision.";
     case "need-more-information":
-      return "Not enough verified inputs for a buy / pass call. Use the missing-diligence list as the next work queue.";
+      return "Not enough verified inputs for a buy / pass call. Use the risk flags and missing-diligence list as the next work queue.";
     default:
       return "Screen outcome not set. Fill provisional status after the next diligence pass.";
   }
@@ -32,7 +30,6 @@ export function RecommendationBanner({ property }: RecommendationBannerProps) {
     property.status?.currentRecommendation ??
     labelForProvisionalStatus(property.status?.provisionalStatus);
   const tone = toneForProvisionalStatus(property.status?.provisionalStatus);
-  const unsetProForma = countUnsetProFormaFields(property);
 
   return (
     <section className="recommendation-banner">
@@ -46,39 +43,12 @@ export function RecommendationBanner({ property }: RecommendationBannerProps) {
         <StatusPill label={recommendation} tone={tone} />
       </div>
 
-      <DetailList
-        items={[
-          {
-            label: "Provisional status",
-            value: labelForProvisionalStatus(
-              property.status?.provisionalStatus
-            ),
-          },
-          {
-            label: "Hard no red flag",
-            value: property.screening?.hardNoRedFlag ?? "unknown",
-          },
-          {
-            label: "Rent supportable",
-            value: property.screening?.rentSupportable ?? "unknown",
-          },
-          {
-            label: "Association risk normal",
-            value: property.screening?.associationRiskNormal ?? "unknown",
-          },
-          {
-            label: "Target cash-on-cash",
-            value: property.screening?.targetCashOnCash ?? "Not set",
-          },
-          {
-            label: "Pro forma fields unset",
-            value: `${unsetProForma} of 5`,
-          },
-        ]}
-      />
-
       <div className="recommendation-banner__meta">
-        <span>Tax status: {property.status?.taxStatus ?? "—"}</span>
+        <span>
+          Status:{" "}
+          {labelForProvisionalStatus(property.status?.provisionalStatus)}
+        </span>
+        <span>Tax: {property.status?.taxStatus ?? "—"}</span>
         <span>
           Last reviewed: {formatDate(property.status?.lastReviewedAt)}
         </span>

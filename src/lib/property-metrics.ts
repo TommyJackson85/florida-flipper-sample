@@ -106,15 +106,3 @@ export function summarizeTaxTrend(property: PropertyScreen): string | null {
 
   return `Annual tax bill ${direction} ${moneyDelta}${pctLabel} from ${oldest.year} (${formatMoney(oldest.amount, { maximumFractionDigits: 2 })}) to ${newest.year} (${formatMoney(newest.amount, { maximumFractionDigits: 2 })}).`;
 }
-
-export function countUnsetProFormaFields(property: PropertyScreen): number {
-  const p = property.proForma;
-  if (!p) return 5;
-  return [
-    p.expectedMarketRentMonthly,
-    p.hoaMonthly,
-    p.insuranceAnnual,
-    p.repairsAnnual,
-    p.vacancyRate,
-  ].filter((value) => value === null || value === undefined).length;
-}

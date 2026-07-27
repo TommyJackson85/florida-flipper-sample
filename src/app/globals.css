@@ -490,3 +490,127 @@ main {
   margin: 0 0 16px;
   color: var(--muted);
 }
+
+.home-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.button-secondary {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--accent);
+  border: 1px solid #cfd6df;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.button-secondary:hover {
+  text-decoration: none;
+}
+
+.risk-flag-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.risk-flag-row {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--soft);
+}
+
+.risk-flag-row:last-child {
+  border-bottom: none;
+}
+
+.risk-flag-row__main {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.risk-flag-row__label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.risk-flag-row__note {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.intake-form {
+  display: grid;
+  gap: 14px;
+}
+
+.intake-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  color: #4b5563;
+  font-weight: 600;
+}
+
+.intake-form input,
+.intake-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--text);
+  font: inherit;
+  font-weight: 400;
+}
+
+.intake-form__row {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .intake-form__row {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+}
+
+.intake-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.intake-form button {
+  border: none;
+  cursor: pointer;
+}
+
+.intake-stub {
+  margin: 0;
+  padding: 14px;
+  overflow: auto;
+  max-height: 480px;
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  background: #111827;
+  color: #e5e7eb;
+  font-size: 12px;
+  line-height: 1.55;
+}

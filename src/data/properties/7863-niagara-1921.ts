@@ -188,6 +188,39 @@ export const property7863Niagara1921: PropertyScreen = {
     },
   ],
 
+  condoRiskFlags: {
+    milestoneInspection: {
+      status: "open",
+      label: "Milestone inspection",
+      note: "No milestone or similar structural inspection report obtained for this building/phase yet.",
+    },
+    sirsReserves: {
+      status: "open",
+      label: "SIRS / reserves",
+      note: "Budget, reserve schedule, and Structural Integrity Reserve Study status not yet obtained from association records.",
+    },
+    specialAssessments: {
+      status: "open",
+      label: "Special assessments",
+      note: "Current/recent special assessments and major capital projects not yet confirmed.",
+    },
+    hoaDues: {
+      status: "open",
+      label: "HOA dues",
+      note: "Listing figures conflict (~$499 vs ~$376/month). Leave proForma.hoaMonthly null until verified.",
+    },
+    insurance: {
+      status: "unknown",
+      label: "Insurance",
+      note: "Association and unit insurance posture not yet researched; no verified annual premium.",
+    },
+    litigationOrRecords: {
+      status: "open",
+      label: "Litigation / records",
+      note: "Official records show recurring association collection activity; material litigation and full document set still need review.",
+    },
+  },
+
   screening: {
     targetCashOnCash: null,
     hardNoRedFlag: "unknown",

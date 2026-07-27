@@ -30,6 +30,7 @@ export default function RootLayout({
             <nav className="site-nav">
               <Link href="/">Home</Link>
               <Link href="/properties">Properties</Link>
+              <Link href="/intake">Intake</Link>
             </nav>
           </div>
         </header>
