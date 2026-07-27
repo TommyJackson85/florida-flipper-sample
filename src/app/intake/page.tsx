@@ -99,6 +99,7 @@ export default function IntakePage() {
     notes: "",
   });
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState(false);
 
   const stub = useMemo(() => buildStub(form), [form]);
   const suggestedPath = `src/data/properties/${slugify(`${form.address}-${form.zip}`)}.ts`;
@@ -106,11 +107,18 @@ export default function IntakePage() {
   function updateField<K extends keyof IntakeForm>(key: K, value: IntakeForm[K]) {
     setForm((current) => ({ ...current, [key]: value }));
     setCopied(false);
+    setCopyError(false);
   }
 
   async function copyStub() {
-    await navigator.clipboard.writeText(stub);
-    setCopied(true);
+    try {
+      await navigator.clipboard.writeText(stub);
+      setCopied(true);
+      setCopyError(false);
+    } catch {
+      setCopied(false);
+      setCopyError(true);
+    }
   }
 
   return (
@@ -206,6 +214,15 @@ export default function IntakePage() {
                 Suggested file: <code>{suggestedPath}</code>
               </span>
             </div>
+            {copyError ? (
+              <p className="muted-note">
+                Copy failed — select the stub below and copy manually.
+              </p>
+            ) : null}
+            <p className="muted-note">
+              Minimal stub for a quick start. Copy{" "}
+              <code>_template.ts</code> if you want the full blank shape.
+            </p>
           </form>
         </div>
       </section>

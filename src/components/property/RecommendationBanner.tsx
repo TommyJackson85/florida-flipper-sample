@@ -44,10 +44,6 @@ export function RecommendationBanner({ property }: RecommendationBannerProps) {
       </div>
 
       <div className="recommendation-banner__meta">
-        <span>
-          Status:{" "}
-          {labelForProvisionalStatus(property.status?.provisionalStatus)}
-        </span>
         <span>Tax: {property.status?.taxStatus ?? "—"}</span>
         <span>
           Last reviewed: {formatDate(property.status?.lastReviewedAt)}
