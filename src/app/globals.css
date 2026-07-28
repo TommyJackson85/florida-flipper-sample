@@ -553,6 +553,36 @@ main {
   font-size: 13px;
 }
 
+.doc-state-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.doc-state-actions__btn {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #cfd6df;
+  background: #ffffff;
+  color: var(--accent);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.doc-state-actions__btn:hover {
+  border-color: var(--accent);
+}
+
+.doc-state-actions__btn--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+  cursor: default;
+}
+
 .intake-form {
   display: grid;
   gap: 14px;

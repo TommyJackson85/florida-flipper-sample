@@ -1,4 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import type {
+  MissingDocumentItem,
   MissingDocumentState,
   PropertyScreen,
 } from "@/types/property";
@@ -9,6 +13,12 @@ import { StatusPill } from "./StatusPill";
 type MissingDocumentsCardProps = {
   property: PropertyScreen;
 };
+
+const STATE_ORDER: MissingDocumentState[] = [
+  "missing",
+  "requested",
+  "received",
+];
 
 function stateTone(state: MissingDocumentState): StatusTone {
   switch (state) {
@@ -34,6 +44,18 @@ function stateLabel(state: MissingDocumentState): string {
   }
 }
 
+function demoNoteForState(state: MissingDocumentState): string {
+  switch (state) {
+    case "received":
+      return "Marked received on this screen — demo only, not saved.";
+    case "requested":
+      return "Marked requested on this screen — demo only, not saved.";
+    case "missing":
+    default:
+      return "Marked missing on this screen — demo only, not saved.";
+  }
+}
+
 export function MissingDocumentsCard({ property }: MissingDocumentsCardProps) {
   if (property.isSample) {
     return (
@@ -48,28 +70,49 @@ export function MissingDocumentsCard({ property }: MissingDocumentsCardProps) {
     );
   }
 
-  const docs = property.missingDocuments;
-  if (!docs || docs.items.length === 0) {
+  const seedItems = property.missingDocuments?.items ?? [];
+  if (seedItems.length === 0) {
     return null;
   }
 
-  const missingCount = docs.items.filter((i) => i.state === "missing").length;
-  const requestedCount = docs.items.filter(
-    (i) => i.state === "requested"
-  ).length;
-  const receivedCount = docs.items.filter((i) => i.state === "received").length;
+  return <MissingDocumentsInteractive seedItems={seedItems} />;
+}
+
+function MissingDocumentsInteractive({
+  seedItems,
+}: {
+  seedItems: MissingDocumentItem[];
+}) {
+  const [items, setItems] = useState<MissingDocumentItem[]>(seedItems);
+
+  const missingCount = items.filter((i) => i.state === "missing").length;
+  const requestedCount = items.filter((i) => i.state === "requested").length;
+  const receivedCount = items.filter((i) => i.state === "received").length;
+
+  function setItemState(id: string, next: MissingDocumentState) {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === id
+          ? { ...item, state: next, note: demoNoteForState(next) }
+          : item
+      )
+    );
+  }
 
   return (
     <SectionCard
       title="Missing documents"
       subtitle="Artifact status only: missing = not yet asked for on this screen · requested = ask noted here, package not in hand · received = in hand. Not closing readiness."
     >
-      <p className="muted-note" style={{ marginBottom: "0.75rem" }}>
+      <p className="muted-note" style={{ marginBottom: "0.5rem" }}>
         {missingCount} missing · {requestedCount} requested · {receivedCount}{" "}
         received
       </p>
+      <p className="muted-note" style={{ marginBottom: "0.75rem" }}>
+        Demo only — changes stay on this screen until refresh; not saved.
+      </p>
       <ul className="risk-flag-list">
-        {docs.items.map((item) => (
+        {items.map((item) => (
           <li key={item.id} className="risk-flag-row">
             <div className="risk-flag-row__main">
               <span className="risk-flag-row__label">{item.label}</span>
@@ -81,6 +124,30 @@ export function MissingDocumentsCard({ property }: MissingDocumentsCardProps) {
             {item.note ? (
               <p className="risk-flag-row__note">{item.note}</p>
             ) : null}
+            <div
+              className="doc-state-actions"
+              role="group"
+              aria-label={`${item.label} status`}
+            >
+              {STATE_ORDER.map((state) => {
+                const pressed = item.state === state;
+                return (
+                  <button
+                    key={state}
+                    type="button"
+                    className={
+                      pressed
+                        ? "doc-state-actions__btn doc-state-actions__btn--active"
+                        : "doc-state-actions__btn"
+                    }
+                    aria-pressed={pressed}
+                    onClick={() => setItemState(item.id, state)}
+                  >
+                    {stateLabel(state)}
+                  </button>
+                );
+              })}
+            </div>
           </li>
         ))}
       </ul>
