@@ -263,14 +263,14 @@ export const property7863Niagara1921: PropertyScreen = {
     ],
   },
 
-  // Artifact tracker — outstanding docs only; no received items invented
+  // Artifact tracker — lifecycle missing → requested → received; no uploads
   missingDocuments: {
     items: [
       {
         id: "estoppel-questionnaire",
         label: "Estoppel / condo questionnaire",
-        state: "requested",
-        note: "Marked requested on this screen — package not in hand.",
+        state: "received",
+        note: "Marked received on this screen — no file stored in app.",
       },
       {
         id: "budget",

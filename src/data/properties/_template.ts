@@ -11,8 +11,9 @@ import type { PropertyScreen } from "@/types/property";
  * 5. Optional closingReadiness: short go/no-go items (open/done/blocked). Status is
  *    derived from item states — do not mark done/ready without evidence.
  * 6. Optional missingDocuments: named artifacts (missing/requested/received). Use
- *    requested only when an ask is noted on this screen; do not mark received without
- *    evidence; do not auto-sync from other sections.
+ *    requested only when an ask is noted on this screen; use received only when the
+ *    package is marked in hand on this screen (status only — no file storage); do not
+ *    auto-sync from other sections.
  * 7. Demo/workflow-practice records: set isSample: true and a short sampleNote.
  * 8. Register the export in `index.ts` (do not import this `_template.ts` file).
  *
