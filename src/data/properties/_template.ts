@@ -10,8 +10,9 @@ import type { PropertyScreen } from "@/types/property";
  * 4. Leave proForma null and condoRiskFlags "unknown" until you have evidence.
  * 5. Optional closingReadiness: short go/no-go items (open/done/blocked). Status is
  *    derived from item states — do not mark done/ready without evidence.
- * 6. Optional missingDocuments: named artifacts (missing/requested/received). Do not
- *    mark received without evidence; do not auto-sync from other sections.
+ * 6. Optional missingDocuments: named artifacts (missing/requested/received). Use
+ *    requested only when an ask is noted on this screen; do not mark received without
+ *    evidence; do not auto-sync from other sections.
  * 7. Demo/workflow-practice records: set isSample: true and a short sampleNote.
  * 8. Register the export in `index.ts` (do not import this `_template.ts` file).
  *

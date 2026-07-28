@@ -269,14 +269,14 @@ export const property7863Niagara1921: PropertyScreen = {
       {
         id: "estoppel-questionnaire",
         label: "Estoppel / condo questionnaire",
-        state: "missing",
-        note: "Not obtained for Unit 1921.",
+        state: "requested",
+        note: "Marked requested on this screen — package not in hand.",
       },
       {
         id: "budget",
         label: "Current approved budget",
-        state: "missing",
-        note: "Latest association budget not on file.",
+        state: "requested",
+        note: "Marked requested on this screen — package not in hand.",
       },
       {
         id: "reserve-schedule",

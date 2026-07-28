@@ -62,7 +62,7 @@ export function MissingDocumentsCard({ property }: MissingDocumentsCardProps) {
   return (
     <SectionCard
       title="Missing documents"
-      subtitle="Named diligence artifacts still outstanding. Separate from risk flags, closing readiness, and Known vs missing."
+      subtitle="Artifact status only: missing = not yet asked for on this screen · requested = ask noted here, package not in hand · received = in hand. Not closing readiness."
     >
       <p className="muted-note" style={{ marginBottom: "0.75rem" }}>
         {missingCount} missing · {requestedCount} requested · {receivedCount}{" "}
