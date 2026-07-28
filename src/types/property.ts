@@ -64,6 +64,19 @@ export type ClosingReadiness = {
   items: ClosingReadinessItem[];
 };
 
+export type MissingDocumentState = "missing" | "requested" | "received";
+
+export type MissingDocumentItem = {
+  id: string;
+  label: string;
+  state: MissingDocumentState;
+  note?: string;
+};
+
+export type MissingDocuments = {
+  items: MissingDocumentItem[];
+};
+
 export type PropertyScreen = {
   id: string;
   title: string;
@@ -157,6 +170,9 @@ export type PropertyScreen = {
 
   /** Compact go/no-go rollup of closing blockers (distinct from screen outcome) */
   closingReadiness?: ClosingReadiness;
+
+  /** Concrete diligence documents still outstanding (artifact tracking only) */
+  missingDocuments?: MissingDocuments;
 
   screening?: {
     targetCashOnCash?: string | null;

@@ -10,11 +10,13 @@ import type { PropertyScreen } from "@/types/property";
  * 4. Leave proForma null and condoRiskFlags "unknown" until you have evidence.
  * 5. Optional closingReadiness: short go/no-go items (open/done/blocked). Status is
  *    derived from item states — do not mark done/ready without evidence.
- * 6. Demo/workflow-practice records: set isSample: true and a short sampleNote.
- * 7. Register the export in `index.ts` (do not import this `_template.ts` file).
+ * 6. Optional missingDocuments: named artifacts (missing/requested/received). Do not
+ *    mark received without evidence; do not auto-sync from other sections.
+ * 7. Demo/workflow-practice records: set isSample: true and a short sampleNote.
+ * 8. Register the export in `index.ts` (do not import this `_template.ts` file).
  *
  * Tip: use `/intake` to generate identity + default flags, then merge into this shape
- * when you need association / tax / identifiers / closing readiness.
+ * when you need association / tax / identifiers / closing readiness / documents.
  */
 export const propertyTemplate: PropertyScreen = {
   // REQUIRED — must match filename and URL /properties/<id>
@@ -139,6 +141,9 @@ export const propertyTemplate: PropertyScreen = {
 
   // Optional — omit until you have closing blockers to track; status derives from items
   closingReadiness: undefined,
+
+  // Optional — named diligence artifacts only (missing / requested / received)
+  missingDocuments: undefined,
 
   screening: {
     targetCashOnCash: null,

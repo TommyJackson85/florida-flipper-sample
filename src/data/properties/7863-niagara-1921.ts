@@ -263,6 +263,60 @@ export const property7863Niagara1921: PropertyScreen = {
     ],
   },
 
+  // Artifact tracker — outstanding docs only; no received items invented
+  missingDocuments: {
+    items: [
+      {
+        id: "estoppel-questionnaire",
+        label: "Estoppel / condo questionnaire",
+        state: "missing",
+        note: "Not obtained for Unit 1921.",
+      },
+      {
+        id: "budget",
+        label: "Current approved budget",
+        state: "missing",
+        note: "Latest association budget not on file.",
+      },
+      {
+        id: "reserve-schedule",
+        label: "Reserve schedule",
+        state: "missing",
+        note: "Reserve schedule not obtained.",
+      },
+      {
+        id: "sirs",
+        label: "Structural Integrity Reserve Study (SIRS)",
+        state: "missing",
+        note: "SIRS completion status not confirmed with documents.",
+      },
+      {
+        id: "milestone-report",
+        label: "Milestone / structural inspection report",
+        state: "missing",
+        note: "No milestone or similar report on file for this building/phase.",
+      },
+      {
+        id: "insurance-docs",
+        label: "Master / unit insurance declarations",
+        state: "missing",
+        note: "Insurance packet not yet requested or received.",
+      },
+      {
+        id: "special-assessment-docs",
+        label: "Special assessment disclosures / related minutes",
+        state: "missing",
+        note: "No assessment disclosure packet on file.",
+      },
+      {
+        id: "litigation-disclosure",
+        label: "Litigation / claims disclosure",
+        state: "missing",
+        note: "Material litigation disclosure not obtained.",
+      },
+    ],
+  },
+
   screening: {
     targetCashOnCash: null,
     hardNoRedFlag: "unknown",
