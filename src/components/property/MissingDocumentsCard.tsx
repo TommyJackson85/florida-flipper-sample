@@ -56,6 +56,24 @@ function demoNoteForState(state: MissingDocumentState): string {
   }
 }
 
+function attentionSummary(
+  missingCount: number,
+  requestedCount: number
+): string {
+  if (missingCount === 0 && requestedCount === 0) {
+    return "Attention: no document follow-up on this screen.";
+  }
+  if (missingCount === 0) {
+    return `Attention: wait on ${requestedCount} requested package${
+      requestedCount === 1 ? "" : "s"
+    }.`;
+  }
+  if (requestedCount === 0) {
+    return `Attention: ask for ${missingCount} still missing.`;
+  }
+  return `Attention: ask for ${missingCount} still missing · wait on ${requestedCount} requested.`;
+}
+
 export function MissingDocumentsCard({ property }: MissingDocumentsCardProps) {
   if (property.isSample) {
     return (
@@ -104,6 +122,9 @@ function MissingDocumentsInteractive({
       title="Missing documents"
       subtitle="Artifact status only: missing = not yet asked for on this screen · requested = ask noted here, package not in hand · received = in hand. Not closing readiness."
     >
+      <p className="muted-note" style={{ marginBottom: "0.35rem" }}>
+        <strong>{attentionSummary(missingCount, requestedCount)}</strong>
+      </p>
       <p className="muted-note" style={{ marginBottom: "0.5rem" }}>
         {missingCount} missing · {requestedCount} requested · {receivedCount}{" "}
         received
