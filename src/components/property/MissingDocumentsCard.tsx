@@ -14,7 +14,16 @@ type MissingDocumentsCardProps = {
   property: PropertyScreen;
 };
 
+type DocumentFilter = "all" | MissingDocumentState;
+
 const STATE_ORDER: MissingDocumentState[] = [
+  "missing",
+  "requested",
+  "received",
+];
+
+const FILTER_ORDER: DocumentFilter[] = [
+  "all",
   "missing",
   "requested",
   "received",
@@ -42,6 +51,10 @@ function stateLabel(state: MissingDocumentState): string {
     default:
       return "Missing";
   }
+}
+
+function filterLabel(filter: DocumentFilter): string {
+  return filter === "all" ? "All" : stateLabel(filter);
 }
 
 function demoNoteForState(state: MissingDocumentState): string {
@@ -102,10 +115,14 @@ function MissingDocumentsInteractive({
   seedItems: MissingDocumentItem[];
 }) {
   const [items, setItems] = useState<MissingDocumentItem[]>(seedItems);
+  const [filter, setFilter] = useState<DocumentFilter>("all");
 
   const missingCount = items.filter((i) => i.state === "missing").length;
   const requestedCount = items.filter((i) => i.state === "requested").length;
   const receivedCount = items.filter((i) => i.state === "received").length;
+
+  const visibleItems =
+    filter === "all" ? items : items.filter((item) => item.state === filter);
 
   function setItemState(id: string, next: MissingDocumentState) {
     setItems((prev) =>
@@ -129,49 +146,78 @@ function MissingDocumentsInteractive({
         {missingCount} missing · {requestedCount} requested · {receivedCount}{" "}
         received
       </p>
-      <p className="muted-note" style={{ marginBottom: "0.75rem" }}>
+      <p className="muted-note" style={{ marginBottom: "0.5rem" }}>
         Demo only — changes stay on this screen until refresh; not saved.
       </p>
-      <ul className="risk-flag-list">
-        {items.map((item) => (
-          <li key={item.id} className="risk-flag-row">
-            <div className="risk-flag-row__main">
-              <span className="risk-flag-row__label">{item.label}</span>
-              <StatusPill
-                label={stateLabel(item.state)}
-                tone={stateTone(item.state)}
-              />
-            </div>
-            {item.note ? (
-              <p className="risk-flag-row__note">{item.note}</p>
-            ) : null}
-            <div
-              className="doc-state-actions"
-              role="group"
-              aria-label={`${item.label} status`}
+      <div
+        className="doc-state-actions"
+        role="group"
+        aria-label="Filter documents by status"
+        style={{ marginBottom: "0.75rem" }}
+      >
+        {FILTER_ORDER.map((option) => {
+          const pressed = filter === option;
+          return (
+            <button
+              key={option}
+              type="button"
+              className={
+                pressed
+                  ? "doc-state-actions__btn doc-state-actions__btn--active"
+                  : "doc-state-actions__btn"
+              }
+              aria-pressed={pressed}
+              onClick={() => setFilter(option)}
             >
-              {STATE_ORDER.map((state) => {
-                const pressed = item.state === state;
-                return (
-                  <button
-                    key={state}
-                    type="button"
-                    className={
-                      pressed
-                        ? "doc-state-actions__btn doc-state-actions__btn--active"
-                        : "doc-state-actions__btn"
-                    }
-                    aria-pressed={pressed}
-                    onClick={() => setItemState(item.id, state)}
-                  >
-                    {stateLabel(state)}
-                  </button>
-                );
-              })}
-            </div>
-          </li>
-        ))}
-      </ul>
+              {filterLabel(option)}
+            </button>
+          );
+        })}
+      </div>
+      {visibleItems.length === 0 ? (
+        <p className="muted-note">No documents in this filter.</p>
+      ) : (
+        <ul className="risk-flag-list">
+          {visibleItems.map((item) => (
+            <li key={item.id} className="risk-flag-row">
+              <div className="risk-flag-row__main">
+                <span className="risk-flag-row__label">{item.label}</span>
+                <StatusPill
+                  label={stateLabel(item.state)}
+                  tone={stateTone(item.state)}
+                />
+              </div>
+              {item.note ? (
+                <p className="risk-flag-row__note">{item.note}</p>
+              ) : null}
+              <div
+                className="doc-state-actions"
+                role="group"
+                aria-label={`${item.label} status`}
+              >
+                {STATE_ORDER.map((state) => {
+                  const pressed = item.state === state;
+                  return (
+                    <button
+                      key={state}
+                      type="button"
+                      className={
+                        pressed
+                          ? "doc-state-actions__btn doc-state-actions__btn--active"
+                          : "doc-state-actions__btn"
+                      }
+                      aria-pressed={pressed}
+                      onClick={() => setItemState(item.id, state)}
+                    >
+                      {stateLabel(state)}
+                    </button>
+                  );
+                })}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </SectionCard>
   );
 }
