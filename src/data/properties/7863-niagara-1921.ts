@@ -221,6 +221,48 @@ export const property7863Niagara1921: PropertyScreen = {
     },
   },
 
+  // Go/no-go rollup — seeded from known open diligence only; no cleared items invented
+  closingReadiness: {
+    items: [
+      {
+        id: "hoa-estoppel",
+        label: "HOA / estoppel",
+        state: "open",
+        note: "Verified dues and estoppel package not obtained; listing figures conflict.",
+      },
+      {
+        id: "sirs-reserves",
+        label: "SIRS / reserves",
+        state: "open",
+        note: "Budget, reserve schedule, and SIRS status not yet obtained.",
+      },
+      {
+        id: "milestone",
+        label: "Milestone inspection",
+        state: "open",
+        note: "No milestone or similar structural inspection report on file.",
+      },
+      {
+        id: "special-assessments",
+        label: "Special assessments",
+        state: "open",
+        note: "Current/recent special assessments not yet confirmed.",
+      },
+      {
+        id: "insurance",
+        label: "Insurance",
+        state: "open",
+        note: "Association and unit insurance posture not yet researched.",
+      },
+      {
+        id: "litigation-records",
+        label: "Litigation / records",
+        state: "open",
+        note: "Material litigation and full association document set still need review.",
+      },
+    ],
+  },
+
   screening: {
     targetCashOnCash: null,
     hardNoRedFlag: "unknown",

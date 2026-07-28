@@ -1,4 +1,6 @@
 import type {
+  ClosingReadiness,
+  ClosingReadinessStatus,
   PropertyScreen,
   ProvisionalStatus,
   SourceEntry,
@@ -37,6 +39,49 @@ export function labelForProvisionalStatus(
       return "Need more information";
     default:
       return "Unknown";
+  }
+}
+
+/**
+ * Derive closing readiness from checklist item states.
+ * Never returns "ready" unless every item is done (and there is at least one item).
+ */
+export function deriveClosingReadinessStatus(
+  readiness?: ClosingReadiness
+): ClosingReadinessStatus {
+  const items = readiness?.items ?? [];
+  if (items.length === 0) return "not-ready";
+  if (items.some((item) => item.state === "blocked")) return "not-ready";
+  if (items.some((item) => item.state === "open")) return "in-progress";
+  if (items.every((item) => item.state === "done")) return "ready";
+  return "not-ready";
+}
+
+export function toneForClosingReadiness(
+  status: ClosingReadinessStatus
+): StatusTone {
+  switch (status) {
+    case "ready":
+      return "good";
+    case "in-progress":
+      return "warn";
+    case "not-ready":
+    default:
+      return "bad";
+  }
+}
+
+export function labelForClosingReadiness(
+  status: ClosingReadinessStatus
+): string {
+  switch (status) {
+    case "ready":
+      return "Ready";
+    case "in-progress":
+      return "In progress";
+    case "not-ready":
+    default:
+      return "Not ready";
   }
 }
 

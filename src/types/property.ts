@@ -49,6 +49,21 @@ export type CondoRiskFlags = {
   litigationOrRecords: RiskFlag;
 };
 
+export type ClosingReadinessItemState = "open" | "done" | "blocked";
+
+export type ClosingReadinessStatus = "not-ready" | "in-progress" | "ready";
+
+export type ClosingReadinessItem = {
+  id: string;
+  label: string;
+  state: ClosingReadinessItemState;
+  note?: string;
+};
+
+export type ClosingReadiness = {
+  items: ClosingReadinessItem[];
+};
+
 export type PropertyScreen = {
   id: string;
   title: string;
@@ -139,6 +154,9 @@ export type PropertyScreen = {
 
   /** Florida condo / building risk flags for quick underwriting scan */
   condoRiskFlags?: CondoRiskFlags;
+
+  /** Compact go/no-go rollup of closing blockers (distinct from screen outcome) */
+  closingReadiness?: ClosingReadiness;
 
   screening?: {
     targetCashOnCash?: string | null;

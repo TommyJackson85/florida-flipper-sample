@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AssociationCard } from "@/components/property/AssociationCard";
+import { ClosingReadinessCard } from "@/components/property/ClosingReadinessCard";
 import { DetailList } from "@/components/property/DetailList";
 import { KnownMissingCard } from "@/components/property/KnownMissingCard";
 import { PropertyHeader } from "@/components/property/PropertyHeader";
@@ -43,6 +44,7 @@ export default async function PropertyDetailPage({
       <RecommendationBanner property={property} />
 
       {isSample ? null : <RiskFlagsCard property={property} />}
+      <ClosingReadinessCard property={property} />
 
       <SectionCard
         title="Snapshot"
