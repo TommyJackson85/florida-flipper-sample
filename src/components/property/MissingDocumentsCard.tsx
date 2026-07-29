@@ -87,6 +87,18 @@ function attentionSummary(
   return `Attention: ask for ${missingCount} still missing · wait on ${requestedCount} requested.`;
 }
 
+function focusNextSummary(items: MissingDocumentItem[]): string {
+  const nextMissing = items.find((item) => item.state === "missing");
+  if (nextMissing) {
+    return `Focus next: ask for ${nextMissing.label}`;
+  }
+  const nextRequested = items.find((item) => item.state === "requested");
+  if (nextRequested) {
+    return `Focus next: wait on ${nextRequested.label}`;
+  }
+  return "Focus next: no document follow-up on this screen.";
+}
+
 export function MissingDocumentsCard({ property }: MissingDocumentsCardProps) {
   if (property.isSample) {
     return (
@@ -152,6 +164,9 @@ function MissingDocumentsInteractive({
     >
       <p className="muted-note" style={{ marginBottom: "0.35rem" }}>
         <strong>{attentionSummary(missingCount, requestedCount)}</strong>
+      </p>
+      <p className="muted-note" style={{ marginBottom: "0.5rem" }}>
+        {focusNextSummary(items)}
       </p>
       <p className="muted-note" style={{ marginBottom: "0.5rem" }}>
         {missingCount} missing · {requestedCount} requested · {receivedCount}{" "}
