@@ -139,3 +139,105 @@ export function loadIntakeStubFromSession(): PropertyScreen | null {
     return null;
   }
 }
+
+/**
+ * Clone a property into a Sample session stub for another workflow pass.
+ * Carries identity / public-record facts; resets decision and workflow state.
+ */
+export function duplicatePropertyAsDemoStub(
+  source: PropertyScreen
+): PropertyScreen {
+  const baseId = source.id.replace(/-demo-copy(-\d+)?$/, "");
+  const id = `${baseId}-demo-copy`;
+  const addressLabel = source.address || baseId;
+  let title = `SAMPLE — Copy of ${addressLabel}`;
+  if (source.title && !source.title.toUpperCase().includes("SAMPLE")) {
+    title = `SAMPLE — Copy of ${source.title}`;
+  } else if (source.title?.toUpperCase().includes("SAMPLE")) {
+    title = source.title.includes("Copy of")
+      ? source.title
+      : `SAMPLE — Copy of ${addressLabel}`;
+  }
+
+  return {
+    id,
+    title,
+    address: source.address,
+    city: source.city,
+    state: source.state,
+    zip: source.zip,
+    community: source.community,
+    county: source.county,
+    propertyType: source.propertyType,
+    unitConfiguration: source.unitConfiguration,
+    zoning: source.zoning,
+    yearBuilt: source.yearBuilt,
+    size: source.size ? { ...source.size } : undefined,
+    pricing: source.pricing ? { ...source.pricing } : undefined,
+    identifiers: source.identifiers ? { ...source.identifiers } : undefined,
+    ownership: source.ownership ? { ...source.ownership } : undefined,
+    isSample: true,
+    sampleNote: `Cloned demo stub from ${source.id} · session only — not a live underwriting file.`,
+    stage: undefined,
+    status: {
+      currentRecommendation: "Need More Information",
+      provisionalStatus: "need-more-information",
+    },
+    summary: {
+      purpose:
+        "Cloned Sample shell for another workflow pass. Decision fields reset; re-verify before underwriting.",
+      whatIsKnown: [...(source.summary?.whatIsKnown ?? [])],
+      publicRiskSignals: [...(source.summary?.publicRiskSignals ?? [])],
+      strengths: [],
+      risks: [],
+    },
+    taxes: source.taxes
+      ? {
+          mostRecentPaymentAmount: source.taxes.mostRecentPaymentAmount,
+          mostRecentPaymentDate: source.taxes.mostRecentPaymentDate,
+          annualHistory: source.taxes.annualHistory.map((row) => ({ ...row })),
+        }
+      : { annualHistory: [] },
+    association: source.association
+      ? {
+          ...source.association,
+          officers: [...(source.association.officers ?? [])],
+          annualReports: [...(source.association.annualReports ?? [])],
+          dbprStatus: [...(source.association.dbprStatus ?? [])],
+          officialRecordsNotes: (
+            source.association.officialRecordsNotes ?? []
+          ).map((note) => ({ ...note })),
+        }
+      : undefined,
+    missingDiligence: (source.missingDiligence ?? []).map((group) => ({
+      title: group.title,
+      items: [...group.items],
+    })),
+    condoRiskFlags: {
+      milestoneInspection: { ...unknownRiskFlags.milestoneInspection },
+      sirsReserves: { ...unknownRiskFlags.sirsReserves },
+      specialAssessments: { ...unknownRiskFlags.specialAssessments },
+      hoaDues: { ...unknownRiskFlags.hoaDues },
+      insurance: { ...unknownRiskFlags.insurance },
+      litigationOrRecords: { ...unknownRiskFlags.litigationOrRecords },
+    },
+    closingReadiness: undefined,
+    milestones: undefined,
+    missingDocuments: undefined,
+    screening: {
+      targetCashOnCash: null,
+      hardNoRedFlag: "unknown",
+      rentSupportable: "unknown",
+      associationRiskNormal: "unknown",
+    },
+    proForma: {
+      expectedMarketRentMonthly: null,
+      hoaMonthly: null,
+      insuranceAnnual: null,
+      repairsAnnual: null,
+      vacancyRate: null,
+    },
+    sources: (source.sources ?? []).map((entry) => ({ ...entry })),
+    referencePaths: [...(source.referencePaths ?? [])],
+  };
+}

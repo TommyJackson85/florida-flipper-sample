@@ -51,7 +51,11 @@ export default function IntakeStubPropertyPage() {
       property={property}
       backHref="/intake"
       backLabel="← Intake"
-      bannerNote="Intake demo stub · session only · Sample — not saved to the repo."
+      bannerNote={
+        property.id.endsWith("-demo-copy")
+          ? "Cloned demo stub · session only · Sample — not saved to the repo."
+          : "Intake demo stub · session only · Sample — not saved to the repo."
+      }
     />
   );
 }

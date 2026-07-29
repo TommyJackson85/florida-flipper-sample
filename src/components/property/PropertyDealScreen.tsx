@@ -4,6 +4,7 @@ import { formatMoney } from "@/lib/format";
 import { AssociationCard } from "./AssociationCard";
 import { ClosingReadinessCard } from "./ClosingReadinessCard";
 import { DetailList } from "./DetailList";
+import { DuplicateDemoStubButton } from "./DuplicateDemoStubButton";
 import { KnownMissingCard } from "./KnownMissingCard";
 import { MilestoneTimelineCard } from "./MilestoneTimelineCard";
 import { MissingDocumentsCard } from "./MissingDocumentsCard";
@@ -39,6 +40,8 @@ export function PropertyDealScreen({
       </Link>
 
       {bannerNote ? <p className="muted-note">{bannerNote}</p> : null}
+
+      <DuplicateDemoStubButton property={property} />
 
       <PropertyHeader property={property} />
       <PropertyOverviewCard property={property} />
