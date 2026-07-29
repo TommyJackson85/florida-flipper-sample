@@ -14,6 +14,10 @@ import {
   collectUniqueTags,
   getPropertyTags,
 } from "@/lib/property-tags";
+import {
+  countPinnedAmong,
+  isPropertyPinned,
+} from "@/lib/property-pinning";
 import { PropertyListCard } from "./PropertyListCard";
 
 type PropertyListProps = {
@@ -24,6 +28,7 @@ type StageFilter = "all" | PropertyStage;
 type KindFilter = "all" | "live" | "sample";
 type SortOption = "address" | "stage" | "diligence";
 type TagFilter = "all" | string;
+type PinFilter = "all" | "pinned";
 
 const STAGE_FILTERS: StageFilter[] = [
   "all",
@@ -82,6 +87,11 @@ function matchesTag(property: PropertyScreen, tag: TagFilter): boolean {
   );
 }
 
+function matchesPin(property: PropertyScreen, pin: PinFilter): boolean {
+  if (pin === "all") return true;
+  return isPropertyPinned(property);
+}
+
 function stageFilterLabel(stage: StageFilter): string {
   return stage === "all" ? "All" : labelForPropertyStage(stage);
 }
@@ -124,6 +134,10 @@ function compareProperties(
   b: PropertyScreen,
   sort: SortOption
 ): number {
+  const pinnedDiff =
+    Number(isPropertyPinned(b)) - Number(isPropertyPinned(a));
+  if (pinnedDiff !== 0) return pinnedDiff;
+
   if (sort === "stage") {
     const byStage = stageRank(a) - stageRank(b);
     if (byStage !== 0) return byStage;
@@ -143,6 +157,7 @@ export function PropertyList({ properties }: PropertyListProps) {
   const [stageFilter, setStageFilter] = useState<StageFilter>("all");
   const [kindFilter, setKindFilter] = useState<KindFilter>("all");
   const [tagFilter, setTagFilter] = useState<TagFilter>("all");
+  const [pinFilter, setPinFilter] = useState<PinFilter>("all");
   const [sort, setSort] = useState<SortOption>("address");
 
   useEffect(() => {
@@ -170,22 +185,29 @@ export function PropertyList({ properties }: PropertyListProps) {
     return collectUniqueTags(pool);
   }, [pool, tick]);
 
+  const pinnedCount = useMemo(() => {
+    void tick;
+    return countPinnedAmong(pool);
+  }, [pool, tick]);
+
   const visible = useMemo(() => {
     const filtered = pool.filter(
       (property) =>
         matchesSearch(property, query) &&
         matchesStage(property, stageFilter) &&
         matchesKind(property, kindFilter) &&
-        matchesTag(property, tagFilter)
+        matchesTag(property, tagFilter) &&
+        matchesPin(property, pinFilter)
     );
     return [...filtered].sort((a, b) => compareProperties(a, b, sort));
-  }, [pool, query, stageFilter, kindFilter, tagFilter, sort]);
+  }, [pool, query, stageFilter, kindFilter, tagFilter, pinFilter, sort, tick]);
 
   const filtersActive =
     query.trim().length > 0 ||
     stageFilter !== "all" ||
     kindFilter !== "all" ||
-    tagFilter !== "all";
+    tagFilter !== "all" ||
+    pinFilter !== "all";
 
   function toggleShowArchived() {
     setShowArchived((prev) => !prev);
@@ -197,11 +219,16 @@ export function PropertyList({ properties }: PropertyListProps) {
     setTick((n) => n + 1);
   }
 
+  function togglePin(_propertyId: string) {
+    setTick((n) => n + 1);
+  }
+
   function clearFilters() {
     setQuery("");
     setStageFilter("all");
     setKindFilter("all");
     setTagFilter("all");
+    setPinFilter("all");
   }
 
   return (
@@ -210,8 +237,9 @@ export function PropertyList({ properties }: PropertyListProps) {
         <p className="muted-note">
           {active.length} active
           {archived.length > 0 ? ` · ${archived.length} archived` : ""}
+          {pinnedCount > 0 ? ` · ${pinnedCount} pinned` : ""}
           {" · "}
-          session archive toggles clear on refresh.
+          session pin/archive toggles stay in this tab.
         </p>
         {archived.length > 0 ? (
           <div
@@ -276,6 +304,40 @@ export function PropertyList({ properties }: PropertyListProps) {
               </button>
             );
           })}
+        </div>
+
+        <p className="muted-note" style={{ marginTop: "0.65rem" }}>
+          Pinned
+        </p>
+        <div
+          className="doc-state-actions"
+          role="group"
+          aria-label="Filter by pinned"
+        >
+          <button
+            type="button"
+            className={
+              pinFilter === "all"
+                ? "doc-state-actions__btn doc-state-actions__btn--active"
+                : "doc-state-actions__btn"
+            }
+            aria-pressed={pinFilter === "all"}
+            onClick={() => setPinFilter("all")}
+          >
+            All
+          </button>
+          <button
+            type="button"
+            className={
+              pinFilter === "pinned"
+                ? "doc-state-actions__btn doc-state-actions__btn--active"
+                : "doc-state-actions__btn"
+            }
+            aria-pressed={pinFilter === "pinned"}
+            onClick={() => setPinFilter("pinned")}
+          >
+            Pinned{pinnedCount > 0 ? ` (${pinnedCount})` : ""}
+          </button>
         </div>
 
         <p className="muted-note" style={{ marginTop: "0.65rem" }}>
@@ -405,12 +467,15 @@ export function PropertyList({ properties }: PropertyListProps) {
         <section className="property-grid">
           {visible.map((property) => {
             const archivedCard = isPropertyArchived(property);
+            const pinnedCard = isPropertyPinned(property);
             return (
               <PropertyListCard
                 key={property.id}
                 property={property}
                 archived={archivedCard}
+                pinned={pinnedCard}
                 onUnarchive={archivedCard ? unarchiveProperty : undefined}
+                onTogglePin={togglePin}
               />
             );
           })}

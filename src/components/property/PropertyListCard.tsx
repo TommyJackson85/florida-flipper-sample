@@ -12,18 +12,26 @@ import {
   toneForProvisionalStatus,
 } from "@/lib/property-metrics";
 import { getPropertyTags } from "@/lib/property-tags";
+import {
+  isPropertyPinned,
+  setPropertyPinnedInSession,
+} from "@/lib/property-pinning";
 import { StatusPill } from "./StatusPill";
 
 type PropertyListCardProps = {
   property: PropertyScreen;
   archived?: boolean;
+  pinned?: boolean;
   onUnarchive?: (propertyId: string) => void;
+  onTogglePin?: (propertyId: string) => void;
 };
 
 export function PropertyListCard({
   property,
   archived = false,
+  pinned = false,
   onUnarchive,
+  onTogglePin,
 }: PropertyListCardProps) {
   const isSample = Boolean(property.isSample);
   const recommendation =
@@ -34,6 +42,7 @@ export function PropertyListCard({
   const sources = summarizeSources(property.sources);
   const showStage = !isSample && Boolean(property.stage);
   const tags = getPropertyTags(property).slice(0, 3);
+  const isPinned = pinned || isPropertyPinned(property);
 
   return (
     <Link href={`/properties/${property.id}`} className="property-list-card">
@@ -46,6 +55,7 @@ export function PropertyListCard({
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
           {isSample ? <StatusPill label="Sample" tone="warn" /> : null}
+          {isPinned ? <StatusPill label="Pinned" tone="warn" /> : null}
           {archived ? <StatusPill label="Archived" tone="neutral" /> : null}
           {showStage ? (
             <StatusPill
@@ -111,15 +121,34 @@ export function PropertyListCard({
         )}
       </div>
 
-      {archived && onUnarchive ? (
-        <div
-          className="doc-state-actions"
-          style={{ marginTop: "0.65rem" }}
-          onClick={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-          }}
-        >
+      <div
+        className="doc-state-actions"
+        style={{ marginTop: "0.65rem" }}
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+        }}
+      >
+        {onTogglePin ? (
+          <button
+            type="button"
+            className={
+              isPinned
+                ? "doc-state-actions__btn doc-state-actions__btn--active"
+                : "doc-state-actions__btn"
+            }
+            aria-pressed={isPinned}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              setPropertyPinnedInSession(property.id, !isPinned);
+              onTogglePin(property.id);
+            }}
+          >
+            {isPinned ? "Unpin" : "Pin"}
+          </button>
+        ) : null}
+        {archived && onUnarchive ? (
           <button
             type="button"
             className="doc-state-actions__btn"
@@ -131,11 +160,8 @@ export function PropertyListCard({
           >
             Unarchive
           </button>
-          <span className="muted-note">
-            Return to the active list (this tab only).
-          </span>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
     </Link>
   );
 }

@@ -9,6 +9,7 @@ import { DuplicateDemoStubButton } from "./DuplicateDemoStubButton";
 import { KnownMissingCard } from "./KnownMissingCard";
 import { MilestoneTimelineCard } from "./MilestoneTimelineCard";
 import { MissingDocumentsCard } from "./MissingDocumentsCard";
+import { PinPropertyButton } from "./PinPropertyButton";
 import { PropertyAttachmentsCard } from "./PropertyAttachmentsCard";
 import { PropertyExportSummaryCard } from "./PropertyExportSummaryCard";
 import { PropertyHeader } from "./PropertyHeader";
@@ -45,6 +46,7 @@ export function PropertyDealScreen({
       {bannerNote ? <p className="muted-note">{bannerNote}</p> : null}
 
       <DuplicateDemoStubButton property={property} />
+      <PinPropertyButton property={property} />
       <ArchivePropertyButton property={property} />
 
       <PropertyHeader property={property} />
