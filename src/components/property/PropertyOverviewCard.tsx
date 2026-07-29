@@ -7,6 +7,7 @@ import {
   labelForClosingReadiness,
   labelForPropertyStage,
   labelForProvisionalStatus,
+  milestoneUrgencyLabel,
   nextMilestone,
   toneForClosingReadiness,
   toneForPropertyStage,
@@ -43,15 +44,9 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
   const diligenceCount = countMissingDiligenceItems(property);
   const openRisks = countOpenRiskFlags(property.condoRiskFlags);
   const milestone = nextMilestone(property.milestones);
-  const today = (() => {
-    const now = new Date();
-    const y = now.getFullYear();
-    const m = String(now.getMonth() + 1).padStart(2, "0");
-    const d = String(now.getDate()).padStart(2, "0");
-    return `${y}-${m}-${d}`;
-  })();
-  const milestoneOverdue =
-    milestone?.status === "upcoming" && milestone.date < today;
+  const milestoneUrgency = milestone
+    ? milestoneUrgencyLabel(milestone)
+    : null;
 
   return (
     <SectionCard
@@ -95,7 +90,7 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
             label: "Next milestone",
             value: milestone
               ? `${milestone.label} · ${formatDate(milestone.date)}${
-                  milestoneOverdue ? " · Overdue" : ""
+                  milestoneUrgency ? ` · ${milestoneUrgency}` : ""
                 }`
               : null,
           },

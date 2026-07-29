@@ -7,16 +7,9 @@ import {
   labelForClosingReadiness,
   labelForPropertyStage,
   labelForProvisionalStatus,
+  milestoneUrgencyLabel,
   nextMilestone,
 } from "@/lib/property-metrics";
-
-function todayIsoDate(): string {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth() + 1).padStart(2, "0");
-  const d = String(now.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-}
 
 /** Concise human-readable deal snapshot for clipboard share (seed-derived). */
 export function buildPropertyExportSummary(property: PropertyScreen): string {
@@ -48,9 +41,9 @@ export function buildPropertyExportSummary(property: PropertyScreen): string {
   const diligenceCount = countMissingDiligenceItems(property);
   const openRisks = countOpenRiskFlags(property.condoRiskFlags);
   const milestone = nextMilestone(property.milestones);
-  const today = todayIsoDate();
-  const milestoneOverdue =
-    milestone?.status === "upcoming" && milestone.date < today;
+  const milestoneUrgency = milestone
+    ? milestoneUrgencyLabel(milestone)
+    : null;
 
   const lines = [
     location,
@@ -66,7 +59,7 @@ export function buildPropertyExportSummary(property: PropertyScreen): string {
       : null,
     milestone
       ? `Next milestone: ${milestone.label} · ${formatDate(milestone.date)}${
-          milestoneOverdue ? " · Overdue" : ""
+          milestoneUrgency ? ` · ${milestoneUrgency}` : ""
         }`
       : null,
     property.status?.lastReviewedAt

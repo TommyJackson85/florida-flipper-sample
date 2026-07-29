@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import type { PropertyScreen } from "@/types/property";
-import { formatMoney } from "@/lib/format";
+import { formatDate, formatMoney } from "@/lib/format";
 import {
   countMissingDiligenceItems,
   labelForPropertyStage,
   labelForProvisionalStatus,
+  milestoneUrgencyLabel,
+  nextMilestone,
   summarizeSources,
   toneForPropertyStage,
   toneForProvisionalStatus,
@@ -43,6 +45,10 @@ export function PropertyListCard({
   const showStage = !isSample && Boolean(property.stage);
   const tags = getPropertyTags(property).slice(0, 3);
   const isPinned = pinned || isPropertyPinned(property);
+  const milestone = isSample ? null : nextMilestone(property.milestones);
+  const milestoneUrgency = milestone
+    ? milestoneUrgencyLabel(milestone)
+    : null;
 
   return (
     <Link href={`/properties/${property.id}`} className="property-list-card">
@@ -71,6 +77,12 @@ export function PropertyListCard({
           {tags.map((tag) => (
             <StatusPill key={tag} label={tag} tone="neutral" />
           ))}
+          {milestoneUrgency ? (
+            <StatusPill
+              label={milestoneUrgency}
+              tone={milestoneUrgency === "Overdue" ? "bad" : "warn"}
+            />
+          ) : null}
         </div>
       </div>
 
@@ -117,6 +129,11 @@ export function PropertyListCard({
               {missingCount === 1 ? "" : "s"}
             </span>
             <span>{sources.completenessLabel}</span>
+            {milestone ? (
+              <span>
+                Next: {milestone.label} · {formatDate(milestone.date)}
+              </span>
+            ) : null}
           </>
         )}
       </div>
