@@ -40,6 +40,18 @@ function statusLabel(status: PropertyMilestoneStatus): string {
   }
 }
 
+function markerModifier(
+  status: PropertyMilestoneStatus,
+  overdue: boolean,
+  dueToday: boolean
+): string {
+  if (overdue) return "deal-timeline__marker--overdue";
+  if (dueToday) return "deal-timeline__marker--due-today";
+  if (status === "done") return "deal-timeline__marker--done";
+  if (status === "upcoming") return "deal-timeline__marker--upcoming";
+  return "deal-timeline__marker--planned";
+}
+
 export function MilestoneTimelineCard({
   property,
 }: MilestoneTimelineCardProps) {
@@ -59,39 +71,52 @@ export function MilestoneTimelineCard({
 
   return (
     <SectionCard
-      title="Milestones"
-      subtitle="Deal checkpoints only — not a calendar or task board."
+      title="Deal timeline"
+      subtitle="Read-only checkpoint sequence — not a calendar or schedule editor."
     >
-      <ul className="risk-flag-list">
+      <ol className="deal-timeline" aria-label="Deal milestone timeline">
         {milestones.map((milestone) => {
           const overdue = isMilestoneOverdue(milestone, today);
           const dueToday = isMilestoneDueToday(milestone, today);
           return (
-            <li key={milestone.id} className="risk-flag-row">
-              <div className="risk-flag-row__main">
-                <span className="risk-flag-row__label">{milestone.label}</span>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                  <StatusPill
-                    label={statusLabel(milestone.status)}
-                    tone={statusTone(milestone.status)}
-                  />
-                  {overdue ? (
-                    <StatusPill label="Overdue" tone="bad" />
-                  ) : dueToday ? (
-                    <StatusPill label="Due today" tone="warn" />
-                  ) : null}
+            <li key={milestone.id} className="deal-timeline__item">
+              <div
+                className={`deal-timeline__marker ${markerModifier(
+                  milestone.status,
+                  overdue,
+                  dueToday
+                )}`}
+                aria-hidden="true"
+              />
+              <div className="deal-timeline__content">
+                <div className="deal-timeline__header">
+                  <time
+                    className="deal-timeline__date"
+                    dateTime={milestone.date}
+                  >
+                    {formatDate(milestone.date)}
+                  </time>
+                  <div className="deal-timeline__pills">
+                    <StatusPill
+                      label={statusLabel(milestone.status)}
+                      tone={statusTone(milestone.status)}
+                    />
+                    {overdue ? (
+                      <StatusPill label="Overdue" tone="bad" />
+                    ) : dueToday ? (
+                      <StatusPill label="Due today" tone="warn" />
+                    ) : null}
+                  </div>
                 </div>
+                <p className="deal-timeline__label">{milestone.label}</p>
+                {milestone.note ? (
+                  <p className="deal-timeline__note">{milestone.note}</p>
+                ) : null}
               </div>
-              <p className="risk-flag-row__note">
-                {formatDate(milestone.date)}
-              </p>
-              {milestone.note ? (
-                <p className="risk-flag-row__note">{milestone.note}</p>
-              ) : null}
             </li>
           );
         })}
-      </ul>
+      </ol>
     </SectionCard>
   );
 }

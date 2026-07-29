@@ -766,6 +766,109 @@ article.property-list-card {
   font-size: 13px;
 }
 
+.deal-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+
+.deal-timeline__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 12px;
+  padding-bottom: 1rem;
+}
+
+.deal-timeline__item:last-child {
+  padding-bottom: 0;
+}
+
+.deal-timeline__item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 14px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+
+.deal-timeline__marker {
+  position: relative;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  margin-top: 3px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  box-sizing: border-box;
+}
+
+.deal-timeline__marker--done {
+  border-color: var(--good-fg);
+  background: var(--good-bg);
+}
+
+.deal-timeline__marker--upcoming {
+  border-color: var(--warn-fg);
+  background: var(--warn-bg);
+}
+
+.deal-timeline__marker--planned {
+  border-color: var(--neutral-fg);
+  background: var(--neutral-bg);
+}
+
+.deal-timeline__marker--due-today {
+  border-color: var(--warn-fg);
+  background: var(--warn-fg);
+}
+
+.deal-timeline__marker--overdue {
+  border-color: var(--bad-fg);
+  background: var(--bad-fg);
+}
+
+.deal-timeline__content {
+  min-width: 0;
+}
+
+.deal-timeline__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.deal-timeline__date {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.deal-timeline__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.deal-timeline__label {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.deal-timeline__note {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .doc-state-actions {
   display: flex;
   flex-wrap: wrap;
