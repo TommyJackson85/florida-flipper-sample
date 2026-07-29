@@ -1,0 +1,35 @@
+/**
+ * Markdown body for a new operator pilot-session note.
+ * Paste into notes/pilot/sessions/YYYY-MM-DD-<slug>.md after a trial.
+ */
+export const PILOT_SESSION_NOTES_TEMPLATE = `# Pilot session — YYYY-MM-DD
+
+- Tester:
+- Role / context:
+- Build: TRIAL_BUILD (Deal Screen pilot)
+- Task attempted: Niagara deal screen / stub generator / other:
+
+## Useful
+
+-
+
+## Confused / friction
+
+-
+
+## Would use again?
+
+- Yes / No / Maybe —
+
+-
+
+## Screening signal
+
+- Would this change how they track condo diligence?
+
+-
+
+## Outcome / next follow-up
+
+-
+`;

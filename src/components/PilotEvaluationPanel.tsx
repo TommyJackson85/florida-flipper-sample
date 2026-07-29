@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CopyPilotNotesTemplateButton } from "@/components/CopyPilotNotesTemplateButton";
 import { SectionCard } from "@/components/property/SectionCard";
 
 const FEEDBACK_MAILTO =
@@ -63,11 +64,21 @@ export function PilotEvaluationPanel() {
         <li>What was clearest / most confusing?</li>
         <li>What’s missing before you’d use this on a live deal?</li>
       </ul>
-      <p style={{ marginTop: "0.75rem", marginBottom: 0 }}>
+      <p className="muted-note">
+        <strong>Operator log:</strong> After the session, paste the template into{" "}
+        <code>notes/pilot/sessions/</code> so outcomes stay in the repo.
+      </p>
+      <div
+        className="doc-state-actions"
+        style={{ marginTop: "0.75rem" }}
+        role="group"
+        aria-label="Pilot feedback actions"
+      >
         <a href={FEEDBACK_MAILTO} className="button-secondary">
           Draft feedback email
         </a>
-      </p>
+        <CopyPilotNotesTemplateButton />
+      </div>
     </SectionCard>
   );
 }
