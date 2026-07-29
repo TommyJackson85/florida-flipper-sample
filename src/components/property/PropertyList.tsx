@@ -2,7 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { PropertyScreen } from "@/types/property";
-import { isPropertyArchived } from "@/lib/property-archive";
+import {
+  isPropertyArchived,
+  setPropertyArchivedInSession,
+} from "@/lib/property-archive";
 import { PropertyListCard } from "./PropertyListCard";
 
 type PropertyListProps = {
@@ -35,6 +38,11 @@ export function PropertyList({ properties }: PropertyListProps) {
 
   function toggleShowArchived() {
     setShowArchived((prev) => !prev);
+    setTick((n) => n + 1);
+  }
+
+  function unarchiveProperty(propertyId: string) {
+    setPropertyArchivedInSession(propertyId, false);
     setTick((n) => n + 1);
   }
 
@@ -80,13 +88,17 @@ export function PropertyList({ properties }: PropertyListProps) {
         </p>
       ) : (
         <section className="property-grid">
-          {visible.map((property) => (
-            <PropertyListCard
-              key={property.id}
-              property={property}
-              archived={isPropertyArchived(property)}
-            />
-          ))}
+          {visible.map((property) => {
+            const archivedCard = isPropertyArchived(property);
+            return (
+              <PropertyListCard
+                key={property.id}
+                property={property}
+                archived={archivedCard}
+                onUnarchive={archivedCard ? unarchiveProperty : undefined}
+              />
+            );
+          })}
         </section>
       )}
     </>

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import type { PropertyScreen } from "@/types/property";
 import { formatMoney } from "@/lib/format";
@@ -14,11 +16,13 @@ import { StatusPill } from "./StatusPill";
 type PropertyListCardProps = {
   property: PropertyScreen;
   archived?: boolean;
+  onUnarchive?: (propertyId: string) => void;
 };
 
 export function PropertyListCard({
   property,
   archived = false,
+  onUnarchive,
 }: PropertyListCardProps) {
   const isSample = Boolean(property.isSample);
   const recommendation =
@@ -101,6 +105,32 @@ export function PropertyListCard({
           </>
         )}
       </div>
+
+      {archived && onUnarchive ? (
+        <div
+          className="doc-state-actions"
+          style={{ marginTop: "0.65rem" }}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+          }}
+        >
+          <button
+            type="button"
+            className="doc-state-actions__btn"
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              onUnarchive(property.id);
+            }}
+          >
+            Unarchive
+          </button>
+          <span className="muted-note">
+            Return to the active list (this tab only).
+          </span>
+        </div>
+      ) : null}
     </Link>
   );
 }

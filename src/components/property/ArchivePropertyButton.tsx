@@ -26,6 +26,10 @@ export function ArchivePropertyButton({
     const next = !archived;
     setPropertyArchivedInSession(property.id, next);
     setArchived(next);
+    if (!next) {
+      router.push("/properties");
+      return;
+    }
     router.refresh();
   }
 
@@ -46,7 +50,7 @@ export function ArchivePropertyButton({
       </div>
       <p className="muted-note" style={{ marginTop: "0.35rem" }}>
         {archived
-          ? "Archived for this tab — hidden from the main list unless shown. Does not delete the record."
+          ? "Restores this property to the active list in this tab. Does not delete or rebuild the record."
           : "Hides this property from the main list in this tab. Does not delete the record."}
       </p>
     </div>
