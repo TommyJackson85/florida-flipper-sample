@@ -225,6 +225,36 @@ main {
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+article.property-list-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.property-list-card__select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.property-list-card__select input {
+  margin: 0;
+}
+
+.property-list-card__link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.property-list-card__link:hover {
+  text-decoration: none;
+}
+
 .property-list-card:hover {
   border-color: #cfd6df;
   box-shadow: 0 1px 0 rgba(30, 58, 95, 0.04);

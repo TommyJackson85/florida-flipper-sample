@@ -20,12 +20,14 @@ import {
 import {
   countPinnedAmong,
   isPropertyPinned,
+  setPropertyPinnedInSession,
 } from "@/lib/property-pinning";
 import {
   type StageOverrides,
   withEffectiveStage,
 } from "@/lib/property-stage";
 import { PropertyBoard } from "./PropertyBoard";
+import { PropertyBulkActions } from "./PropertyBulkActions";
 import { PropertyListCard } from "./PropertyListCard";
 import { PortfolioOverview } from "./PortfolioOverview";
 import {
@@ -216,6 +218,7 @@ export function PropertyList({ properties }: PropertyListProps) {
   const [activePreset, setActivePreset] = useState<ViewPresetId | null>(
     "all-active"
   );
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   useEffect(() => {
     setTick((n) => n + 1);
@@ -231,6 +234,7 @@ export function PropertyList({ properties }: PropertyListProps) {
     setStageFilter("all");
     setShowArchived(false);
     setActivePreset(preset);
+    setSelectedIds([]);
 
     if (preset === "all-active") {
       setKindFilter("all");
@@ -317,6 +321,26 @@ export function PropertyList({ properties }: PropertyListProps) {
     activePreset,
   ]);
 
+  const selectedVisible = useMemo(() => {
+    const visibleIds = new Set(visible.map((property) => property.id));
+    return selectedIds.filter((id) => visibleIds.has(id));
+  }, [selectedIds, visible]);
+
+  const selectedProperties = useMemo(
+    () =>
+      visible.filter((property) => selectedVisible.includes(property.id)),
+    [visible, selectedVisible]
+  );
+
+  const canArchiveSelected = selectedProperties.some(
+    (property) => !isPropertyArchived(property)
+  );
+  const canRestoreSelected = selectedProperties.some((property) =>
+    isPropertyArchived(property)
+  );
+  const allVisibleSelected =
+    visible.length > 0 && selectedVisible.length === visible.length;
+
   const filtersActive =
     query.trim().length > 0 ||
     stageFilter !== "all" ||
@@ -352,6 +376,38 @@ export function PropertyList({ properties }: PropertyListProps) {
     setPinFilter("all");
     setActivePreset("all-active");
     setShowArchived(false);
+    setSelectedIds([]);
+  }
+
+  function toggleSelect(propertyId: string) {
+    setSelectedIds((prev) =>
+      prev.includes(propertyId)
+        ? prev.filter((id) => id !== propertyId)
+        : [...prev, propertyId]
+    );
+  }
+
+  function selectAllVisible() {
+    setSelectedIds(visible.map((property) => property.id));
+  }
+
+  function clearSelection() {
+    setSelectedIds([]);
+  }
+
+  function bulkPin(pinned: boolean) {
+    for (const id of selectedVisible) {
+      setPropertyPinnedInSession(id, pinned);
+    }
+    setTick((n) => n + 1);
+  }
+
+  function bulkArchive(archived: boolean) {
+    for (const id of selectedVisible) {
+      setPropertyArchivedInSession(id, archived);
+    }
+    setSelectedIds([]);
+    setTick((n) => n + 1);
   }
 
   return (
@@ -373,6 +429,21 @@ export function PropertyList({ properties }: PropertyListProps) {
         activePreset={activePreset}
         onSelect={applyViewPreset}
       />
+
+      {viewMode === "list" ? (
+        <PropertyBulkActions
+          selectedCount={selectedVisible.length}
+          canArchive={canArchiveSelected}
+          canRestore={canRestoreSelected}
+          allVisibleSelected={allVisibleSelected}
+          onSelectAllVisible={selectAllVisible}
+          onClear={clearSelection}
+          onPin={() => bulkPin(true)}
+          onUnpin={() => bulkPin(false)}
+          onArchive={() => bulkArchive(true)}
+          onRestore={() => bulkArchive(false)}
+        />
+      ) : null}
 
       <section className="page-intro" style={{ marginBottom: 0 }}>
         <p className="muted-note">
@@ -687,8 +758,10 @@ export function PropertyList({ properties }: PropertyListProps) {
                 property={property}
                 archived={archivedCard}
                 pinned={pinnedCard}
+                selected={selectedVisible.includes(property.id)}
                 onUnarchive={archivedCard ? unarchiveProperty : undefined}
                 onTogglePin={togglePin}
+                onToggleSelect={toggleSelect}
               />
             );
           })}

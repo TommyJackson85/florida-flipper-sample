@@ -27,16 +27,20 @@ type PropertyListCardProps = {
   property: PropertyScreen;
   archived?: boolean;
   pinned?: boolean;
+  selected?: boolean;
   onUnarchive?: (propertyId: string) => void;
   onTogglePin?: (propertyId: string) => void;
+  onToggleSelect?: (propertyId: string) => void;
 };
 
 export function PropertyListCard({
   property,
   archived = false,
   pinned = false,
+  selected = false,
   onUnarchive,
   onTogglePin,
+  onToggleSelect,
 }: PropertyListCardProps) {
   const isSample = Boolean(property.isSample);
   const recommendation =
@@ -55,7 +59,26 @@ export function PropertyListCard({
   const progress = isSample ? null : deriveProgressSummary(property);
 
   return (
-    <Link href={`/properties/${property.id}`} className="property-list-card">
+    <article className="property-list-card">
+      {onToggleSelect ? (
+        <label
+          className="property-list-card__select"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <input
+            type="checkbox"
+            checked={selected}
+            aria-label={`Select ${property.address}`}
+            onChange={() => onToggleSelect(property.id)}
+          />
+          Select
+        </label>
+      ) : null}
+
+      <Link
+        href={`/properties/${property.id}`}
+        className="property-list-card__link"
+      >
       <div className="property-list-card__top">
         <div>
           <h2>{property.address}</h2>
@@ -189,6 +212,7 @@ export function PropertyListCard({
           </button>
         ) : null}
       </div>
-    </Link>
+      </Link>
+    </article>
   );
 }
