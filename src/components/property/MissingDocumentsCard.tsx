@@ -25,6 +25,32 @@ type ActivityEntry = {
 
 const ACTIVITY_CAP = 12;
 
+/** Demo preset — add-if-missing only; includes extras beyond Niagara seed. */
+const CONDO_DILIGENCE_PACK: Omit<MissingDocumentItem, "state" | "note">[] = [
+  { id: "estoppel-questionnaire", label: "Estoppel / condo questionnaire" },
+  { id: "budget", label: "Current approved budget" },
+  { id: "reserve-schedule", label: "Reserve schedule" },
+  { id: "sirs", label: "Structural Integrity Reserve Study (SIRS)" },
+  {
+    id: "milestone-report",
+    label: "Milestone / structural inspection report",
+  },
+  { id: "insurance-docs", label: "Master / unit insurance declarations" },
+  {
+    id: "special-assessment-docs",
+    label: "Special assessment disclosures / related minutes",
+  },
+  { id: "litigation-disclosure", label: "Litigation / claims disclosure" },
+  {
+    id: "declaration-bylaws",
+    label: "Declaration / bylaws / rules and regulations",
+  },
+  {
+    id: "year-end-financials",
+    label: "Most recent year-end financial statements",
+  },
+];
+
 const STATE_ORDER: MissingDocumentState[] = [
   "missing",
   "requested",
@@ -169,6 +195,10 @@ function MissingDocumentsInteractive({
   const visibleItems =
     filter === "all" ? items : items.filter((item) => item.state === filter);
 
+  const packAdditions = CONDO_DILIGENCE_PACK.filter(
+    (packItem) => !items.some((item) => item.id === packItem.id)
+  );
+
   function appendActivity(message: string) {
     setActivity((prev) =>
       [
@@ -203,6 +233,24 @@ function MissingDocumentsInteractive({
     appendActivity("Reset documents to seed");
   }
 
+  function applyCondoPack() {
+    if (packAdditions.length === 0) {
+      appendActivity("Applied Condo diligence pack · nothing new");
+      return;
+    }
+
+    const added = packAdditions.map((packItem) => ({
+      ...packItem,
+      state: "missing" as const,
+      note: "Added from condo diligence pack (demo).",
+    }));
+
+    setItems((prev) => [...prev, ...added]);
+    appendActivity(
+      `Applied Condo diligence pack · added ${added.length}`
+    );
+  }
+
   function clearOperatorNote() {
     if (!operatorNote) return;
     setOperatorNote("");
@@ -235,13 +283,22 @@ function MissingDocumentsInteractive({
         <button
           type="button"
           className="doc-state-actions__btn"
+          onClick={applyCondoPack}
+          disabled={packAdditions.length === 0}
+        >
+          Apply condo pack
+        </button>
+        <button
+          type="button"
+          className="doc-state-actions__btn"
           onClick={resetToSeed}
         >
           Reset to seed
         </button>
       </div>
       <p className="muted-note" style={{ marginBottom: "0.5rem" }}>
-        Demo only — changes stay on this screen until refresh; not saved.
+        Apply condo pack adds missing pack items only — does not change existing
+        rows. Demo only — changes stay on this screen until refresh; not saved.
       </p>
       <div className="doc-operator-note">
         <div className="doc-operator-note__header">
