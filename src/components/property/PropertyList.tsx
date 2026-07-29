@@ -6,7 +6,10 @@ import {
   isPropertyArchived,
   setPropertyArchivedInSession,
 } from "@/lib/property-archive";
-import { labelForPropertyStage } from "@/lib/property-metrics";
+import {
+  countMissingDiligenceItems,
+  labelForPropertyStage,
+} from "@/lib/property-metrics";
 import { PropertyListCard } from "./PropertyListCard";
 
 type PropertyListProps = {
@@ -15,6 +18,7 @@ type PropertyListProps = {
 
 type StageFilter = "all" | PropertyStage;
 type KindFilter = "all" | "live" | "sample";
+type SortOption = "address" | "stage" | "diligence";
 
 const STAGE_FILTERS: StageFilter[] = [
   "all",
@@ -27,6 +31,17 @@ const STAGE_FILTERS: StageFilter[] = [
 ];
 
 const KIND_FILTERS: KindFilter[] = ["all", "live", "sample"];
+
+const SORT_OPTIONS: SortOption[] = ["address", "stage", "diligence"];
+
+const STAGE_RANK: Record<PropertyStage, number> = {
+  lead: 0,
+  screening: 1,
+  diligence: 2,
+  "under-contract": 3,
+  closing: 4,
+  "post-close": 5,
+};
 
 function matchesSearch(property: PropertyScreen, query: string): boolean {
   const q = query.trim().toLowerCase();
@@ -71,12 +86,51 @@ function kindFilterLabel(kind: KindFilter): string {
   }
 }
 
+function sortOptionLabel(sort: SortOption): string {
+  switch (sort) {
+    case "stage":
+      return "Stage";
+    case "diligence":
+      return "Open diligence";
+    case "address":
+    default:
+      return "Address";
+  }
+}
+
+function addressKey(property: PropertyScreen): string {
+  return property.address.toLowerCase();
+}
+
+function stageRank(property: PropertyScreen): number {
+  if (!property.stage) return STAGE_RANK["post-close"] + 1;
+  return STAGE_RANK[property.stage];
+}
+
+function compareProperties(
+  a: PropertyScreen,
+  b: PropertyScreen,
+  sort: SortOption
+): number {
+  if (sort === "stage") {
+    const byStage = stageRank(a) - stageRank(b);
+    if (byStage !== 0) return byStage;
+  } else if (sort === "diligence") {
+    const byDiligence =
+      countMissingDiligenceItems(b) - countMissingDiligenceItems(a);
+    if (byDiligence !== 0) return byDiligence;
+  }
+
+  return addressKey(a).localeCompare(addressKey(b));
+}
+
 export function PropertyList({ properties }: PropertyListProps) {
   const [showArchived, setShowArchived] = useState(false);
   const [tick, setTick] = useState(0);
   const [query, setQuery] = useState("");
   const [stageFilter, setStageFilter] = useState<StageFilter>("all");
   const [kindFilter, setKindFilter] = useState<KindFilter>("all");
+  const [sort, setSort] = useState<SortOption>("address");
 
   useEffect(() => {
     setTick((n) => n + 1);
@@ -98,16 +152,15 @@ export function PropertyList({ properties }: PropertyListProps) {
 
   const pool = showArchived ? [...active, ...archived] : active;
 
-  const visible = useMemo(
-    () =>
-      pool.filter(
-        (property) =>
-          matchesSearch(property, query) &&
-          matchesStage(property, stageFilter) &&
-          matchesKind(property, kindFilter)
-      ),
-    [pool, query, stageFilter, kindFilter]
-  );
+  const visible = useMemo(() => {
+    const filtered = pool.filter(
+      (property) =>
+        matchesSearch(property, query) &&
+        matchesStage(property, stageFilter) &&
+        matchesKind(property, kindFilter)
+    );
+    return [...filtered].sort((a, b) => compareProperties(a, b, sort));
+  }, [pool, query, stageFilter, kindFilter, sort]);
 
   const filtersActive =
     query.trim().length > 0 || stageFilter !== "all" || kindFilter !== "all";
@@ -225,6 +278,34 @@ export function PropertyList({ properties }: PropertyListProps) {
                 onClick={() => setStageFilter(option)}
               >
                 {stageFilterLabel(option)}
+              </button>
+            );
+          })}
+        </div>
+
+        <p className="muted-note" style={{ marginTop: "0.65rem" }}>
+          Sort
+        </p>
+        <div
+          className="doc-state-actions"
+          role="group"
+          aria-label="Sort properties"
+        >
+          {SORT_OPTIONS.map((option) => {
+            const pressed = sort === option;
+            return (
+              <button
+                key={option}
+                type="button"
+                className={
+                  pressed
+                    ? "doc-state-actions__btn doc-state-actions__btn--active"
+                    : "doc-state-actions__btn"
+                }
+                aria-pressed={pressed}
+                onClick={() => setSort(option)}
+              >
+                {sortOptionLabel(option)}
               </button>
             );
           })}
