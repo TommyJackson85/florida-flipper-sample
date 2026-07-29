@@ -122,6 +122,8 @@ export type PropertyScreen = {
   sampleNote?: string;
   /** Soft-hide from the main list (seed and/or session overlay) */
   archived?: boolean;
+  /** Freeform demo labels (seed and/or session overlay) */
+  tags?: string[];
   /** Operator workflow stage — display only; not screen outcome */
   stage?: PropertyStage;
 

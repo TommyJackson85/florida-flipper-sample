@@ -10,6 +10,10 @@ import {
   countMissingDiligenceItems,
   labelForPropertyStage,
 } from "@/lib/property-metrics";
+import {
+  collectUniqueTags,
+  getPropertyTags,
+} from "@/lib/property-tags";
 import { PropertyListCard } from "./PropertyListCard";
 
 type PropertyListProps = {
@@ -19,6 +23,7 @@ type PropertyListProps = {
 type StageFilter = "all" | PropertyStage;
 type KindFilter = "all" | "live" | "sample";
 type SortOption = "address" | "stage" | "diligence";
+type TagFilter = "all" | string;
 
 const STAGE_FILTERS: StageFilter[] = [
   "all",
@@ -68,6 +73,13 @@ function matchesKind(property: PropertyScreen, kind: KindFilter): boolean {
   if (kind === "all") return true;
   if (kind === "sample") return Boolean(property.isSample);
   return !property.isSample;
+}
+
+function matchesTag(property: PropertyScreen, tag: TagFilter): boolean {
+  if (tag === "all") return true;
+  return getPropertyTags(property).some(
+    (entry) => entry.toLowerCase() === tag.toLowerCase()
+  );
 }
 
 function stageFilterLabel(stage: StageFilter): string {
@@ -130,6 +142,7 @@ export function PropertyList({ properties }: PropertyListProps) {
   const [query, setQuery] = useState("");
   const [stageFilter, setStageFilter] = useState<StageFilter>("all");
   const [kindFilter, setKindFilter] = useState<KindFilter>("all");
+  const [tagFilter, setTagFilter] = useState<TagFilter>("all");
   const [sort, setSort] = useState<SortOption>("address");
 
   useEffect(() => {
@@ -152,18 +165,27 @@ export function PropertyList({ properties }: PropertyListProps) {
 
   const pool = showArchived ? [...active, ...archived] : active;
 
+  const availableTags = useMemo(() => {
+    void tick;
+    return collectUniqueTags(pool);
+  }, [pool, tick]);
+
   const visible = useMemo(() => {
     const filtered = pool.filter(
       (property) =>
         matchesSearch(property, query) &&
         matchesStage(property, stageFilter) &&
-        matchesKind(property, kindFilter)
+        matchesKind(property, kindFilter) &&
+        matchesTag(property, tagFilter)
     );
     return [...filtered].sort((a, b) => compareProperties(a, b, sort));
-  }, [pool, query, stageFilter, kindFilter, sort]);
+  }, [pool, query, stageFilter, kindFilter, tagFilter, sort]);
 
   const filtersActive =
-    query.trim().length > 0 || stageFilter !== "all" || kindFilter !== "all";
+    query.trim().length > 0 ||
+    stageFilter !== "all" ||
+    kindFilter !== "all" ||
+    tagFilter !== "all";
 
   function toggleShowArchived() {
     setShowArchived((prev) => !prev);
@@ -179,6 +201,7 @@ export function PropertyList({ properties }: PropertyListProps) {
     setQuery("");
     setStageFilter("all");
     setKindFilter("all");
+    setTagFilter("all");
   }
 
   return (
@@ -282,6 +305,50 @@ export function PropertyList({ properties }: PropertyListProps) {
             );
           })}
         </div>
+
+        {availableTags.length > 0 ? (
+          <>
+            <p className="muted-note" style={{ marginTop: "0.65rem" }}>
+              Tag
+            </p>
+            <div
+              className="doc-state-actions"
+              role="group"
+              aria-label="Filter by tag"
+            >
+              <button
+                type="button"
+                className={
+                  tagFilter === "all"
+                    ? "doc-state-actions__btn doc-state-actions__btn--active"
+                    : "doc-state-actions__btn"
+                }
+                aria-pressed={tagFilter === "all"}
+                onClick={() => setTagFilter("all")}
+              >
+                All
+              </button>
+              {availableTags.map((tag) => {
+                const pressed = tagFilter.toLowerCase() === tag.toLowerCase();
+                return (
+                  <button
+                    key={tag}
+                    type="button"
+                    className={
+                      pressed
+                        ? "doc-state-actions__btn doc-state-actions__btn--active"
+                        : "doc-state-actions__btn"
+                    }
+                    aria-pressed={pressed}
+                    onClick={() => setTagFilter(tag)}
+                  >
+                    {tag}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        ) : null}
 
         <p className="muted-note" style={{ marginTop: "0.65rem" }}>
           Sort

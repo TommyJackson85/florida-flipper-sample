@@ -11,6 +11,7 @@ import {
   toneForPropertyStage,
   toneForProvisionalStatus,
 } from "@/lib/property-metrics";
+import { getPropertyTags } from "@/lib/property-tags";
 import { StatusPill } from "./StatusPill";
 
 type PropertyListCardProps = {
@@ -32,6 +33,7 @@ export function PropertyListCard({
   const missingCount = countMissingDiligenceItems(property);
   const sources = summarizeSources(property.sources);
   const showStage = !isSample && Boolean(property.stage);
+  const tags = getPropertyTags(property).slice(0, 3);
 
   return (
     <Link href={`/properties/${property.id}`} className="property-list-card">
@@ -56,6 +58,9 @@ export function PropertyListCard({
           ) : (
             <StatusPill label="Practice shell" tone="neutral" />
           )}
+          {tags.map((tag) => (
+            <StatusPill key={tag} label={tag} tone="neutral" />
+          ))}
         </div>
       </div>
 

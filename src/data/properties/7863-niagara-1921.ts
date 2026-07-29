@@ -9,6 +9,7 @@ export const property7863Niagara1921: PropertyScreen = {
   zip: "33617",
 
   stage: "diligence",
+  tags: ["condo", "hillsborough"],
 
   milestones: [
     {

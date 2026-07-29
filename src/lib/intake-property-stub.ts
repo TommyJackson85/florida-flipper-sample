@@ -179,6 +179,7 @@ export function duplicatePropertyAsDemoStub(
     isSample: true,
     sampleNote: `Cloned demo stub from ${source.id} · session only — not a live underwriting file.`,
     stage: undefined,
+    tags: undefined,
     status: {
       currentRecommendation: "Need More Information",
       provisionalStatus: "need-more-information",

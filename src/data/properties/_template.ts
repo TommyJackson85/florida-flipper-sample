@@ -24,7 +24,9 @@ import type { PropertyScreen } from "@/types/property";
  * 10. Demo/workflow-practice records: set isSample: true and a short sampleNote.
  * 11. Optional archived: soft-hide from the main list (session toggle can also
  *     archive without editing seed data).
- * 12. Register the export in `index.ts` (do not import this `_template.ts` file).
+ * 12. Optional tags: freeform demo labels (string[]). Session overlay can add/remove
+ *     without editing seed; omit on sample shells.
+ * 13. Register the export in `index.ts` (do not import this `_template.ts` file).
  *
  * Tip: use `/intake` to generate identity + default flags, then merge into this shape
  * when you need association / tax / identifiers / closing readiness / documents.
@@ -42,6 +44,7 @@ export const propertyTemplate: PropertyScreen = {
   isSample: false,
   sampleNote: undefined,
   archived: undefined,
+  tags: undefined,
   stage: "screening",
 
   // Optional identity / listing

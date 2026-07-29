@@ -13,6 +13,7 @@ import { PropertyAttachmentsCard } from "./PropertyAttachmentsCard";
 import { PropertyExportSummaryCard } from "./PropertyExportSummaryCard";
 import { PropertyHeader } from "./PropertyHeader";
 import { PropertyOverviewCard } from "./PropertyOverviewCard";
+import { PropertyTagsCard } from "./PropertyTagsCard";
 import { RecommendationBanner } from "./RecommendationBanner";
 import { RiskFlagsCard } from "./RiskFlagsCard";
 import { ScreeningCard } from "./ScreeningCard";
@@ -48,6 +49,7 @@ export function PropertyDealScreen({
 
       <PropertyHeader property={property} />
       <PropertyOverviewCard property={property} />
+      <PropertyTagsCard property={property} />
       <PropertyExportSummaryCard property={property} />
       <RecommendationBanner property={property} />
       <MilestoneTimelineCard property={property} />
