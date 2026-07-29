@@ -1,6 +1,8 @@
 import type {
   ClosingReadiness,
   ClosingReadinessStatus,
+  CondoRiskFlags,
+  PropertyMilestone,
   PropertyScreen,
   PropertyStage,
   ProvisionalStatus,
@@ -127,6 +129,37 @@ export function countMissingDiligenceItems(
     (total, group) => total + group.items.length,
     0
   );
+}
+
+export function countOpenRiskFlags(flags?: CondoRiskFlags): number {
+  if (!flags) return 0;
+  return Object.values(flags).filter((flag) => flag.status === "open").length;
+}
+
+/** Earliest upcoming or planned milestone; prefers overdue upcoming first. */
+export function nextMilestone(
+  milestones?: PropertyMilestone[]
+): PropertyMilestone | null {
+  const candidates = (milestones ?? []).filter(
+    (m) => m.status === "upcoming" || m.status === "planned"
+  );
+  if (candidates.length === 0) return null;
+
+  const today = todayIsoDate();
+  const overdue = candidates
+    .filter((m) => m.status === "upcoming" && m.date < today)
+    .sort((a, b) => a.date.localeCompare(b.date));
+  if (overdue.length > 0) return overdue[0];
+
+  return [...candidates].sort((a, b) => a.date.localeCompare(b.date))[0];
+}
+
+function todayIsoDate(): string {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }
 
 export function summarizeSources(sources: SourceEntry[] = []): {

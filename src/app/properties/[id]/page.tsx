@@ -7,6 +7,7 @@ import { KnownMissingCard } from "@/components/property/KnownMissingCard";
 import { MilestoneTimelineCard } from "@/components/property/MilestoneTimelineCard";
 import { MissingDocumentsCard } from "@/components/property/MissingDocumentsCard";
 import { PropertyHeader } from "@/components/property/PropertyHeader";
+import { PropertyOverviewCard } from "@/components/property/PropertyOverviewCard";
 import { RecommendationBanner } from "@/components/property/RecommendationBanner";
 import { RiskFlagsCard } from "@/components/property/RiskFlagsCard";
 import { ScreeningCard } from "@/components/property/ScreeningCard";
@@ -43,6 +44,7 @@ export default async function PropertyDetailPage({
       </Link>
 
       <PropertyHeader property={property} />
+      <PropertyOverviewCard property={property} />
       <RecommendationBanner property={property} />
       <MilestoneTimelineCard property={property} />
 
