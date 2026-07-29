@@ -583,6 +583,27 @@ main {
   cursor: default;
 }
 
+.doc-operator-note {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 0.75rem;
+  font-size: 13px;
+  color: #4b5563;
+  font-weight: 600;
+}
+
+.doc-operator-note textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--text);
+  font: inherit;
+  font-weight: 400;
+  resize: vertical;
+}
+
 .intake-form {
   display: grid;
   gap: 14px;

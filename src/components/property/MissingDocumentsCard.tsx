@@ -116,6 +116,7 @@ function MissingDocumentsInteractive({
 }) {
   const [items, setItems] = useState<MissingDocumentItem[]>(seedItems);
   const [filter, setFilter] = useState<DocumentFilter>("all");
+  const [operatorNote, setOperatorNote] = useState("");
 
   const missingCount = items.filter((i) => i.state === "missing").length;
   const requestedCount = items.filter((i) => i.state === "requested").length;
@@ -137,6 +138,7 @@ function MissingDocumentsInteractive({
   function resetToSeed() {
     setItems(seedItems.map((item) => ({ ...item })));
     setFilter("all");
+    setOperatorNote("");
   }
 
   return (
@@ -168,6 +170,15 @@ function MissingDocumentsInteractive({
       <p className="muted-note" style={{ marginBottom: "0.5rem" }}>
         Demo only — changes stay on this screen until refresh; not saved.
       </p>
+      <label className="doc-operator-note">
+        <span>Operator note</span>
+        <textarea
+          rows={2}
+          value={operatorNote}
+          onChange={(event) => setOperatorNote(event.target.value)}
+          placeholder="Short follow-up for this screen (demo only — not saved)."
+        />
+      </label>
       <div
         className="doc-state-actions"
         role="group"
