@@ -86,6 +86,7 @@ main {
   display: flex;
   gap: 16px;
   font-size: 14px;
+  align-items: center;
 }
 
 .site-nav a {
@@ -95,6 +96,86 @@ main {
 
 .site-nav a:hover {
   color: var(--accent);
+}
+
+.site-nav__help {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  font-size: 14px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.site-nav__help:hover,
+.site-nav__help[aria-expanded="true"] {
+  color: var(--accent);
+}
+
+.workspace-help {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(17, 24, 39, 0.45);
+}
+
+.workspace-help__dialog {
+  width: min(560px, 100%);
+  max-height: min(80vh, 720px);
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 20px;
+  box-shadow: 0 12px 40px rgba(17, 24, 39, 0.18);
+}
+
+.workspace-help__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.workspace-help__header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+}
+
+.workspace-help__body {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.workspace-help__body h3 {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+}
+
+.workspace-help__body ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.workspace-help__body li + li {
+  margin-top: 4px;
+}
+
+.workspace-help__body strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.workspace-help__footer {
+  margin: 16px 0 0;
 }
 
 .page-stack {

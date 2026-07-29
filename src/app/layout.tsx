@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
 import Link from "next/link";
+import { WorkspaceHelp } from "@/components/WorkspaceHelp";
 import "./globals.css";
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -31,6 +32,7 @@ export default function RootLayout({
               <Link href="/">Home</Link>
               <Link href="/properties">Properties</Link>
               <Link href="/intake">Intake</Link>
+              <WorkspaceHelp />
             </nav>
           </div>
         </header>
