@@ -24,6 +24,7 @@ import {
 } from "@/lib/property-stage";
 import { PropertyBoard } from "./PropertyBoard";
 import { PropertyListCard } from "./PropertyListCard";
+import { PortfolioOverview } from "./PortfolioOverview";
 
 type PropertyListProps = {
   properties: PropertyScreen[];
@@ -257,6 +258,8 @@ export function PropertyList({ properties }: PropertyListProps) {
 
   return (
     <>
+      <PortfolioOverview properties={properties} tick={tick} />
+
       <section className="page-intro" style={{ marginBottom: 0 }}>
         <p className="muted-note">
           {active.length} active
