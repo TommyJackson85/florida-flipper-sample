@@ -110,7 +110,9 @@ function AttachmentsInteractive() {
         notes.
       </p>
       {attachments.length === 0 ? (
-        <p className="muted-note">No attachments yet.</p>
+        <p className="muted-note">
+          No attachments yet. Add a file for this browser tab only.
+        </p>
       ) : (
         <ul className="risk-flag-list">
           {attachments.map((entry) => (

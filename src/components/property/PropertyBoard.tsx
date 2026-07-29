@@ -55,7 +55,9 @@ export function PropertyBoard({
                 <span className="muted-note">{cards.length}</span>
               </div>
               {cards.length === 0 ? (
-                <p className="muted-note property-board__empty">No deals</p>
+                <p className="muted-note property-board__empty">
+                  No deals in this stage.
+                </p>
               ) : (
                 <div className="property-board__cards">
                   {cards.map((property) => (

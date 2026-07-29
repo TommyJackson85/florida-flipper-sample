@@ -738,11 +738,45 @@ export function PropertyList({ properties }: PropertyListProps) {
       </section>
 
       {visible.length === 0 ? (
-        <p className="muted-note">
-          {pool.length === 0
-            ? "No active properties. Show archived to reveal hidden records."
-            : "No properties match these filters."}
-        </p>
+        <div>
+          <p className="muted-note" style={{ margin: 0 }}>
+            {pool.length === 0
+              ? "No active properties. Show archived to reveal hidden records."
+              : "No properties match your search or filters."}
+          </p>
+          {pool.length === 0 && archived.length > 0 && !showArchived ? (
+            <div
+              className="doc-state-actions"
+              style={{ marginTop: "0.5rem" }}
+              role="group"
+              aria-label="Reveal archived properties"
+            >
+              <button
+                type="button"
+                className="doc-state-actions__btn"
+                onClick={toggleShowArchived}
+              >
+                Show archived ({archived.length})
+              </button>
+            </div>
+          ) : null}
+          {pool.length > 0 && filtersActive ? (
+            <div
+              className="doc-state-actions"
+              style={{ marginTop: "0.5rem" }}
+              role="group"
+              aria-label="Clear property filters"
+            >
+              <button
+                type="button"
+                className="doc-state-actions__btn"
+                onClick={clearFilters}
+              >
+                Clear filters
+              </button>
+            </div>
+          ) : null}
+        </div>
       ) : viewMode === "board" ? (
         <PropertyBoard
           properties={visible}

@@ -346,7 +346,27 @@ function MissingDocumentsInteractive({
         })}
       </div>
       {visibleItems.length === 0 ? (
-        <p className="muted-note">No documents in this filter.</p>
+        <div>
+          <p className="muted-note" style={{ margin: 0 }}>
+            No documents in this status filter.
+          </p>
+          {filter !== "all" ? (
+            <div
+              className="doc-state-actions"
+              style={{ marginTop: "0.5rem" }}
+              role="group"
+              aria-label="Clear document status filter"
+            >
+              <button
+                type="button"
+                className="doc-state-actions__btn"
+                onClick={() => setFilter("all")}
+              >
+                Show all documents
+              </button>
+            </div>
+          ) : null}
+        </div>
       ) : (
         <ul className="risk-flag-list">
           {visibleItems.map((item) => (
@@ -403,7 +423,9 @@ function MissingDocumentsInteractive({
       subtitle="Demo only — this session on this screen; not saved."
     >
       {activity.length === 0 ? (
-        <p className="muted-note">No activity yet this session.</p>
+        <p className="muted-note">
+          No activity yet this session. Status changes here will appear below.
+        </p>
       ) : (
         <ul className="risk-flag-list">
           {activity.map((entry) => (

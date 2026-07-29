@@ -120,7 +120,7 @@ export function PortfolioOverview({
 
       <OverviewGroup
         title="Needs attention"
-        empty="None right now."
+        empty="Nothing flagged for attention."
         properties={snapshot.needsAttention}
         detailFor={(property) => {
           const progress = deriveProgressSummary(property);
@@ -131,7 +131,7 @@ export function PortfolioOverview({
       />
       <OverviewGroup
         title="Dates due"
-        empty="None right now."
+        empty="No upcoming or overdue dates in this set."
         properties={snapshot.datesDue}
         detailFor={(property) => {
           const milestone = nextMilestone(property.milestones);
@@ -142,7 +142,7 @@ export function PortfolioOverview({
       />
       <OverviewGroup
         title="Post-close outstanding"
-        empty="None right now."
+        empty="No open post-close items."
         properties={snapshot.postCloseOutstanding}
         detailFor={(property) => {
           const open = countOpenPostClose(property);

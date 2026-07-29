@@ -173,6 +173,10 @@ export function WorkspaceHelp() {
                   <li>
                     Reset does not change TypeScript seed files on disk
                   </li>
+                  <li>
+                    An empty list usually means filters or search — use Clear
+                    filters, or Reset demo data after heavy testing
+                  </li>
                 </ul>
               </section>
 
