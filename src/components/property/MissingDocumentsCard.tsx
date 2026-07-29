@@ -17,6 +17,14 @@ type MissingDocumentsCardProps = {
 
 type DocumentFilter = "all" | MissingDocumentState;
 
+type ActivityEntry = {
+  id: string;
+  at: number;
+  message: string;
+};
+
+const ACTIVITY_CAP = 12;
+
 const STATE_ORDER: MissingDocumentState[] = [
   "missing",
   "requested",
@@ -113,6 +121,13 @@ function isOverdue(item: MissingDocumentItem, today: string): boolean {
   return item.dueDate < today;
 }
 
+function formatActivityTime(at: number): string {
+  return new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date(at));
+}
+
 export function MissingDocumentsCard({ property }: MissingDocumentsCardProps) {
   if (property.isSample) {
     return (
@@ -143,6 +158,7 @@ function MissingDocumentsInteractive({
   const [items, setItems] = useState<MissingDocumentItem[]>(seedItems);
   const [filter, setFilter] = useState<DocumentFilter>("all");
   const [operatorNote, setOperatorNote] = useState("");
+  const [activity, setActivity] = useState<ActivityEntry[]>([]);
 
   const today = todayIsoDate();
   const missingCount = items.filter((i) => i.state === "missing").length;
@@ -153,7 +169,23 @@ function MissingDocumentsInteractive({
   const visibleItems =
     filter === "all" ? items : items.filter((item) => item.state === filter);
 
+  function appendActivity(message: string) {
+    setActivity((prev) =>
+      [
+        {
+          id: `${Date.now()}-${prev.length}`,
+          at: Date.now(),
+          message,
+        },
+        ...prev,
+      ].slice(0, ACTIVITY_CAP)
+    );
+  }
+
   function setItemState(id: string, next: MissingDocumentState) {
+    const current = items.find((item) => item.id === id);
+    if (!current || current.state === next) return;
+
     setItems((prev) =>
       prev.map((item) =>
         item.id === id
@@ -161,19 +193,24 @@ function MissingDocumentsInteractive({
           : item
       )
     );
+    appendActivity(`Marked ${current.label} as ${stateLabel(next)}`);
   }
 
   function resetToSeed() {
     setItems(seedItems.map((item) => ({ ...item })));
     setFilter("all");
     setOperatorNote("");
+    appendActivity("Reset documents to seed");
   }
 
   function clearOperatorNote() {
+    if (!operatorNote) return;
     setOperatorNote("");
+    appendActivity("Cleared operator note");
   }
 
   return (
+    <>
     <SectionCard
       title="Missing documents"
       subtitle="Artifact status only: missing = not yet asked for on this screen · requested = ask noted here, package not in hand · received = in hand. Not closing readiness."
@@ -304,5 +341,25 @@ function MissingDocumentsInteractive({
         </ul>
       )}
     </SectionCard>
+    <SectionCard
+      title="Activity"
+      subtitle="Demo only — this session on this screen; not saved."
+    >
+      {activity.length === 0 ? (
+        <p className="muted-note">No activity yet this session.</p>
+      ) : (
+        <ul className="risk-flag-list">
+          {activity.map((entry) => (
+            <li key={entry.id} className="risk-flag-row">
+              <div className="risk-flag-row__main">
+                <span className="risk-flag-row__label">{entry.message}</span>
+                <span className="muted-note">{formatActivityTime(entry.at)}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </SectionCard>
+    </>
   );
 }
