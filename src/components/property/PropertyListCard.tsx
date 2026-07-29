@@ -3,8 +3,10 @@ import type { PropertyScreen } from "@/types/property";
 import { formatMoney } from "@/lib/format";
 import {
   countMissingDiligenceItems,
+  labelForPropertyStage,
   labelForProvisionalStatus,
   summarizeSources,
+  toneForPropertyStage,
   toneForProvisionalStatus,
 } from "@/lib/property-metrics";
 import { StatusPill } from "./StatusPill";
@@ -21,6 +23,7 @@ export function PropertyListCard({ property }: PropertyListCardProps) {
   const tone = toneForProvisionalStatus(property.status?.provisionalStatus);
   const missingCount = countMissingDiligenceItems(property);
   const sources = summarizeSources(property.sources);
+  const showStage = !isSample && Boolean(property.stage);
 
   return (
     <Link href={`/properties/${property.id}`} className="property-list-card">
@@ -33,6 +36,12 @@ export function PropertyListCard({ property }: PropertyListCardProps) {
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
           {isSample ? <StatusPill label="Sample" tone="warn" /> : null}
+          {showStage ? (
+            <StatusPill
+              label={labelForPropertyStage(property.stage)}
+              tone={toneForPropertyStage(property.stage)}
+            />
+          ) : null}
           {!isSample ? (
             <StatusPill label={recommendation} tone={tone} />
           ) : (

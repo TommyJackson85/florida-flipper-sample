@@ -1,5 +1,9 @@
 import type { PropertyScreen } from "@/types/property";
 import { formatDate } from "@/lib/format";
+import {
+  labelForPropertyStage,
+  toneForPropertyStage,
+} from "@/lib/property-metrics";
 import { StatusPill } from "./StatusPill";
 
 type PropertyHeaderProps = {
@@ -8,6 +12,7 @@ type PropertyHeaderProps = {
 
 export function PropertyHeader({ property }: PropertyHeaderProps) {
   const isSample = Boolean(property.isSample);
+  const showStage = !isSample && Boolean(property.stage);
 
   return (
     <header className="property-header">
@@ -25,7 +30,15 @@ export function PropertyHeader({ property }: PropertyHeaderProps) {
             {property.community ? ` · ${property.community}` : ""}
           </p>
         </div>
-        {isSample ? <StatusPill label="Sample" tone="warn" /> : null}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          {isSample ? <StatusPill label="Sample" tone="warn" /> : null}
+          {showStage ? (
+            <StatusPill
+              label={labelForPropertyStage(property.stage)}
+              tone={toneForPropertyStage(property.stage)}
+            />
+          ) : null}
+        </div>
       </div>
       {isSample && property.sampleNote ? (
         <p className="property-header__purpose">{property.sampleNote}</p>

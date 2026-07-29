@@ -14,8 +14,11 @@ import type { PropertyScreen } from "@/types/property";
  *    requested only when an ask is noted on this screen; use received only when the
  *    package is marked in hand on this screen (status only — no file storage); optional
  *    dueDate (YYYY-MM-DD) for display urgency only; do not auto-sync from other sections.
- * 7. Demo/workflow-practice records: set isSample: true and a short sampleNote.
- * 8. Register the export in `index.ts` (do not import this `_template.ts` file).
+ * 7. Optional stage: lead | screening | diligence | under-contract | closing |
+ *    post-close. Display only — distinct from provisional screen outcome. Omit on
+ *    sample shells.
+ * 8. Demo/workflow-practice records: set isSample: true and a short sampleNote.
+ * 9. Register the export in `index.ts` (do not import this `_template.ts` file).
  *
  * Tip: use `/intake` to generate identity + default flags, then merge into this shape
  * when you need association / tax / identifiers / closing readiness / documents.
@@ -32,6 +35,7 @@ export const propertyTemplate: PropertyScreen = {
   // Demo records only — leave false/undefined for real underwriting files
   isSample: false,
   sampleNote: undefined,
+  stage: "screening",
 
   // Optional identity / listing
   community: undefined,

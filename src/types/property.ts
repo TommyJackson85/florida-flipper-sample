@@ -30,6 +30,15 @@ export type ProvisionalStatus =
   | "pass"
   | "need-more-information";
 
+/** Where the deal sits in the operator workflow (distinct from screen outcome). */
+export type PropertyStage =
+  | "lead"
+  | "screening"
+  | "diligence"
+  | "under-contract"
+  | "closing"
+  | "post-close";
+
 export type TriState = "yes" | "no" | "unknown";
 
 export type RiskFlagStatus = "unknown" | "open" | "clear";
@@ -91,6 +100,8 @@ export type PropertyScreen = {
   isSample?: boolean;
   /** Short disclaimer shown on list/detail when isSample is true */
   sampleNote?: string;
+  /** Operator workflow stage — display only; not screen outcome */
+  stage?: PropertyStage;
 
   community?: string;
   county?: string;

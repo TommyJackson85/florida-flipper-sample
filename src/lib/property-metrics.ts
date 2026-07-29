@@ -2,6 +2,7 @@ import type {
   ClosingReadiness,
   ClosingReadinessStatus,
   PropertyScreen,
+  PropertyStage,
   ProvisionalStatus,
   SourceEntry,
 } from "@/types/property";
@@ -37,6 +38,40 @@ export function labelForProvisionalStatus(
       return "Pass";
     case "need-more-information":
       return "Need more information";
+    default:
+      return "Unknown";
+  }
+}
+
+export function toneForPropertyStage(stage?: PropertyStage): StatusTone {
+  switch (stage) {
+    case "under-contract":
+    case "closing":
+      return "good";
+    case "screening":
+    case "diligence":
+      return "warn";
+    case "lead":
+    case "post-close":
+    default:
+      return "neutral";
+  }
+}
+
+export function labelForPropertyStage(stage?: PropertyStage): string {
+  switch (stage) {
+    case "lead":
+      return "Lead";
+    case "screening":
+      return "Screening";
+    case "diligence":
+      return "Diligence";
+    case "under-contract":
+      return "Under contract";
+    case "closing":
+      return "Closing";
+    case "post-close":
+      return "Post-close";
     default:
       return "Unknown";
   }

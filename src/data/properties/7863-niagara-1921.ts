@@ -8,6 +8,8 @@ export const property7863Niagara1921: PropertyScreen = {
   state: "FL",
   zip: "33617",
 
+  stage: "diligence",
+
   community: "River Oaks Condominium II – Phase 3, Building 19, Unit 1921",
   county: "Hillsborough County",
   propertyType: "Condominium",
