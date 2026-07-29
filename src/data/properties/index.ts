@@ -1,4 +1,5 @@
 import type { PropertyScreen } from "@/types/property";
+import { property2200EFowlerAveB12 } from "./2200-e-fowler-ave-b12";
 import { property4821CypressHammockDr33617 } from "./4821-cypress-hammock-dr-33617";
 import { property7863Niagara1921 } from "./7863-niagara-1921";
 
@@ -16,6 +17,7 @@ import { property7863Niagara1921 } from "./7863-niagara-1921";
 
 export const properties: PropertyScreen[] = [
   property7863Niagara1921,
+  property2200EFowlerAveB12,
   property4821CypressHammockDr33617,
 ];
 
@@ -27,4 +29,8 @@ export function getAllProperties(): PropertyScreen[] {
   return properties;
 }
 
-export { property7863Niagara1921, property4821CypressHammockDr33617 };
+export {
+  property2200EFowlerAveB12,
+  property7863Niagara1921,
+  property4821CypressHammockDr33617,
+};

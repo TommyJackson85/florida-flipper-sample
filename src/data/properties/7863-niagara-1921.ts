@@ -78,14 +78,14 @@ export const property7863Niagara1921: PropertyScreen = {
   },
 
   status: {
-    currentRecommendation: "Need More Information / Track",
-    provisionalStatus: "need-more-information",
+    currentRecommendation: "Track",
+    provisionalStatus: "track",
     taxStatus: "Paid in full; no amount due",
     lastReviewedAt: "2026-07-24",
     recommendationHistory: [
       {
         at: "2026-07-24",
-        label: "Need More Information / Track",
+        label: "Track",
         note: "Current screen — association packet and operating inputs still open.",
       },
       {

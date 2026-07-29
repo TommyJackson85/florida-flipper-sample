@@ -28,7 +28,8 @@ export function PilotEvaluationPanel() {
         not CRM or team workflows.
       </p>
       <p className="muted-note">
-        <strong>Task (about 10–15 min):</strong>
+        <strong>Task (about 15–20 min):</strong> compare two live screens, then
+        notice the Sample shell is not a screening story.
       </p>
       <ol className="pilot-eval__steps">
         <li>
@@ -36,14 +37,27 @@ export function PilotEvaluationPanel() {
           <Link href="/properties">View properties</Link>, then{" "}
           <Link href="/properties/7863-niagara-1921">
             7863 Niagara Ave #1921
-          </Link>
-          .
+          </Link>{" "}
+          (<strong>Track</strong> — public facts usable; association packet still
+          blocks buy/pass.
         </li>
         <li>
-          Read the screen outcome, overview, condo risk flags, and missing
-          documents / known missing.
+          Then open{" "}
+          <Link href="/properties/2200-e-fowler-ave-b12">
+            2200 E Fowler Ave #B12
+          </Link>{" "}
+          <strong>Pass</strong> — association disclosures triggered a hard-no
+          without modeling returns.
         </li>
-        <li>Skim tax history, association, and the underwriting checklist.</li>
+        <li>
+          On each live deal: read screen outcome, overview, condo risk flags,
+          missing documents / known missing; skim tax, association, and
+          screening checklist (pro forma stays unset where unknown).
+        </li>
+        <li>
+          Cypress Hammock is a <strong>Sample</strong> identity shell only —
+          practice, not a second underwriting comparison.
+        </li>
         <li>
           Optional:{" "}
           <Link href="/intake">Stub generator</Link> — creates TypeScript for
@@ -61,7 +75,7 @@ export function PilotEvaluationPanel() {
       </p>
       <ul className="pilot-eval__feedback">
         <li>Would this screen change how you track condo diligence?</li>
-        <li>What was clearest / most confusing?</li>
+        <li>Was Track vs Pass contrast clear?</li>
         <li>What’s missing before you’d use this on a live deal?</li>
       </ul>
       <p className="muted-note">
