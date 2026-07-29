@@ -30,6 +30,14 @@ export type ProvisionalStatus =
   | "pass"
   | "need-more-information";
 
+/** Prior screen-outcome snapshot for display-only recommendation history. */
+export type RecommendationHistoryEntry = {
+  /** ISO date YYYY-MM-DD */
+  at: string;
+  label: string;
+  note?: string;
+};
+
 /** Where the deal sits in the operator workflow (distinct from screen outcome). */
 export type PropertyStage =
   | "lead"
@@ -142,6 +150,8 @@ export type PropertyScreen = {
     provisionalStatus?: ProvisionalStatus;
     taxStatus?: string;
     lastReviewedAt?: string;
+    /** Prior screen outcomes for display only (newest first preferred in seed) */
+    recommendationHistory?: RecommendationHistoryEntry[];
   };
 
   summary?: {

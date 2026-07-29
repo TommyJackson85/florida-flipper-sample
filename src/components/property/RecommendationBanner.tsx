@@ -10,6 +10,8 @@ type RecommendationBannerProps = {
   property: PropertyScreen;
 };
 
+const HISTORY_CAP = 3;
+
 function framingForStatus(property: PropertyScreen): string {
   if (property.isSample) {
     return "Sample / workflow-practice record. This is not a live underwriting decision — use it to practice intake and registration only.";
@@ -38,6 +40,9 @@ export function RecommendationBanner({ property }: RecommendationBannerProps) {
   const tone = isSample
     ? "warn"
     : toneForProvisionalStatus(property.status?.provisionalStatus);
+  const history = isSample
+    ? []
+    : (property.status?.recommendationHistory ?? []).slice(0, HISTORY_CAP);
 
   return (
     <section className="recommendation-banner">
@@ -61,6 +66,30 @@ export function RecommendationBanner({ property }: RecommendationBannerProps) {
           Last reviewed: {formatDate(property.status?.lastReviewedAt)}
         </span>
       </div>
+
+      {history.length > 0 ? (
+        <div style={{ marginTop: "0.85rem" }}>
+          <p
+            className="muted-note"
+            style={{ marginBottom: "0.4rem", fontWeight: 600 }}
+          >
+            Recent recommendations
+          </p>
+          <ul className="risk-flag-list">
+            {history.map((entry) => (
+              <li key={`${entry.at}-${entry.label}`} className="risk-flag-row">
+                <div className="risk-flag-row__main">
+                  <span className="risk-flag-row__label">{entry.label}</span>
+                  <span className="muted-note">{formatDate(entry.at)}</span>
+                </div>
+                {entry.note ? (
+                  <p className="risk-flag-row__note">{entry.note}</p>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </section>
   );
 }

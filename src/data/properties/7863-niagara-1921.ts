@@ -50,6 +50,23 @@ export const property7863Niagara1921: PropertyScreen = {
     provisionalStatus: "need-more-information",
     taxStatus: "Paid in full; no amount due",
     lastReviewedAt: "2026-07-24",
+    recommendationHistory: [
+      {
+        at: "2026-07-24",
+        label: "Need More Information / Track",
+        note: "Current screen — association packet and operating inputs still open.",
+      },
+      {
+        at: "2026-07-10",
+        label: "Track",
+        note: "Public facts usable; held for association diligence before a buy/pass call.",
+      },
+      {
+        at: "2026-06-28",
+        label: "Need more information",
+        note: "First pass after intake — HOA dues conflict and condo risk unknowns.",
+      },
+    ],
   },
 
   summary: {

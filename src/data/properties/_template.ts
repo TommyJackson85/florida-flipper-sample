@@ -17,8 +17,10 @@ import type { PropertyScreen } from "@/types/property";
  * 7. Optional stage: lead | screening | diligence | under-contract | closing |
  *    post-close. Display only — distinct from provisional screen outcome. Omit on
  *    sample shells.
- * 8. Demo/workflow-practice records: set isSample: true and a short sampleNote.
- * 9. Register the export in `index.ts` (do not import this `_template.ts` file).
+ * 8. Optional status.recommendationHistory: prior screen outcomes (at/label/note)
+ *    for display only — keep newest first; omit on sample shells.
+ * 9. Demo/workflow-practice records: set isSample: true and a short sampleNote.
+ * 10. Register the export in `index.ts` (do not import this `_template.ts` file).
  *
  * Tip: use `/intake` to generate identity + default flags, then merge into this shape
  * when you need association / tax / identifiers / closing readiness / documents.
@@ -76,6 +78,7 @@ export const propertyTemplate: PropertyScreen = {
     provisionalStatus: "need-more-information",
     taxStatus: undefined,
     lastReviewedAt: undefined,
+    recommendationHistory: undefined,
   },
 
   summary: {
