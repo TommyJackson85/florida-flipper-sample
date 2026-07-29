@@ -669,6 +669,11 @@ main {
   cursor: pointer;
 }
 
+a.doc-state-actions__btn {
+  display: inline-block;
+  text-decoration: none;
+}
+
 .doc-state-actions__btn:hover {
   border-color: var(--accent);
 }

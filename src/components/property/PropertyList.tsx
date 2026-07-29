@@ -8,6 +8,7 @@ import {
 } from "@/lib/property-archive";
 import {
   countMissingDiligenceItems,
+  deriveProgressSummary,
   labelForPropertyStage,
 } from "@/lib/property-metrics";
 import {
@@ -25,6 +26,7 @@ import {
 import { PropertyBoard } from "./PropertyBoard";
 import { PropertyListCard } from "./PropertyListCard";
 import { PortfolioOverview } from "./PortfolioOverview";
+import { WorkspaceQuickActions } from "./WorkspaceQuickActions";
 
 type PropertyListProps = {
   properties: PropertyScreen[];
@@ -199,6 +201,19 @@ export function PropertyList({ properties }: PropertyListProps) {
     return countPinnedAmong(pool);
   }, [pool, tick]);
 
+  const needsAttentionHref = useMemo(() => {
+    void tick;
+    const target = properties.find((property) => {
+      if (property.isSample || isPropertyArchived(property)) return false;
+      const progress = deriveProgressSummary(property);
+      return (
+        progress?.status === "needs-attention" ||
+        progress?.status === "blocked"
+      );
+    });
+    return target ? `/properties/${target.id}` : null;
+  }, [properties, tick]);
+
   const visible = useMemo(() => {
     const filtered = pool
       .map((property) => withEffectiveStage(property, stageOverrides))
@@ -259,6 +274,17 @@ export function PropertyList({ properties }: PropertyListProps) {
   return (
     <>
       <PortfolioOverview properties={properties} tick={tick} />
+
+      <WorkspaceQuickActions
+        viewMode={viewMode}
+        pinFilterActive={pinFilter === "pinned"}
+        showArchived={showArchived}
+        archivedCount={archived.length}
+        needsAttentionHref={needsAttentionHref}
+        onShowBoard={() => setViewMode("board")}
+        onShowPinned={() => setPinFilter("pinned")}
+        onToggleArchived={toggleShowArchived}
+      />
 
       <section className="page-intro" style={{ marginBottom: 0 }}>
         <p className="muted-note">
