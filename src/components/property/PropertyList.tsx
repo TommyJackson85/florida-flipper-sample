@@ -18,12 +18,18 @@ import {
   countPinnedAmong,
   isPropertyPinned,
 } from "@/lib/property-pinning";
+import {
+  type StageOverrides,
+  withEffectiveStage,
+} from "@/lib/property-stage";
+import { PropertyBoard } from "./PropertyBoard";
 import { PropertyListCard } from "./PropertyListCard";
 
 type PropertyListProps = {
   properties: PropertyScreen[];
 };
 
+type ViewMode = "list" | "board";
 type StageFilter = "all" | PropertyStage;
 type KindFilter = "all" | "live" | "sample";
 type SortOption = "address" | "stage" | "diligence";
@@ -159,6 +165,8 @@ export function PropertyList({ properties }: PropertyListProps) {
   const [tagFilter, setTagFilter] = useState<TagFilter>("all");
   const [pinFilter, setPinFilter] = useState<PinFilter>("all");
   const [sort, setSort] = useState<SortOption>("address");
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const [stageOverrides, setStageOverrides] = useState<StageOverrides>({});
 
   useEffect(() => {
     setTick((n) => n + 1);
@@ -191,16 +199,28 @@ export function PropertyList({ properties }: PropertyListProps) {
   }, [pool, tick]);
 
   const visible = useMemo(() => {
-    const filtered = pool.filter(
-      (property) =>
-        matchesSearch(property, query) &&
-        matchesStage(property, stageFilter) &&
-        matchesKind(property, kindFilter) &&
-        matchesTag(property, tagFilter) &&
-        matchesPin(property, pinFilter)
-    );
+    const filtered = pool
+      .map((property) => withEffectiveStage(property, stageOverrides))
+      .filter(
+        (property) =>
+          matchesSearch(property, query) &&
+          matchesStage(property, stageFilter) &&
+          matchesKind(property, kindFilter) &&
+          matchesTag(property, tagFilter) &&
+          matchesPin(property, pinFilter)
+      );
     return [...filtered].sort((a, b) => compareProperties(a, b, sort));
-  }, [pool, query, stageFilter, kindFilter, tagFilter, pinFilter, sort, tick]);
+  }, [
+    pool,
+    query,
+    stageFilter,
+    kindFilter,
+    tagFilter,
+    pinFilter,
+    sort,
+    tick,
+    stageOverrides,
+  ]);
 
   const filtersActive =
     query.trim().length > 0 ||
@@ -223,6 +243,10 @@ export function PropertyList({ properties }: PropertyListProps) {
     setTick((n) => n + 1);
   }
 
+  function setStage(propertyId: string, stage: PropertyStage | null) {
+    setStageOverrides((prev) => ({ ...prev, [propertyId]: stage }));
+  }
+
   function clearFilters() {
     setQuery("");
     setStageFilter("all");
@@ -239,8 +263,46 @@ export function PropertyList({ properties }: PropertyListProps) {
           {archived.length > 0 ? ` · ${archived.length} archived` : ""}
           {pinnedCount > 0 ? ` · ${pinnedCount} pinned` : ""}
           {" · "}
-          session pin/archive toggles stay in this tab.
+          session pin/archive toggles stay in this tab
+          {viewMode === "board"
+            ? "; board stage moves reset on refresh."
+            : "."}
         </p>
+
+        <p className="muted-note" style={{ marginTop: "0.65rem" }}>
+          View
+        </p>
+        <div
+          className="doc-state-actions"
+          role="group"
+          aria-label="Property view mode"
+        >
+          <button
+            type="button"
+            className={
+              viewMode === "list"
+                ? "doc-state-actions__btn doc-state-actions__btn--active"
+                : "doc-state-actions__btn"
+            }
+            aria-pressed={viewMode === "list"}
+            onClick={() => setViewMode("list")}
+          >
+            List
+          </button>
+          <button
+            type="button"
+            className={
+              viewMode === "board"
+                ? "doc-state-actions__btn doc-state-actions__btn--active"
+                : "doc-state-actions__btn"
+            }
+            aria-pressed={viewMode === "board"}
+            onClick={() => setViewMode("board")}
+          >
+            Board
+          </button>
+        </div>
+
         {archived.length > 0 ? (
           <div
             className="doc-state-actions"
@@ -412,33 +474,37 @@ export function PropertyList({ properties }: PropertyListProps) {
           </>
         ) : null}
 
-        <p className="muted-note" style={{ marginTop: "0.65rem" }}>
-          Sort
-        </p>
-        <div
-          className="doc-state-actions"
-          role="group"
-          aria-label="Sort properties"
-        >
-          {SORT_OPTIONS.map((option) => {
-            const pressed = sort === option;
-            return (
-              <button
-                key={option}
-                type="button"
-                className={
-                  pressed
-                    ? "doc-state-actions__btn doc-state-actions__btn--active"
-                    : "doc-state-actions__btn"
-                }
-                aria-pressed={pressed}
-                onClick={() => setSort(option)}
-              >
-                {sortOptionLabel(option)}
-              </button>
-            );
-          })}
-        </div>
+        {viewMode === "list" ? (
+          <>
+            <p className="muted-note" style={{ marginTop: "0.65rem" }}>
+              Sort
+            </p>
+            <div
+              className="doc-state-actions"
+              role="group"
+              aria-label="Sort properties"
+            >
+              {SORT_OPTIONS.map((option) => {
+                const pressed = sort === option;
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    className={
+                      pressed
+                        ? "doc-state-actions__btn doc-state-actions__btn--active"
+                        : "doc-state-actions__btn"
+                    }
+                    aria-pressed={pressed}
+                    onClick={() => setSort(option)}
+                  >
+                    {sortOptionLabel(option)}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        ) : null}
 
         <p className="muted-note" style={{ marginTop: "0.65rem" }}>
           Showing {visible.length} of {pool.length}
@@ -463,6 +529,12 @@ export function PropertyList({ properties }: PropertyListProps) {
             ? "No active properties. Show archived to reveal hidden records."
             : "No properties match these filters."}
         </p>
+      ) : viewMode === "board" ? (
+        <PropertyBoard
+          properties={visible}
+          isArchived={isPropertyArchived}
+          onStageChange={setStage}
+        />
       ) : (
         <section className="property-grid">
           {visible.map((property) => {
