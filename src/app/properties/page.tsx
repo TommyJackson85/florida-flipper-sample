@@ -1,4 +1,4 @@
-import { PropertyListCard } from "@/components/property/PropertyListCard";
+import { PropertyList } from "@/components/property/PropertyList";
 import { getAllProperties } from "@/data/properties";
 
 export default function PropertiesPage() {
@@ -12,15 +12,12 @@ export default function PropertiesPage() {
           {properties.length} propert{properties.length === 1 ? "y" : "ies"} in
           the current file-based screen set. Add another TypeScript data file
           under <code>src/data/properties</code>, then register it in{" "}
-          <code>index.ts</code>.
+          <code>index.ts</code>. Archived records soft-hide from the main list
+          without being deleted.
         </p>
       </section>
 
-      <section className="property-grid">
-        {properties.map((property) => (
-          <PropertyListCard key={property.id} property={property} />
-        ))}
-      </section>
+      <PropertyList properties={properties} />
     </main>
   );
 }

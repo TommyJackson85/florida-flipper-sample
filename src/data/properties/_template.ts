@@ -22,7 +22,9 @@ import type { PropertyScreen } from "@/types/property";
  * 9. Optional milestones: a few deal checkpoints (label/date/status). Display only —
  *    not a calendar; omit on sample shells.
  * 10. Demo/workflow-practice records: set isSample: true and a short sampleNote.
- * 11. Register the export in `index.ts` (do not import this `_template.ts` file).
+ * 11. Optional archived: soft-hide from the main list (session toggle can also
+ *     archive without editing seed data).
+ * 12. Register the export in `index.ts` (do not import this `_template.ts` file).
  *
  * Tip: use `/intake` to generate identity + default flags, then merge into this shape
  * when you need association / tax / identifiers / closing readiness / documents.
@@ -39,6 +41,7 @@ export const propertyTemplate: PropertyScreen = {
   // Demo records only — leave false/undefined for real underwriting files
   isSample: false,
   sampleNote: undefined,
+  archived: undefined,
   stage: "screening",
 
   // Optional identity / listing

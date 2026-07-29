@@ -13,9 +13,13 @@ import { StatusPill } from "./StatusPill";
 
 type PropertyListCardProps = {
   property: PropertyScreen;
+  archived?: boolean;
 };
 
-export function PropertyListCard({ property }: PropertyListCardProps) {
+export function PropertyListCard({
+  property,
+  archived = false,
+}: PropertyListCardProps) {
   const isSample = Boolean(property.isSample);
   const recommendation =
     property.status?.currentRecommendation ??
@@ -36,6 +40,7 @@ export function PropertyListCard({ property }: PropertyListCardProps) {
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
           {isSample ? <StatusPill label="Sample" tone="warn" /> : null}
+          {archived ? <StatusPill label="Archived" tone="neutral" /> : null}
           {showStage ? (
             <StatusPill
               label={labelForPropertyStage(property.stage)}

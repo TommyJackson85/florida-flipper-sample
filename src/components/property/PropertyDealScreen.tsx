@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { PropertyScreen } from "@/types/property";
 import { formatMoney } from "@/lib/format";
+import { ArchivePropertyButton } from "./ArchivePropertyButton";
 import { AssociationCard } from "./AssociationCard";
 import { ClosingReadinessCard } from "./ClosingReadinessCard";
 import { DetailList } from "./DetailList";
@@ -42,6 +43,7 @@ export function PropertyDealScreen({
       {bannerNote ? <p className="muted-note">{bannerNote}</p> : null}
 
       <DuplicateDemoStubButton property={property} />
+      <ArchivePropertyButton property={property} />
 
       <PropertyHeader property={property} />
       <PropertyOverviewCard property={property} />

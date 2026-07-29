@@ -120,6 +120,8 @@ export type PropertyScreen = {
   isSample?: boolean;
   /** Short disclaimer shown on list/detail when isSample is true */
   sampleNote?: string;
+  /** Soft-hide from the main list (seed and/or session overlay) */
+  archived?: boolean;
   /** Operator workflow stage — display only; not screen outcome */
   stage?: PropertyStage;
 

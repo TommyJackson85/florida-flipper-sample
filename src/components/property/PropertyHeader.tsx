@@ -4,6 +4,7 @@ import {
   labelForPropertyStage,
   toneForPropertyStage,
 } from "@/lib/property-metrics";
+import { ArchivedStatusPill } from "./ArchivedStatusPill";
 import { StatusPill } from "./StatusPill";
 
 type PropertyHeaderProps = {
@@ -32,6 +33,7 @@ export function PropertyHeader({ property }: PropertyHeaderProps) {
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
           {isSample ? <StatusPill label="Sample" tone="warn" /> : null}
+          <ArchivedStatusPill property={property} />
           {showStage ? (
             <StatusPill
               label={labelForPropertyStage(property.stage)}
