@@ -9,6 +9,7 @@ import { DuplicateDemoStubButton } from "./DuplicateDemoStubButton";
 import { KnownMissingCard } from "./KnownMissingCard";
 import { MilestoneTimelineCard } from "./MilestoneTimelineCard";
 import { MissingDocumentsCard } from "./MissingDocumentsCard";
+import { PropertyAttachmentsCard } from "./PropertyAttachmentsCard";
 import { PropertyExportSummaryCard } from "./PropertyExportSummaryCard";
 import { PropertyHeader } from "./PropertyHeader";
 import { PropertyOverviewCard } from "./PropertyOverviewCard";
@@ -54,6 +55,7 @@ export function PropertyDealScreen({
       {isSample ? null : <RiskFlagsCard property={property} />}
       <ClosingReadinessCard property={property} />
       <MissingDocumentsCard property={property} />
+      <PropertyAttachmentsCard property={property} />
 
       <SectionCard
         title="Snapshot"
