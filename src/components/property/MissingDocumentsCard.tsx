@@ -134,6 +134,11 @@ function MissingDocumentsInteractive({
     );
   }
 
+  function resetToSeed() {
+    setItems(seedItems.map((item) => ({ ...item })));
+    setFilter("all");
+  }
+
   return (
     <SectionCard
       title="Missing documents"
@@ -146,6 +151,20 @@ function MissingDocumentsInteractive({
         {missingCount} missing · {requestedCount} requested · {receivedCount}{" "}
         received
       </p>
+      <div
+        className="doc-state-actions"
+        style={{ marginBottom: "0.5rem" }}
+        role="group"
+        aria-label="Demo document controls"
+      >
+        <button
+          type="button"
+          className="doc-state-actions__btn"
+          onClick={resetToSeed}
+        >
+          Reset to seed
+        </button>
+      </div>
       <p className="muted-note" style={{ marginBottom: "0.5rem" }}>
         Demo only — changes stay on this screen until refresh; not saved.
       </p>
