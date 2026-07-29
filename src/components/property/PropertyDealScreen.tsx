@@ -52,6 +52,12 @@ export function PropertyDealScreen({
       <PropertyHeader property={property} />
       <PropertyOverviewCard property={property} />
       <PropertyTagsCard property={property} />
+      <p className="muted-note" style={{ margin: 0 }}>
+        <Link href={`/properties/${property.id}/status`}>
+          Preview client status
+        </Link>
+        {" — curated read-only demo page (not a live share link)."}
+      </p>
       <PropertyExportSummaryCard property={property} />
       <RecommendationBanner property={property} />
       <MilestoneTimelineCard property={property} />
