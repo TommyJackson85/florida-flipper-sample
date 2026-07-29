@@ -6,12 +6,14 @@ import {
   labelForClosingReadiness,
   labelForProgressSummary,
   labelForPropertyStage,
+  labelForProvisionalStatus,
   milestoneUrgencyLabel,
   nextMilestone,
   toneForClosingReadiness,
   toneForProgressSummary,
   toneForPropertyStage,
 } from "@/lib/property-metrics";
+import { PrintPageButton } from "@/components/PrintPageButton";
 import { ArchivedStatusPill } from "./ArchivedStatusPill";
 import { DetailList } from "./DetailList";
 import { SectionCard } from "./SectionCard";
@@ -67,6 +69,12 @@ function docsTone(status: DocsRollup): "good" | "warn" | "bad" {
   }
 }
 
+function countOpenPostClose(property: PropertyScreen): number {
+  return (property.postCloseItems?.items ?? []).filter(
+    (item) => item.state === "open"
+  ).length;
+}
+
 export function PropertyClientStatusView({
   property,
 }: PropertyClientStatusViewProps) {
@@ -82,15 +90,33 @@ export function PropertyClientStatusView({
     ? milestoneUrgencyLabel(milestone)
     : null;
   const docs = isSample ? null : deriveDocsRollup(property);
+  const screenOutcome = isSample
+    ? null
+    : (property.status?.currentRecommendation ??
+      labelForProvisionalStatus(property.status?.provisionalStatus));
+  const postCloseOpen = isSample ? 0 : countOpenPostClose(property);
+  const hasPostCloseSeed =
+    !isSample && (property.postCloseItems?.items?.length ?? 0) > 0;
 
   return (
-    <div className="page-stack" style={{ gap: "1rem" }}>
-      <p className="muted-note">
-        Demo client status preview — curated fields only. Not a live share link.
-      </p>
+    <div className="page-stack printable-summary" style={{ gap: "1rem" }}>
+      <div className="print-hide" style={{ display: "grid", gap: "0.5rem" }}>
+        <p className="muted-note" style={{ margin: 0 }}>
+          Demo client status preview — curated fields only. Not a live share
+          link. Uses the browser print dialog — choose Save as PDF for a demo
+          snapshot from seed data.
+        </p>
+        <div
+          className="doc-state-actions"
+          role="group"
+          aria-label="Printable summary"
+        >
+          <PrintPageButton />
+        </div>
+      </div>
 
       <header className="property-header">
-        <p className="property-header__eyebrow">Deal status</p>
+        <p className="property-header__eyebrow print-hide">Deal status</p>
         <div className="property-header__row">
           <div>
             <h1>{property.address}</h1>
@@ -134,6 +160,7 @@ export function PropertyClientStatusView({
           subtitle="Client-facing demo preview — curated fields only."
         >
           <div
+            className="print-hide"
             style={{
               display: "flex",
               flexWrap: "wrap",
@@ -169,6 +196,10 @@ export function PropertyClientStatusView({
                   : "Not set on this screen",
               },
               {
+                label: "Screen outcome",
+                value: screenOutcome ?? "Not set on this screen",
+              },
+              {
                 label: "Progress",
                 value: progress
                   ? `${labelForProgressSummary(progress.status)} · ${progress.reason}`
@@ -191,6 +222,12 @@ export function PropertyClientStatusView({
               {
                 label: "Documents",
                 value: docs ? docs.summary : "Not set on this screen",
+              },
+              {
+                label: "Post-close",
+                value: hasPostCloseSeed
+                  ? `${postCloseOpen} open item${postCloseOpen === 1 ? "" : "s"}`
+                  : "Not set on this screen",
               },
             ]}
           />

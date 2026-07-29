@@ -896,3 +896,31 @@ a.doc-state-actions__btn {
   font-size: 12px;
   line-height: 1.55;
 }
+
+@media print {
+  .site-header,
+  .print-hide {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #111;
+  }
+
+  main {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .property-header,
+  .section-card {
+    break-inside: avoid;
+  }
+}

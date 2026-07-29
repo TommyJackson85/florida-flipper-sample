@@ -22,8 +22,11 @@ export default async function PropertyStatusPage({
   }
 
   return (
-    <main className="page-stack">
-      <Link href={`/properties/${property.id}`} className="back-link">
+    <main className="page-stack printable-summary-page">
+      <Link
+        href={`/properties/${property.id}`}
+        className="back-link print-hide"
+      >
         ← Full deal screen
       </Link>
       <PropertyClientStatusView property={property} />
