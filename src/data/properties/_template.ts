@@ -19,8 +19,10 @@ import type { PropertyScreen } from "@/types/property";
  *    sample shells.
  * 8. Optional status.recommendationHistory: prior screen outcomes (at/label/note)
  *    for display only — keep newest first; omit on sample shells.
- * 9. Demo/workflow-practice records: set isSample: true and a short sampleNote.
- * 10. Register the export in `index.ts` (do not import this `_template.ts` file).
+ * 9. Optional milestones: a few deal checkpoints (label/date/status). Display only —
+ *    not a calendar; omit on sample shells.
+ * 10. Demo/workflow-practice records: set isSample: true and a short sampleNote.
+ * 11. Register the export in `index.ts` (do not import this `_template.ts` file).
  *
  * Tip: use `/intake` to generate identity + default flags, then merge into this shape
  * when you need association / tax / identifiers / closing readiness / documents.
@@ -150,6 +152,9 @@ export const propertyTemplate: PropertyScreen = {
 
   // Optional — omit until you have closing blockers to track; status derives from items
   closingReadiness: undefined,
+
+  // Optional — a few deal checkpoints (label / date / done|upcoming|planned)
+  milestones: undefined,
 
   // Optional — named diligence artifacts only (missing / requested / received)
   missingDocuments: undefined,

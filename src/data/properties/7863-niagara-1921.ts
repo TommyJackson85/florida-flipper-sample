@@ -10,6 +10,37 @@ export const property7863Niagara1921: PropertyScreen = {
 
   stage: "diligence",
 
+  milestones: [
+    {
+      id: "intake-complete",
+      label: "Intake complete",
+      date: "2026-06-28",
+      status: "done",
+      note: "Identity and public-record pass registered.",
+    },
+    {
+      id: "first-screen-review",
+      label: "First screen review",
+      date: "2026-07-10",
+      status: "done",
+      note: "Moved to Track pending association packet.",
+    },
+    {
+      id: "association-packet-target",
+      label: "Association packet target",
+      date: "2026-08-05",
+      status: "upcoming",
+      note: "Budget, reserves, SIRS, and estoppel follow-up.",
+    },
+    {
+      id: "buy-pass-gate",
+      label: "Buy / pass gate",
+      date: "2026-08-20",
+      status: "planned",
+      note: "Decision after association diligence, not a hard close date.",
+    },
+  ],
+
   community: "River Oaks Condominium II – Phase 3, Building 19, Unit 1921",
   county: "Hillsborough County",
   propertyType: "Condominium",

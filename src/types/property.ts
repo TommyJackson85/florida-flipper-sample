@@ -96,6 +96,18 @@ export type MissingDocuments = {
   items: MissingDocumentItem[];
 };
 
+export type PropertyMilestoneStatus = "done" | "upcoming" | "planned";
+
+/** Deal checkpoint for display-only timeline (not condo inspection milestone). */
+export type PropertyMilestone = {
+  id: string;
+  label: string;
+  /** ISO date YYYY-MM-DD */
+  date: string;
+  status: PropertyMilestoneStatus;
+  note?: string;
+};
+
 export type PropertyScreen = {
   id: string;
   title: string;
@@ -193,6 +205,9 @@ export type PropertyScreen = {
 
   /** Compact go/no-go rollup of closing blockers (distinct from screen outcome) */
   closingReadiness?: ClosingReadiness;
+
+  /** Deal checkpoints for a simple display-only timeline */
+  milestones?: PropertyMilestone[];
 
   /** Concrete diligence documents still outstanding (artifact tracking only) */
   missingDocuments?: MissingDocuments;

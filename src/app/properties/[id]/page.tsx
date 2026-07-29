@@ -4,6 +4,7 @@ import { AssociationCard } from "@/components/property/AssociationCard";
 import { ClosingReadinessCard } from "@/components/property/ClosingReadinessCard";
 import { DetailList } from "@/components/property/DetailList";
 import { KnownMissingCard } from "@/components/property/KnownMissingCard";
+import { MilestoneTimelineCard } from "@/components/property/MilestoneTimelineCard";
 import { MissingDocumentsCard } from "@/components/property/MissingDocumentsCard";
 import { PropertyHeader } from "@/components/property/PropertyHeader";
 import { RecommendationBanner } from "@/components/property/RecommendationBanner";
@@ -43,6 +44,7 @@ export default async function PropertyDetailPage({
 
       <PropertyHeader property={property} />
       <RecommendationBanner property={property} />
+      <MilestoneTimelineCard property={property} />
 
       {isSample ? null : <RiskFlagsCard property={property} />}
       <ClosingReadinessCard property={property} />
