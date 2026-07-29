@@ -592,6 +592,14 @@ main {
   font-weight: 600;
 }
 
+.doc-operator-note__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .doc-operator-note textarea {
   width: 100%;
   padding: 10px 12px;
@@ -602,6 +610,11 @@ main {
   font: inherit;
   font-weight: 400;
   resize: vertical;
+}
+
+.doc-state-actions__btn:disabled {
+  opacity: 0.45;
+  cursor: default;
 }
 
 .intake-form {

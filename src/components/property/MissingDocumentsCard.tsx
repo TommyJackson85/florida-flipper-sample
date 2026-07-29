@@ -141,6 +141,10 @@ function MissingDocumentsInteractive({
     setOperatorNote("");
   }
 
+  function clearOperatorNote() {
+    setOperatorNote("");
+  }
+
   return (
     <SectionCard
       title="Missing documents"
@@ -170,15 +174,26 @@ function MissingDocumentsInteractive({
       <p className="muted-note" style={{ marginBottom: "0.5rem" }}>
         Demo only — changes stay on this screen until refresh; not saved.
       </p>
-      <label className="doc-operator-note">
-        <span>Operator note</span>
+      <div className="doc-operator-note">
+        <div className="doc-operator-note__header">
+          <span>Operator note</span>
+          <button
+            type="button"
+            className="doc-state-actions__btn"
+            onClick={clearOperatorNote}
+            disabled={!operatorNote}
+          >
+            Clear note
+          </button>
+        </div>
         <textarea
           rows={2}
           value={operatorNote}
           onChange={(event) => setOperatorNote(event.target.value)}
           placeholder="Short follow-up for this screen (demo only — not saved)."
+          aria-label="Operator note"
         />
-      </label>
+      </div>
       <div
         className="doc-state-actions"
         role="group"
