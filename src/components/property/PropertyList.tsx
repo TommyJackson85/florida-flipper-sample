@@ -10,6 +10,8 @@ import {
   countMissingDiligenceItems,
   deriveProgressSummary,
   labelForPropertyStage,
+  milestoneUrgencyLabel,
+  nextMilestone,
 } from "@/lib/property-metrics";
 import {
   collectUniqueTags,
@@ -26,6 +28,10 @@ import {
 import { PropertyBoard } from "./PropertyBoard";
 import { PropertyListCard } from "./PropertyListCard";
 import { PortfolioOverview } from "./PortfolioOverview";
+import {
+  PropertyViewPresets,
+  type ViewPresetId,
+} from "./PropertyViewPresets";
 import { WorkspaceQuickActions } from "./WorkspaceQuickActions";
 
 type PropertyListProps = {
@@ -101,6 +107,43 @@ function matchesPin(property: PropertyScreen, pin: PinFilter): boolean {
   return isPropertyPinned(property);
 }
 
+function hasOpenPostClose(property: PropertyScreen): boolean {
+  return (property.postCloseItems?.items ?? []).some(
+    (item) => item.state === "open"
+  );
+}
+
+function matchesViewPreset(
+  property: PropertyScreen,
+  preset: ViewPresetId | null
+): boolean {
+  if (!preset || preset === "all-active" || preset === "pinned") {
+    return true;
+  }
+
+  if (property.isSample) return false;
+
+  if (preset === "needs-attention") {
+    const progress = deriveProgressSummary(property);
+    return (
+      progress?.status === "needs-attention" ||
+      progress?.status === "blocked"
+    );
+  }
+
+  if (preset === "dates-due") {
+    const milestone = nextMilestone(property.milestones);
+    const urgency = milestone ? milestoneUrgencyLabel(milestone) : null;
+    return urgency === "Overdue" || urgency === "Due today";
+  }
+
+  if (preset === "post-close") {
+    return property.stage === "post-close" || hasOpenPostClose(property);
+  }
+
+  return true;
+}
+
 function stageFilterLabel(stage: StageFilter): string {
   return stage === "all" ? "All" : labelForPropertyStage(stage);
 }
@@ -170,10 +213,44 @@ export function PropertyList({ properties }: PropertyListProps) {
   const [sort, setSort] = useState<SortOption>("address");
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [stageOverrides, setStageOverrides] = useState<StageOverrides>({});
+  const [activePreset, setActivePreset] = useState<ViewPresetId | null>(
+    "all-active"
+  );
 
   useEffect(() => {
     setTick((n) => n + 1);
   }, []);
+
+  function clearPresetHighlight() {
+    setActivePreset(null);
+  }
+
+  function applyViewPreset(preset: ViewPresetId) {
+    setQuery("");
+    setTagFilter("all");
+    setStageFilter("all");
+    setShowArchived(false);
+    setActivePreset(preset);
+
+    if (preset === "all-active") {
+      setKindFilter("all");
+      setPinFilter("all");
+      setSort("address");
+      return;
+    }
+
+    if (preset === "pinned") {
+      setKindFilter("all");
+      setPinFilter("pinned");
+      setSort("address");
+      return;
+    }
+
+    // Soft signal presets: live deals only
+    setKindFilter("live");
+    setPinFilter("all");
+    setSort("address");
+  }
 
   const { active, archived } = useMemo(() => {
     void tick;
@@ -223,7 +300,8 @@ export function PropertyList({ properties }: PropertyListProps) {
           matchesStage(property, stageFilter) &&
           matchesKind(property, kindFilter) &&
           matchesTag(property, tagFilter) &&
-          matchesPin(property, pinFilter)
+          matchesPin(property, pinFilter) &&
+          matchesViewPreset(property, activePreset)
       );
     return [...filtered].sort((a, b) => compareProperties(a, b, sort));
   }, [
@@ -236,6 +314,7 @@ export function PropertyList({ properties }: PropertyListProps) {
     sort,
     tick,
     stageOverrides,
+    activePreset,
   ]);
 
   const filtersActive =
@@ -243,9 +322,11 @@ export function PropertyList({ properties }: PropertyListProps) {
     stageFilter !== "all" ||
     kindFilter !== "all" ||
     tagFilter !== "all" ||
-    pinFilter !== "all";
+    pinFilter !== "all" ||
+    (activePreset !== null && activePreset !== "all-active");
 
   function toggleShowArchived() {
+    clearPresetHighlight();
     setShowArchived((prev) => !prev);
     setTick((n) => n + 1);
   }
@@ -269,6 +350,8 @@ export function PropertyList({ properties }: PropertyListProps) {
     setKindFilter("all");
     setTagFilter("all");
     setPinFilter("all");
+    setActivePreset("all-active");
+    setShowArchived(false);
   }
 
   return (
@@ -282,8 +365,13 @@ export function PropertyList({ properties }: PropertyListProps) {
         archivedCount={archived.length}
         needsAttentionHref={needsAttentionHref}
         onShowBoard={() => setViewMode("board")}
-        onShowPinned={() => setPinFilter("pinned")}
+        onShowPinned={() => applyViewPreset("pinned")}
         onToggleArchived={toggleShowArchived}
+      />
+
+      <PropertyViewPresets
+        activePreset={activePreset}
+        onSelect={applyViewPreset}
       />
 
       <section className="page-intro" style={{ marginBottom: 0 }}>
@@ -362,7 +450,10 @@ export function PropertyList({ properties }: PropertyListProps) {
             <input
               type="search"
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => {
+                clearPresetHighlight();
+                setQuery(event.target.value);
+              }}
               placeholder="Search address, city, ZIP, community…"
               aria-label="Search properties"
             />
@@ -389,7 +480,10 @@ export function PropertyList({ properties }: PropertyListProps) {
                     : "doc-state-actions__btn"
                 }
                 aria-pressed={pressed}
-                onClick={() => setKindFilter(option)}
+                onClick={() => {
+                  clearPresetHighlight();
+                  setKindFilter(option);
+                }}
               >
                 {kindFilterLabel(option)}
               </button>
@@ -413,7 +507,10 @@ export function PropertyList({ properties }: PropertyListProps) {
                 : "doc-state-actions__btn"
             }
             aria-pressed={pinFilter === "all"}
-            onClick={() => setPinFilter("all")}
+            onClick={() => {
+              clearPresetHighlight();
+              setPinFilter("all");
+            }}
           >
             All
           </button>
@@ -425,7 +522,10 @@ export function PropertyList({ properties }: PropertyListProps) {
                 : "doc-state-actions__btn"
             }
             aria-pressed={pinFilter === "pinned"}
-            onClick={() => setPinFilter("pinned")}
+            onClick={() => {
+              clearPresetHighlight();
+              setPinFilter("pinned");
+            }}
           >
             Pinned{pinnedCount > 0 ? ` (${pinnedCount})` : ""}
           </button>
@@ -451,7 +551,10 @@ export function PropertyList({ properties }: PropertyListProps) {
                     : "doc-state-actions__btn"
                 }
                 aria-pressed={pressed}
-                onClick={() => setStageFilter(option)}
+                onClick={() => {
+                  clearPresetHighlight();
+                  setStageFilter(option);
+                }}
               >
                 {stageFilterLabel(option)}
               </button>
@@ -477,7 +580,10 @@ export function PropertyList({ properties }: PropertyListProps) {
                     : "doc-state-actions__btn"
                 }
                 aria-pressed={tagFilter === "all"}
-                onClick={() => setTagFilter("all")}
+                onClick={() => {
+                  clearPresetHighlight();
+                  setTagFilter("all");
+                }}
               >
                 All
               </button>
@@ -493,7 +599,10 @@ export function PropertyList({ properties }: PropertyListProps) {
                         : "doc-state-actions__btn"
                     }
                     aria-pressed={pressed}
-                    onClick={() => setTagFilter(tag)}
+                    onClick={() => {
+                      clearPresetHighlight();
+                      setTagFilter(tag);
+                    }}
                   >
                     {tag}
                   </button>
@@ -525,7 +634,10 @@ export function PropertyList({ properties }: PropertyListProps) {
                         : "doc-state-actions__btn"
                     }
                     aria-pressed={pressed}
-                    onClick={() => setSort(option)}
+                    onClick={() => {
+                      clearPresetHighlight();
+                      setSort(option);
+                    }}
                   >
                     {sortOptionLabel(option)}
                   </button>
