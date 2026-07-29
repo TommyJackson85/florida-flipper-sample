@@ -17,6 +17,7 @@ import { PropertyHeader } from "./PropertyHeader";
 import { PropertyOverviewCard } from "./PropertyOverviewCard";
 import { PropertyTagsCard } from "./PropertyTagsCard";
 import { RecommendationBanner } from "./RecommendationBanner";
+import { RecordPropertyView } from "./RecordPropertyView";
 import { RiskFlagsCard } from "./RiskFlagsCard";
 import { ScreeningCard } from "./ScreeningCard";
 import { SectionCard } from "./SectionCard";
@@ -40,6 +41,7 @@ export function PropertyDealScreen({
 
   return (
     <main className="page-stack">
+      <RecordPropertyView propertyId={property.id} />
       <Link href={backHref} className="back-link">
         {backLabel}
       </Link>

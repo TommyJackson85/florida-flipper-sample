@@ -30,6 +30,7 @@ import { PropertyBoard } from "./PropertyBoard";
 import { PropertyBulkActions } from "./PropertyBulkActions";
 import { PropertyListCard } from "./PropertyListCard";
 import { PortfolioOverview } from "./PortfolioOverview";
+import { RecentlyViewedProperties } from "./RecentlyViewedProperties";
 import {
   PropertyViewPresets,
   type ViewPresetId,
@@ -413,6 +414,7 @@ export function PropertyList({ properties }: PropertyListProps) {
   return (
     <>
       <PortfolioOverview properties={properties} tick={tick} />
+      <RecentlyViewedProperties properties={properties} />
 
       <WorkspaceQuickActions
         viewMode={viewMode}
