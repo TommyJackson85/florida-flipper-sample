@@ -277,12 +277,14 @@ export const property7863Niagara1921: PropertyScreen = {
         label: "Current approved budget",
         state: "requested",
         note: "Marked requested on this screen — package not in hand.",
+        dueDate: "2026-08-05",
       },
       {
         id: "reserve-schedule",
         label: "Reserve schedule",
         state: "missing",
         note: "Reserve schedule not obtained.",
+        dueDate: "2026-07-20",
       },
       {
         id: "sirs",

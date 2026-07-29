@@ -71,6 +71,8 @@ export type MissingDocumentItem = {
   label: string;
   state: MissingDocumentState;
   note?: string;
+  /** Optional follow-up target date as YYYY-MM-DD (display urgency only). */
+  dueDate?: string;
 };
 
 export type MissingDocuments = {

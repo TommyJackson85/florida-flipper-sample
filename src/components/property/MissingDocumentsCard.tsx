@@ -6,6 +6,7 @@ import type {
   MissingDocumentState,
   PropertyScreen,
 } from "@/types/property";
+import { formatDate } from "@/lib/format";
 import type { StatusTone } from "@/lib/property-metrics";
 import { SectionCard } from "./SectionCard";
 import { StatusPill } from "./StatusPill";
@@ -99,6 +100,19 @@ function focusNextSummary(items: MissingDocumentItem[]): string {
   return "Focus next: no document follow-up on this screen.";
 }
 
+function todayIsoDate(): string {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+function isOverdue(item: MissingDocumentItem, today: string): boolean {
+  if (!item.dueDate || item.state === "received") return false;
+  return item.dueDate < today;
+}
+
 export function MissingDocumentsCard({ property }: MissingDocumentsCardProps) {
   if (property.isSample) {
     return (
@@ -130,9 +144,11 @@ function MissingDocumentsInteractive({
   const [filter, setFilter] = useState<DocumentFilter>("all");
   const [operatorNote, setOperatorNote] = useState("");
 
+  const today = todayIsoDate();
   const missingCount = items.filter((i) => i.state === "missing").length;
   const requestedCount = items.filter((i) => i.state === "requested").length;
   const receivedCount = items.filter((i) => i.state === "received").length;
+  const overdueCount = items.filter((i) => isOverdue(i, today)).length;
 
   const visibleItems =
     filter === "all" ? items : items.filter((item) => item.state === filter);
@@ -171,6 +187,7 @@ function MissingDocumentsInteractive({
       <p className="muted-note" style={{ marginBottom: "0.5rem" }}>
         {missingCount} missing · {requestedCount} requested · {receivedCount}{" "}
         received
+        {overdueCount > 0 ? ` · ${overdueCount} overdue` : ""}
       </p>
       <div
         className="doc-state-actions"
@@ -246,7 +263,15 @@ function MissingDocumentsInteractive({
                   label={stateLabel(item.state)}
                   tone={stateTone(item.state)}
                 />
+                {isOverdue(item, today) ? (
+                  <StatusPill label="Overdue" tone="bad" />
+                ) : null}
               </div>
+              {item.dueDate && item.state !== "received" ? (
+                <p className="risk-flag-row__note">
+                  Due {formatDate(item.dueDate)}
+                </p>
+              ) : null}
               {item.note ? (
                 <p className="risk-flag-row__note">{item.note}</p>
               ) : null}

@@ -12,8 +12,8 @@ import type { PropertyScreen } from "@/types/property";
  *    derived from item states — do not mark done/ready without evidence.
  * 6. Optional missingDocuments: named artifacts (missing/requested/received). Use
  *    requested only when an ask is noted on this screen; use received only when the
- *    package is marked in hand on this screen (status only — no file storage); do not
- *    auto-sync from other sections.
+ *    package is marked in hand on this screen (status only — no file storage); optional
+ *    dueDate (YYYY-MM-DD) for display urgency only; do not auto-sync from other sections.
  * 7. Demo/workflow-practice records: set isSample: true and a short sampleNote.
  * 8. Register the export in `index.ts` (do not import this `_template.ts` file).
  *
