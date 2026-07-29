@@ -1,42 +1,22 @@
 "use client";
 
 import { useMemo, useState } from "react";
-
-type IntakeForm = {
-  title: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  county: string;
-  notes: string;
-  isSample: boolean;
-};
-
-const SAMPLE_NOTE =
-  "Workflow practice only — identity shell, not a live underwriting decision.";
-
-function slugify(value: string): string {
-  const slug = value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-  return slug || "new-property";
-}
+import { useRouter } from "next/navigation";
+import {
+  buildPropertyFromIntake,
+  saveIntakeStubToSession,
+  slugify,
+  type IntakeFormInput,
+} from "@/lib/intake-property-stub";
 
 function escapeTsString(value: string): string {
   return value.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
 }
 
-function buildStub(form: IntakeForm): string {
-  const id = slugify(`${form.address}-${form.zip}`);
-  const isSample = form.isSample;
-  let title =
-    form.title.trim() ||
-    `Deal Screen — ${form.address.trim() || "Address"}`;
-  if (isSample && !title.toUpperCase().includes("SAMPLE")) {
-    title = `SAMPLE — ${title}`;
-  }
+function buildStub(form: IntakeFormInput): string {
+  const property = buildPropertyFromIntake(form);
+  const id = property.id;
+  const isSample = Boolean(property.isSample);
   const whatIsKnown = form.notes.trim()
     ? `[\n      "${escapeTsString(form.notes.trim())}",\n    ]`
     : "[]";
@@ -55,13 +35,14 @@ function buildStub(form: IntakeForm): string {
 
 export const ${exportName}: PropertyScreen = {
   id: "${id}",
-  title: "${escapeTsString(title)}",
-  address: "${escapeTsString(form.address.trim() || "Street address")}",
-  city: "${escapeTsString(form.city.trim() || "City")}",
-  state: "${escapeTsString(form.state.trim() || "FL")}",
-  zip: "${escapeTsString(form.zip.trim() || "00000")}",
-  county: ${form.county.trim() ? `"${escapeTsString(form.county.trim())}"` : "undefined"},
+  title: "${escapeTsString(property.title)}",
+  address: "${escapeTsString(property.address)}",
+  city: "${escapeTsString(property.city)}",
+  state: "${escapeTsString(property.state)}",
+  zip: "${escapeTsString(property.zip)}",
+  county: ${property.county ? `"${escapeTsString(property.county)}"` : "undefined"},
   propertyType: "Condominium",
+  stage: "screening",
   status: {
     currentRecommendation: "Need More Information",
     provisionalStatus: "need-more-information",
@@ -112,14 +93,14 @@ export const ${exportName}: PropertyScreen = {
 
 export const ${exportName}: PropertyScreen = {
   id: "${id}",
-  title: "${escapeTsString(title)}",
-  address: "${escapeTsString(form.address.trim() || "Street address")}",
-  city: "${escapeTsString(form.city.trim() || "City")}",
-  state: "${escapeTsString(form.state.trim() || "FL")}",
-  zip: "${escapeTsString(form.zip.trim() || "00000")}",
-  county: ${form.county.trim() ? `"${escapeTsString(form.county.trim())}"` : "undefined"},
+  title: "${escapeTsString(property.title)}",
+  address: "${escapeTsString(property.address)}",
+  city: "${escapeTsString(property.city)}",
+  state: "${escapeTsString(property.state)}",
+  zip: "${escapeTsString(property.zip)}",
+  county: ${property.county ? `"${escapeTsString(property.county)}"` : "undefined"},
   isSample: true,
-  sampleNote: "${escapeTsString(SAMPLE_NOTE)}",
+  sampleNote: "${escapeTsString(property.sampleNote ?? "")}",
   propertyType: undefined,
   status: {
     currentRecommendation: "Need More Information",
@@ -164,7 +145,8 @@ export const ${exportName}: PropertyScreen = {
 }
 
 export default function IntakePage() {
-  const [form, setForm] = useState<IntakeForm>({
+  const router = useRouter();
+  const [form, setForm] = useState<IntakeFormInput>({
     title: "",
     address: "",
     city: "",
@@ -180,7 +162,10 @@ export default function IntakePage() {
   const stub = useMemo(() => buildStub(form), [form]);
   const suggestedPath = `src/data/properties/${slugify(`${form.address}-${form.zip}`)}.ts`;
 
-  function updateField<K extends keyof IntakeForm>(key: K, value: IntakeForm[K]) {
+  function updateField<K extends keyof IntakeFormInput>(
+    key: K,
+    value: IntakeFormInput[K]
+  ) {
     setForm((current) => ({ ...current, [key]: value }));
     setCopied(false);
     setCopyError(false);
@@ -197,14 +182,21 @@ export default function IntakePage() {
     }
   }
 
+  function openDemoStub() {
+    const property = buildPropertyFromIntake(form, { forceSample: true });
+    saveIntakeStubToSession(property);
+    router.push("/properties/intake-stub");
+  }
+
   return (
     <main className="page-stack">
       <section className="page-intro">
         <h1>Property intake</h1>
         <p>
-          Enter a new address to generate a TypeScript stub. This does not save
-          anything — paste the output into a new file under{" "}
-          <code>src/data/properties</code>, then register it in{" "}
+          Enter a new address to generate a TypeScript stub or open a one-way
+          Sample demo shell in this browser tab. Copy + register still saves
+          nothing until you paste a file under{" "}
+          <code>src/data/properties</code> and update{" "}
           <code>index.ts</code>. For association / tax / identifier sections,
           copy <code>_template.ts</code> and merge the identity fields from this
           stub.
@@ -305,16 +297,30 @@ export default function IntakePage() {
             </label>
             <p className="muted-note">
               Sample mode creates a clearly labeled identity shell for testing
-              only — not a live underwriting record.
+              only — not a live underwriting record.{" "}
+              <strong>Open demo stub</strong> always opens as Sample in this tab
+              only.
             </p>
             <div className="intake-form__actions">
               <button type="submit" className="button-primary">
                 {copied ? "Copied" : "Copy TypeScript stub"}
               </button>
+              <button
+                type="button"
+                className="doc-state-actions__btn"
+                onClick={openDemoStub}
+              >
+                Open demo stub
+              </button>
               <span className="muted-note">
                 Suggested file: <code>{suggestedPath}</code>
               </span>
             </div>
+            <p className="muted-note">
+              Open demo stub opens a Sample practice shell in this browser tab
+              only — not saved to the repo. Use Copy stub to register a real
+              file.
+            </p>
             {copyError ? (
               <p className="muted-note">
                 Copy failed — select the stub below and copy manually.
