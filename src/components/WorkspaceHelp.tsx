@@ -2,6 +2,11 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { resetDemoData } from "@/lib/demo-reset";
+import {
+  applyWorkspaceTransfer,
+  downloadWorkspaceTransfer,
+  parseWorkspaceTransfer,
+} from "@/lib/workspace-transfer";
 
 function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
@@ -13,14 +18,52 @@ function isTypingTarget(target: EventTarget | null): boolean {
 const RESET_CONFIRM =
   "Clear this tab’s pins, archives, tags, intake stub, and recents, then reload to the seeded sample state? Unsaved on-screen toggles will be lost.";
 
+const IMPORT_CONFIRM =
+  "Replace this tab’s session overlays with the file, then reload? Seed properties on disk stay unchanged. Attachments and other on-screen demo toggles are not included.";
+
 export function WorkspaceHelp() {
   const [open, setOpen] = useState(false);
   const titleId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const importInputRef = useRef<HTMLInputElement>(null);
 
   function handleResetDemoData() {
     if (!window.confirm(RESET_CONFIRM)) return;
     resetDemoData();
+    window.location.reload();
+  }
+
+  function handleExportWorkspace() {
+    downloadWorkspaceTransfer();
+  }
+
+  function handleImportPick() {
+    importInputRef.current?.click();
+  }
+
+  async function handleImportFile(fileList: FileList | null) {
+    const file = fileList?.[0];
+    if (importInputRef.current) {
+      importInputRef.current.value = "";
+    }
+    if (!file) return;
+
+    let parsedJson: unknown;
+    try {
+      parsedJson = JSON.parse(await file.text()) as unknown;
+    } catch {
+      window.alert("Could not read that file as JSON.");
+      return;
+    }
+
+    const result = parseWorkspaceTransfer(parsedJson);
+    if (!result.ok) {
+      window.alert(result.error);
+      return;
+    }
+
+    if (!window.confirm(IMPORT_CONFIRM)) return;
+    applyWorkspaceTransfer(result.payload);
     window.location.reload();
   }
 
@@ -177,7 +220,47 @@ export function WorkspaceHelp() {
                     An empty list usually means filters or search — use Clear
                     filters, or Reset demo data after heavy testing
                   </li>
+                  <li>
+                    Import/export moves session overlays only — not seed files,
+                    attachments, or on-screen toggles
+                  </li>
                 </ul>
+              </section>
+
+              <section className="workspace-help__reset">
+                <h3>Import / export</h3>
+                <p className="muted-note" style={{ margin: "0 0 0.65rem" }}>
+                  Download this tab’s pins, archives, tags, intake stub, and
+                  recents as JSON. Import replaces those overlays, then
+                  reloads. Seed files and attachments are not included.
+                </p>
+                <div
+                  className="doc-state-actions"
+                  role="group"
+                  aria-label="Workspace import and export"
+                >
+                  <button
+                    type="button"
+                    className="doc-state-actions__btn"
+                    onClick={handleExportWorkspace}
+                  >
+                    Export workspace JSON
+                  </button>
+                  <button
+                    type="button"
+                    className="doc-state-actions__btn"
+                    onClick={handleImportPick}
+                  >
+                    Import workspace JSON
+                  </button>
+                  <input
+                    ref={importInputRef}
+                    type="file"
+                    accept="application/json,.json"
+                    hidden
+                    onChange={(event) => handleImportFile(event.target.files)}
+                  />
+                </div>
               </section>
 
               <section className="workspace-help__reset">
