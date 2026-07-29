@@ -3,6 +3,12 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { resetDemoData } from "@/lib/demo-reset";
 import {
+  diagnoseTransfer,
+  diagnoseWorkspace,
+  formatDiagnosticSummary,
+  type DiagnosticIssue,
+} from "@/lib/workspace-diagnostics";
+import {
   applyWorkspaceTransfer,
   downloadWorkspaceTransfer,
   parseWorkspaceTransfer,
@@ -23,6 +29,9 @@ const IMPORT_CONFIRM =
 
 export function WorkspaceHelp() {
   const [open, setOpen] = useState(false);
+  const [diagnosticIssues, setDiagnosticIssues] = useState<
+    DiagnosticIssue[] | null
+  >(null);
   const titleId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
   const importInputRef = useRef<HTMLInputElement>(null);
@@ -35,6 +44,10 @@ export function WorkspaceHelp() {
 
   function handleExportWorkspace() {
     downloadWorkspaceTransfer();
+  }
+
+  function handleRunDiagnostics() {
+    setDiagnosticIssues(diagnoseWorkspace());
   }
 
   function handleImportPick() {
@@ -62,7 +75,14 @@ export function WorkspaceHelp() {
       return;
     }
 
-    if (!window.confirm(IMPORT_CONFIRM)) return;
+    const issues = diagnoseTransfer(result.payload);
+    if (issues.length > 0) {
+      const warn = `${formatDiagnosticSummary(issues)}\n\nImport anyway?\n\n${IMPORT_CONFIRM}`;
+      if (!window.confirm(warn)) return;
+    } else if (!window.confirm(IMPORT_CONFIRM)) {
+      return;
+    }
+
     applyWorkspaceTransfer(result.payload);
     window.location.reload();
   }
@@ -92,7 +112,10 @@ export function WorkspaceHelp() {
   }, [open]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      setDiagnosticIssues(null);
+      return;
+    }
     closeRef.current?.focus();
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -224,7 +247,55 @@ export function WorkspaceHelp() {
                     Import/export moves session overlays only — not seed files,
                     attachments, or on-screen toggles
                   </li>
+                  <li>
+                    Diagnostics are read-only warnings — they do not repair or
+                    block a confirmed import
+                  </li>
                 </ul>
+              </section>
+
+              <section className="workspace-help__reset">
+                <h3>Workspace diagnostics</h3>
+                <p className="muted-note" style={{ margin: "0 0 0.65rem" }}>
+                  Check the seed catalog and this tab’s session overlays for
+                  orphan ids, invalid stages, weak intake stubs, and a few
+                  other high-signal shape issues. Does not fix data.
+                </p>
+                <button
+                  type="button"
+                  className="doc-state-actions__btn"
+                  onClick={handleRunDiagnostics}
+                >
+                  Run workspace diagnostics
+                </button>
+                {diagnosticIssues ? (
+                  <div
+                    className="workspace-help__diagnostics"
+                    style={{ marginTop: "0.65rem" }}
+                  >
+                    {diagnosticIssues.length === 0 ? (
+                      <p className="muted-note" style={{ margin: 0 }}>
+                        No issues found in seed catalog or this tab’s session
+                        overlays.
+                      </p>
+                    ) : (
+                      <>
+                        <p className="muted-note" style={{ margin: "0 0 0.35rem" }}>
+                          {diagnosticIssues.length} issue
+                          {diagnosticIssues.length === 1 ? "" : "s"} found
+                          (read-only):
+                        </p>
+                        <ul>
+                          {diagnosticIssues.map((issue, index) => (
+                            <li key={`${issue.code}-${index}`}>
+                              {issue.message}
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                  </div>
+                ) : null}
               </section>
 
               <section className="workspace-help__reset">
