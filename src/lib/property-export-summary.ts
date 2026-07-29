@@ -4,7 +4,9 @@ import {
   countMissingDiligenceItems,
   countOpenRiskFlags,
   deriveClosingReadinessStatus,
+  deriveProgressSummary,
   labelForClosingReadiness,
+  labelForProgressSummary,
   labelForPropertyStage,
   labelForProvisionalStatus,
   milestoneUrgencyLabel,
@@ -38,6 +40,7 @@ export function buildPropertyExportSummary(property: PropertyScreen): string {
   const closingStatus = deriveClosingReadinessStatus(
     property.closingReadiness
   );
+  const progress = deriveProgressSummary(property);
   const diligenceCount = countMissingDiligenceItems(property);
   const openRisks = countOpenRiskFlags(property.condoRiskFlags);
   const milestone = nextMilestone(property.milestones);
@@ -52,6 +55,9 @@ export function buildPropertyExportSummary(property: PropertyScreen): string {
       ? `Stage: ${labelForPropertyStage(property.stage)}`
       : null,
     `Screen outcome: ${recommendation}`,
+    progress
+      ? `Progress: ${labelForProgressSummary(progress.status)} · ${progress.reason}`
+      : null,
     `Closing readiness: ${labelForClosingReadiness(closingStatus)}`,
     `Open diligence items: ${diligenceCount}`,
     property.condoRiskFlags

@@ -5,11 +5,14 @@ import type { PropertyScreen } from "@/types/property";
 import { formatDate, formatMoney } from "@/lib/format";
 import {
   countMissingDiligenceItems,
+  deriveProgressSummary,
+  labelForProgressSummary,
   labelForPropertyStage,
   labelForProvisionalStatus,
   milestoneUrgencyLabel,
   nextMilestone,
   summarizeSources,
+  toneForProgressSummary,
   toneForPropertyStage,
   toneForProvisionalStatus,
 } from "@/lib/property-metrics";
@@ -49,6 +52,7 @@ export function PropertyListCard({
   const milestoneUrgency = milestone
     ? milestoneUrgencyLabel(milestone)
     : null;
+  const progress = isSample ? null : deriveProgressSummary(property);
 
   return (
     <Link href={`/properties/${property.id}`} className="property-list-card">
@@ -81,6 +85,12 @@ export function PropertyListCard({
             <StatusPill
               label={milestoneUrgency}
               tone={milestoneUrgency === "Overdue" ? "bad" : "warn"}
+            />
+          ) : null}
+          {progress ? (
+            <StatusPill
+              label={`Progress: ${labelForProgressSummary(progress.status)}`}
+              tone={toneForProgressSummary(progress.status)}
             />
           ) : null}
         </div>

@@ -122,6 +122,115 @@ export function labelForClosingReadiness(
   }
 }
 
+/** Seed-derived deal health — not screen outcome and not an AI summary. */
+export type ProgressSummaryStatus = "on-track" | "needs-attention" | "blocked";
+
+export type ProgressSummary = {
+  status: ProgressSummaryStatus;
+  reason: string;
+};
+
+export function toneForProgressSummary(
+  status: ProgressSummaryStatus
+): StatusTone {
+  switch (status) {
+    case "on-track":
+      return "good";
+    case "needs-attention":
+      return "warn";
+    case "blocked":
+    default:
+      return "bad";
+  }
+}
+
+export function labelForProgressSummary(
+  status: ProgressSummaryStatus
+): string {
+  switch (status) {
+    case "on-track":
+      return "On track";
+    case "needs-attention":
+      return "Needs attention";
+    case "blocked":
+    default:
+      return "Blocked";
+  }
+}
+
+function hasIncompleteDocuments(property: PropertyScreen): boolean {
+  const items = property.missingDocuments?.items ?? [];
+  if (items.length === 0) return false;
+  return items.some((item) => item.state !== "received");
+}
+
+/**
+ * Cheap deal-health rollup from existing seed signals.
+ * Returns null for samples or when there is too little signal to judge.
+ */
+export function deriveProgressSummary(
+  property: PropertyScreen
+): ProgressSummary | null {
+  if (property.isSample) return null;
+
+  const closingItems = property.closingReadiness?.items ?? [];
+  const hasClosing = closingItems.length > 0;
+  const hasBlockedClosing = closingItems.some(
+    (item) => item.state === "blocked"
+  );
+  const closingStatus = hasClosing
+    ? deriveClosingReadinessStatus(property.closingReadiness)
+    : null;
+  const openRisks = countOpenRiskFlags(property.condoRiskFlags);
+  const hasRiskFlags = Boolean(property.condoRiskFlags);
+  const diligenceCount = countMissingDiligenceItems(property);
+  const hasDiligence = (property.missingDiligence ?? []).length > 0;
+  const milestone = nextMilestone(property.milestones);
+  const milestoneUrgency = milestone
+    ? milestoneUrgencyLabel(milestone)
+    : null;
+  const docsIncomplete = hasIncompleteDocuments(property);
+  const hasDocs = (property.missingDocuments?.items ?? []).length > 0;
+
+  const hasSignal =
+    hasClosing ||
+    hasRiskFlags ||
+    hasDiligence ||
+    Boolean(milestone) ||
+    hasDocs ||
+    Boolean(property.stage);
+
+  if (!hasSignal) return null;
+
+  if (hasBlockedClosing) {
+    return { status: "blocked", reason: "Closing item blocked" };
+  }
+
+  if (milestoneUrgency === "Overdue") {
+    return { status: "needs-attention", reason: "Overdue milestone" };
+  }
+  if (milestoneUrgency === "Due today") {
+    return { status: "needs-attention", reason: "Milestone due today" };
+  }
+  if (hasRiskFlags && openRisks > 0) {
+    return { status: "needs-attention", reason: "Open risk flags" };
+  }
+  if (docsIncomplete) {
+    return { status: "needs-attention", reason: "Documents incomplete" };
+  }
+  if (
+    closingStatus === "not-ready" ||
+    closingStatus === "in-progress"
+  ) {
+    return { status: "needs-attention", reason: "Closing blockers open" };
+  }
+  if (hasDiligence && diligenceCount > 0) {
+    return { status: "needs-attention", reason: "Open diligence items" };
+  }
+
+  return { status: "on-track", reason: "No open blockers in seed signals" };
+}
+
 export function countMissingDiligenceItems(
   property: PropertyScreen
 ): number {

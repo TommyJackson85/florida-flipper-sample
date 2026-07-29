@@ -5,10 +5,13 @@ import type { PropertyScreen, PropertyStage } from "@/types/property";
 import { formatDate } from "@/lib/format";
 import {
   countMissingDiligenceItems,
+  deriveProgressSummary,
+  labelForProgressSummary,
   labelForPropertyStage,
   labelForProvisionalStatus,
   milestoneUrgencyLabel,
   nextMilestone,
+  toneForProgressSummary,
   toneForProvisionalStatus,
 } from "@/lib/property-metrics";
 import { isPropertyPinned } from "@/lib/property-pinning";
@@ -37,6 +40,7 @@ export function PropertyBoardCard({
   const milestoneUrgency = milestone
     ? milestoneUrgencyLabel(milestone)
     : null;
+  const progress = isSample ? null : deriveProgressSummary(property);
   const stageValue = property.stage ?? "";
 
   return (
@@ -59,6 +63,12 @@ export function PropertyBoardCard({
             <StatusPill
               label={milestoneUrgency}
               tone={milestoneUrgency === "Overdue" ? "bad" : "warn"}
+            />
+          ) : null}
+          {progress ? (
+            <StatusPill
+              label={`Progress: ${labelForProgressSummary(progress.status)}`}
+              tone={toneForProgressSummary(progress.status)}
             />
           ) : null}
         </div>

@@ -4,12 +4,15 @@ import {
   countMissingDiligenceItems,
   countOpenRiskFlags,
   deriveClosingReadinessStatus,
+  deriveProgressSummary,
   labelForClosingReadiness,
+  labelForProgressSummary,
   labelForPropertyStage,
   labelForProvisionalStatus,
   milestoneUrgencyLabel,
   nextMilestone,
   toneForClosingReadiness,
+  toneForProgressSummary,
   toneForPropertyStage,
   toneForProvisionalStatus,
 } from "@/lib/property-metrics";
@@ -41,6 +44,7 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
   const closingStatus = deriveClosingReadinessStatus(
     property.closingReadiness
   );
+  const progress = deriveProgressSummary(property);
   const diligenceCount = countMissingDiligenceItems(property);
   const openRisks = countOpenRiskFlags(property.condoRiskFlags);
   const milestone = nextMilestone(property.milestones);
@@ -71,6 +75,12 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
           label={recommendation}
           tone={toneForProvisionalStatus(property.status?.provisionalStatus)}
         />
+        {progress ? (
+          <StatusPill
+            label={`Progress: ${labelForProgressSummary(progress.status)}`}
+            tone={toneForProgressSummary(progress.status)}
+          />
+        ) : null}
         <StatusPill
           label={`Closing: ${labelForClosingReadiness(closingStatus)}`}
           tone={toneForClosingReadiness(closingStatus)}
@@ -78,6 +88,12 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
       </div>
       <DetailList
         items={[
+          {
+            label: "Progress",
+            value: progress
+              ? `${labelForProgressSummary(progress.status)} · ${progress.reason}`
+              : null,
+          },
           {
             label: "Open diligence items",
             value: diligenceCount,
