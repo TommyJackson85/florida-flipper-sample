@@ -370,6 +370,36 @@ export const property7863Niagara1921: PropertyScreen = {
     ],
   },
 
+  // Post-close wrap-up — demo checklist; card shows at stage post-close or via detail toggle
+  postCloseItems: {
+    items: [
+      {
+        id: "keys-access",
+        label: "Keys / access handoff",
+        state: "open",
+        note: "Confirm fobs, mailbox, and gate codes with buyer or PM.",
+      },
+      {
+        id: "utility-transfer",
+        label: "Utility transfer confirmation",
+        state: "open",
+        note: "Electric, water, and trash accounts moved off seller.",
+      },
+      {
+        id: "hoa-buyer-packet",
+        label: "HOA buyer welcome / estoppel file",
+        state: "done",
+        note: "Marked done on this screen — demo only.",
+      },
+      {
+        id: "final-docs-file",
+        label: "Final closing docs filed",
+        state: "open",
+        note: "HUD/CD and deed copies parked with the deal file.",
+      },
+    ],
+  },
+
   screening: {
     targetCashOnCash: null,
     hardNoRedFlag: "unknown",

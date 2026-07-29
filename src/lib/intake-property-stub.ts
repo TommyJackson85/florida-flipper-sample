@@ -225,6 +225,7 @@ export function duplicatePropertyAsDemoStub(
     closingReadiness: undefined,
     milestones: undefined,
     missingDocuments: undefined,
+    postCloseItems: undefined,
     screening: {
       targetCashOnCash: null,
       hardNoRedFlag: "unknown",

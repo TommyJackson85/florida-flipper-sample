@@ -81,6 +81,20 @@ export type ClosingReadiness = {
   items: ClosingReadinessItem[];
 };
 
+export type PostCloseItemState = "open" | "done";
+
+export type PostCloseItem = {
+  id: string;
+  label: string;
+  state: PostCloseItemState;
+  note?: string;
+};
+
+/** Outstanding wrap-up after close — not closing readiness or accounting. */
+export type PostCloseItems = {
+  items: PostCloseItem[];
+};
+
 export type MissingDocumentState = "missing" | "requested" | "received";
 
 export type MissingDocumentItem = {
@@ -215,6 +229,9 @@ export type PropertyScreen = {
 
   /** Concrete diligence documents still outstanding (artifact tracking only) */
   missingDocuments?: MissingDocuments;
+
+  /** Post-close outstanding wrap-up items (open/done) — not accounting */
+  postCloseItems?: PostCloseItems;
 
   screening?: {
     targetCashOnCash?: string | null;

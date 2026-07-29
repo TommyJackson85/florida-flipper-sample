@@ -10,6 +10,7 @@ import { KnownMissingCard } from "./KnownMissingCard";
 import { MilestoneTimelineCard } from "./MilestoneTimelineCard";
 import { MissingDocumentsCard } from "./MissingDocumentsCard";
 import { PinPropertyButton } from "./PinPropertyButton";
+import { PostCloseWorkspaceCard } from "./PostCloseWorkspaceCard";
 import { PropertyAttachmentsCard } from "./PropertyAttachmentsCard";
 import { PropertyExportSummaryCard } from "./PropertyExportSummaryCard";
 import { PropertyHeader } from "./PropertyHeader";
@@ -64,6 +65,7 @@ export function PropertyDealScreen({
 
       {isSample ? null : <RiskFlagsCard property={property} />}
       <ClosingReadinessCard property={property} />
+      <PostCloseWorkspaceCard property={property} />
       <MissingDocumentsCard property={property} />
       <PropertyAttachmentsCard property={property} />
 

@@ -110,6 +110,16 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
                 }`
               : null,
           },
+          {
+            label: "Post-close open",
+            value:
+              property.postCloseItems?.items &&
+              property.postCloseItems.items.length > 0
+                ? property.postCloseItems.items.filter(
+                    (item) => item.state === "open"
+                  ).length
+                : null,
+          },
         ]}
       />
     </SectionCard>

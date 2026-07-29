@@ -21,12 +21,14 @@ import type { PropertyScreen } from "@/types/property";
  *    for display only — keep newest first; omit on sample shells.
  * 9. Optional milestones: a few deal checkpoints (label/date/status). Display only —
  *    not a calendar; omit on sample shells.
- * 10. Demo/workflow-practice records: set isSample: true and a short sampleNote.
- * 11. Optional archived: soft-hide from the main list (session toggle can also
+ * 10. Optional postCloseItems: open/done wrap-up after close (not closing readiness or
+ *     accounting). Card shows when stage is post-close or via demo toggle; omit on samples.
+ * 11. Demo/workflow-practice records: set isSample: true and a short sampleNote.
+ * 12. Optional archived: soft-hide from the main list (session toggle can also
  *     archive without editing seed data).
- * 12. Optional tags: freeform demo labels (string[]). Session overlay can add/remove
+ * 13. Optional tags: freeform demo labels (string[]). Session overlay can add/remove
  *     without editing seed; omit on sample shells.
- * 13. Register the export in `index.ts` (do not import this `_template.ts` file).
+ * 14. Register the export in `index.ts` (do not import this `_template.ts` file).
  *
  * Tip: use `/intake` to generate identity + default flags, then merge into this shape
  * when you need association / tax / identifiers / closing readiness / documents.
@@ -164,6 +166,9 @@ export const propertyTemplate: PropertyScreen = {
 
   // Optional — named diligence artifacts only (missing / requested / received)
   missingDocuments: undefined,
+
+  // Optional — post-close wrap-up (open / done); not closing readiness or accounting
+  postCloseItems: undefined,
 
   screening: {
     targetCashOnCash: null,
