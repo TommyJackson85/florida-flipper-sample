@@ -4,6 +4,7 @@ import {
   labelForPropertyStage,
   toneForPropertyStage,
 } from "@/lib/property-metrics";
+import { showDemoDealExtras } from "@/lib/trial-build";
 import { ArchivedStatusPill } from "./ArchivedStatusPill";
 import { PinnedStatusPill } from "./PinnedStatusPill";
 import { StatusPill } from "./StatusPill";
@@ -15,6 +16,7 @@ type PropertyHeaderProps = {
 export function PropertyHeader({ property }: PropertyHeaderProps) {
   const isSample = Boolean(property.isSample);
   const showStage = !isSample && Boolean(property.stage);
+  const showSessionPills = showDemoDealExtras();
 
   return (
     <header className="property-header">
@@ -34,8 +36,10 @@ export function PropertyHeader({ property }: PropertyHeaderProps) {
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
           {isSample ? <StatusPill label="Sample" tone="warn" /> : null}
-          <PinnedStatusPill property={property} />
-          <ArchivedStatusPill property={property} />
+          {showSessionPills ? <PinnedStatusPill property={property} /> : null}
+          {showSessionPills ? (
+            <ArchivedStatusPill property={property} />
+          ) : null}
           {showStage ? (
             <StatusPill
               label={labelForPropertyStage(property.stage)}

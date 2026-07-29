@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
 import Link from "next/link";
 import { WorkspaceHelp } from "@/components/WorkspaceHelp";
+import { showDemoWorkspaceChrome } from "@/lib/trial-build";
 import "./globals.css";
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -12,7 +13,8 @@ const ibmPlexSans = IBM_Plex_Sans({
 
 export const metadata: Metadata = {
   title: "Deal Screen",
-  description: "Lightweight property deal screening for Florida condo diligence.",
+  description:
+    "Structured condo screening for a small number of opportunities — not a CRM.",
 };
 
 export default function RootLayout({
@@ -31,8 +33,8 @@ export default function RootLayout({
             <nav className="site-nav">
               <Link href="/">Home</Link>
               <Link href="/properties">Properties</Link>
-              <Link href="/intake">Intake</Link>
-              <WorkspaceHelp />
+              <Link href="/intake">Stub generator</Link>
+              {showDemoWorkspaceChrome() ? <WorkspaceHelp /> : null}
             </nav>
           </div>
         </header>

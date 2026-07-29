@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { PropertyScreen } from "@/types/property";
 import { formatMoney } from "@/lib/format";
+import { showDemoDealExtras } from "@/lib/trial-build";
 import { ArchivePropertyButton } from "./ArchivePropertyButton";
 import { AssociationCard } from "./AssociationCard";
 import { ClosingReadinessCard } from "./ClosingReadinessCard";
@@ -38,38 +39,45 @@ export function PropertyDealScreen({
   bannerNote,
 }: PropertyDealScreenProps) {
   const isSample = Boolean(property.isSample);
+  const demoExtras = showDemoDealExtras();
 
   return (
     <main className="page-stack">
-      <RecordPropertyView propertyId={property.id} />
+      {demoExtras ? <RecordPropertyView propertyId={property.id} /> : null}
       <Link href={backHref} className="back-link">
         {backLabel}
       </Link>
 
       {bannerNote ? <p className="muted-note">{bannerNote}</p> : null}
 
-      <DuplicateDemoStubButton property={property} />
-      <PinPropertyButton property={property} />
-      <ArchivePropertyButton property={property} />
+      {demoExtras ? (
+        <>
+          <DuplicateDemoStubButton property={property} />
+          <PinPropertyButton property={property} />
+          <ArchivePropertyButton property={property} />
+        </>
+      ) : null}
 
       <PropertyHeader property={property} />
       <PropertyOverviewCard property={property} />
-      <PropertyTagsCard property={property} />
-      <p className="muted-note" style={{ margin: 0 }}>
-        <Link href={`/properties/${property.id}/status`}>
-          Preview client status (printable)
-        </Link>
-        {" — curated read-only demo page; use Print / Save as PDF (not a live share link)."}
-      </p>
-      <PropertyExportSummaryCard property={property} />
+      {demoExtras ? <PropertyTagsCard property={property} /> : null}
+      {demoExtras ? (
+        <p className="muted-note" style={{ margin: 0 }}>
+          <Link href={`/properties/${property.id}/status`}>
+            Demo status mockup — not a share link
+          </Link>
+          {" — curated read-only preview; Print / Save as PDF is experimental."}
+        </p>
+      ) : null}
+      {demoExtras ? <PropertyExportSummaryCard property={property} /> : null}
       <RecommendationBanner property={property} />
       <MilestoneTimelineCard property={property} />
 
       {isSample ? null : <RiskFlagsCard property={property} />}
       <ClosingReadinessCard property={property} />
-      <PostCloseWorkspaceCard property={property} />
+      {demoExtras ? <PostCloseWorkspaceCard property={property} /> : null}
       <MissingDocumentsCard property={property} />
-      <PropertyAttachmentsCard property={property} />
+      {demoExtras ? <PropertyAttachmentsCard property={property} /> : null}
 
       <SectionCard
         title="Snapshot"

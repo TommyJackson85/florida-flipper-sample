@@ -36,6 +36,7 @@ import {
   type ViewPresetId,
 } from "./PropertyViewPresets";
 import { WorkspaceQuickActions } from "./WorkspaceQuickActions";
+import { showDemoWorkspaceChrome } from "@/lib/trial-build";
 
 type PropertyListProps = {
   properties: PropertyScreen[];
@@ -413,108 +414,124 @@ export function PropertyList({ properties }: PropertyListProps) {
 
   return (
     <>
-      <PortfolioOverview properties={properties} tick={tick} />
-      <RecentlyViewedProperties properties={properties} />
+      {showDemoWorkspaceChrome() ? (
+        <>
+          <PortfolioOverview properties={properties} tick={tick} />
+          <RecentlyViewedProperties properties={properties} />
 
-      <WorkspaceQuickActions
-        viewMode={viewMode}
-        pinFilterActive={pinFilter === "pinned"}
-        showArchived={showArchived}
-        archivedCount={archived.length}
-        needsAttentionHref={needsAttentionHref}
-        onShowBoard={() => setViewMode("board")}
-        onShowPinned={() => applyViewPreset("pinned")}
-        onToggleArchived={toggleShowArchived}
-      />
+          <WorkspaceQuickActions
+            viewMode={viewMode}
+            pinFilterActive={pinFilter === "pinned"}
+            showArchived={showArchived}
+            archivedCount={archived.length}
+            needsAttentionHref={needsAttentionHref}
+            onShowBoard={() => setViewMode("board")}
+            onShowPinned={() => applyViewPreset("pinned")}
+            onToggleArchived={toggleShowArchived}
+          />
 
-      <PropertyViewPresets
-        activePreset={activePreset}
-        onSelect={applyViewPreset}
-      />
+          <PropertyViewPresets
+            activePreset={activePreset}
+            onSelect={applyViewPreset}
+          />
 
-      {viewMode === "list" ? (
-        <PropertyBulkActions
-          selectedCount={selectedVisible.length}
-          canArchive={canArchiveSelected}
-          canRestore={canRestoreSelected}
-          allVisibleSelected={allVisibleSelected}
-          onSelectAllVisible={selectAllVisible}
-          onClear={clearSelection}
-          onPin={() => bulkPin(true)}
-          onUnpin={() => bulkPin(false)}
-          onArchive={() => bulkArchive(true)}
-          onRestore={() => bulkArchive(false)}
-        />
+          {viewMode === "list" ? (
+            <PropertyBulkActions
+              selectedCount={selectedVisible.length}
+              canArchive={canArchiveSelected}
+              canRestore={canRestoreSelected}
+              allVisibleSelected={allVisibleSelected}
+              onSelectAllVisible={selectAllVisible}
+              onClear={clearSelection}
+              onPin={() => bulkPin(true)}
+              onUnpin={() => bulkPin(false)}
+              onArchive={() => bulkArchive(true)}
+              onRestore={() => bulkArchive(false)}
+            />
+          ) : null}
+        </>
       ) : null}
 
       <section className="page-intro" style={{ marginBottom: 0 }}>
-        <p className="muted-note">
-          {active.length} active
-          {archived.length > 0 ? ` · ${archived.length} archived` : ""}
-          {pinnedCount > 0 ? ` · ${pinnedCount} pinned` : ""}
-          {" · "}
-          session pin/archive toggles stay in this tab
-          {viewMode === "board"
-            ? "; board stage moves reset on refresh."
-            : "."}
-        </p>
+        {showDemoWorkspaceChrome() ? (
+          <p className="muted-note">
+            {active.length} active
+            {archived.length > 0 ? ` · ${archived.length} archived` : ""}
+            {pinnedCount > 0 ? ` · ${pinnedCount} pinned` : ""}
+            {" · "}
+            session pin/archive toggles stay in this tab
+            {viewMode === "board"
+              ? "; board stage moves reset on refresh."
+              : "."}
+          </p>
+        ) : (
+          <p className="muted-note">
+            {active.length} screened propert
+            {active.length === 1 ? "y" : "ies"} in this file-based set. Open a
+            deal to review the condo screen.
+          </p>
+        )}
 
-        <p className="muted-note" style={{ marginTop: "0.65rem" }}>
-          View
-        </p>
-        <div
-          className="doc-state-actions"
-          role="group"
-          aria-label="Property view mode"
-        >
-          <button
-            type="button"
-            className={
-              viewMode === "list"
-                ? "doc-state-actions__btn doc-state-actions__btn--active"
-                : "doc-state-actions__btn"
-            }
-            aria-pressed={viewMode === "list"}
-            onClick={() => setViewMode("list")}
-          >
-            List
-          </button>
-          <button
-            type="button"
-            className={
-              viewMode === "board"
-                ? "doc-state-actions__btn doc-state-actions__btn--active"
-                : "doc-state-actions__btn"
-            }
-            aria-pressed={viewMode === "board"}
-            onClick={() => setViewMode("board")}
-          >
-            Board
-          </button>
-        </div>
-
-        {archived.length > 0 ? (
-          <div
-            className="doc-state-actions"
-            style={{ marginTop: "0.5rem" }}
-            role="group"
-            aria-label="Archived list visibility"
-          >
-            <button
-              type="button"
-              className={
-                showArchived
-                  ? "doc-state-actions__btn doc-state-actions__btn--active"
-                  : "doc-state-actions__btn"
-              }
-              aria-pressed={showArchived}
-              onClick={toggleShowArchived}
+        {showDemoWorkspaceChrome() ? (
+          <>
+            <p className="muted-note" style={{ marginTop: "0.65rem" }}>
+              View
+            </p>
+            <div
+              className="doc-state-actions"
+              role="group"
+              aria-label="Property view mode"
             >
-              {showArchived
-                ? "Hide archived"
-                : `Show archived (${archived.length})`}
-            </button>
-          </div>
+              <button
+                type="button"
+                className={
+                  viewMode === "list"
+                    ? "doc-state-actions__btn doc-state-actions__btn--active"
+                    : "doc-state-actions__btn"
+                }
+                aria-pressed={viewMode === "list"}
+                onClick={() => setViewMode("list")}
+              >
+                List
+              </button>
+              <button
+                type="button"
+                className={
+                  viewMode === "board"
+                    ? "doc-state-actions__btn doc-state-actions__btn--active"
+                    : "doc-state-actions__btn"
+                }
+                aria-pressed={viewMode === "board"}
+                onClick={() => setViewMode("board")}
+              >
+                Board
+              </button>
+            </div>
+
+            {archived.length > 0 ? (
+              <div
+                className="doc-state-actions"
+                style={{ marginTop: "0.5rem" }}
+                role="group"
+                aria-label="Archived list visibility"
+              >
+                <button
+                  type="button"
+                  className={
+                    showArchived
+                      ? "doc-state-actions__btn doc-state-actions__btn--active"
+                      : "doc-state-actions__btn"
+                  }
+                  aria-pressed={showArchived}
+                  onClick={toggleShowArchived}
+                >
+                  {showArchived
+                    ? "Hide archived"
+                    : `Show archived (${archived.length})`}
+                </button>
+              </div>
+            ) : null}
+          </>
         ) : null}
 
         <div className="intake-form" style={{ marginTop: "0.85rem" }}>
@@ -564,78 +581,82 @@ export function PropertyList({ properties }: PropertyListProps) {
           })}
         </div>
 
-        <p className="muted-note" style={{ marginTop: "0.65rem" }}>
-          Pinned
-        </p>
-        <div
-          className="doc-state-actions"
-          role="group"
-          aria-label="Filter by pinned"
-        >
-          <button
-            type="button"
-            className={
-              pinFilter === "all"
-                ? "doc-state-actions__btn doc-state-actions__btn--active"
-                : "doc-state-actions__btn"
-            }
-            aria-pressed={pinFilter === "all"}
-            onClick={() => {
-              clearPresetHighlight();
-              setPinFilter("all");
-            }}
-          >
-            All
-          </button>
-          <button
-            type="button"
-            className={
-              pinFilter === "pinned"
-                ? "doc-state-actions__btn doc-state-actions__btn--active"
-                : "doc-state-actions__btn"
-            }
-            aria-pressed={pinFilter === "pinned"}
-            onClick={() => {
-              clearPresetHighlight();
-              setPinFilter("pinned");
-            }}
-          >
-            Pinned{pinnedCount > 0 ? ` (${pinnedCount})` : ""}
-          </button>
-        </div>
-
-        <p className="muted-note" style={{ marginTop: "0.65rem" }}>
-          Stage
-        </p>
-        <div
-          className="doc-state-actions"
-          role="group"
-          aria-label="Filter by stage"
-        >
-          {STAGE_FILTERS.map((option) => {
-            const pressed = stageFilter === option;
-            return (
+        {showDemoWorkspaceChrome() ? (
+          <>
+            <p className="muted-note" style={{ marginTop: "0.65rem" }}>
+              Pinned
+            </p>
+            <div
+              className="doc-state-actions"
+              role="group"
+              aria-label="Filter by pinned"
+            >
               <button
-                key={option}
                 type="button"
                 className={
-                  pressed
+                  pinFilter === "all"
                     ? "doc-state-actions__btn doc-state-actions__btn--active"
                     : "doc-state-actions__btn"
                 }
-                aria-pressed={pressed}
+                aria-pressed={pinFilter === "all"}
                 onClick={() => {
                   clearPresetHighlight();
-                  setStageFilter(option);
+                  setPinFilter("all");
                 }}
               >
-                {stageFilterLabel(option)}
+                All
               </button>
-            );
-          })}
-        </div>
+              <button
+                type="button"
+                className={
+                  pinFilter === "pinned"
+                    ? "doc-state-actions__btn doc-state-actions__btn--active"
+                    : "doc-state-actions__btn"
+                }
+                aria-pressed={pinFilter === "pinned"}
+                onClick={() => {
+                  clearPresetHighlight();
+                  setPinFilter("pinned");
+                }}
+              >
+                Pinned{pinnedCount > 0 ? ` (${pinnedCount})` : ""}
+              </button>
+            </div>
 
-        {availableTags.length > 0 ? (
+            <p className="muted-note" style={{ marginTop: "0.65rem" }}>
+              Stage
+            </p>
+            <div
+              className="doc-state-actions"
+              role="group"
+              aria-label="Filter by stage"
+            >
+              {STAGE_FILTERS.map((option) => {
+                const pressed = stageFilter === option;
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    className={
+                      pressed
+                        ? "doc-state-actions__btn doc-state-actions__btn--active"
+                        : "doc-state-actions__btn"
+                    }
+                    aria-pressed={pressed}
+                    onClick={() => {
+                      clearPresetHighlight();
+                      setStageFilter(option);
+                    }}
+                  >
+                    {stageFilterLabel(option)}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        ) : null}
+
+        {showDemoWorkspaceChrome() && availableTags.length > 0 ? (
           <>
             <p className="muted-note" style={{ marginTop: "0.65rem" }}>
               Tag
@@ -741,10 +762,15 @@ export function PropertyList({ properties }: PropertyListProps) {
         <div>
           <p className="muted-note" style={{ margin: 0 }}>
             {pool.length === 0
-              ? "No active properties. Show archived to reveal hidden records."
+              ? showDemoWorkspaceChrome()
+                ? "No active properties. Show archived to reveal hidden records."
+                : "No screened properties in this set."
               : "No properties match your search or filters."}
           </p>
-          {pool.length === 0 && archived.length > 0 && !showArchived ? (
+          {showDemoWorkspaceChrome() &&
+          pool.length === 0 &&
+          archived.length > 0 &&
+          !showArchived ? (
             <div
               className="doc-state-actions"
               style={{ marginTop: "0.5rem" }}
@@ -777,7 +803,7 @@ export function PropertyList({ properties }: PropertyListProps) {
             </div>
           ) : null}
         </div>
-      ) : viewMode === "board" ? (
+      ) : showDemoWorkspaceChrome() && viewMode === "board" ? (
         <PropertyBoard
           properties={visible}
           isArchived={isPropertyArchived}
@@ -788,16 +814,21 @@ export function PropertyList({ properties }: PropertyListProps) {
           {visible.map((property) => {
             const archivedCard = isPropertyArchived(property);
             const pinnedCard = isPropertyPinned(property);
+            const chrome = showDemoWorkspaceChrome();
             return (
               <PropertyListCard
                 key={property.id}
                 property={property}
-                archived={archivedCard}
-                pinned={pinnedCard}
-                selected={selectedVisible.includes(property.id)}
-                onUnarchive={archivedCard ? unarchiveProperty : undefined}
-                onTogglePin={togglePin}
-                onToggleSelect={toggleSelect}
+                archived={chrome ? archivedCard : false}
+                pinned={chrome ? pinnedCard : false}
+                selected={
+                  chrome ? selectedVisible.includes(property.id) : false
+                }
+                onUnarchive={
+                  chrome && archivedCard ? unarchiveProperty : undefined
+                }
+                onTogglePin={chrome ? togglePin : undefined}
+                onToggleSelect={chrome ? toggleSelect : undefined}
               />
             );
           })}

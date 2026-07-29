@@ -183,6 +183,19 @@ main {
   border-top: 1px solid var(--border);
 }
 
+.pilot-eval__steps,
+.pilot-eval__feedback {
+  margin: 0.35rem 0 0.65rem;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.pilot-eval__steps li + li,
+.pilot-eval__feedback li + li {
+  margin-top: 0.35rem;
+}
+
 .page-stack {
   display: grid;
   gap: 18px;

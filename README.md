@@ -1,6 +1,6 @@
 # Deal Screen
 
-Lightweight Next.js app for Florida condo deal screening. File-based only — no database or auth.
+Structured condo screening workspace for evaluating a small number of opportunities — not a full CRM or collaboration platform. File-based only (no database or auth).
 
 ## Workflow
 

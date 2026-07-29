@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { PilotEvaluationPanel } from "@/components/PilotEvaluationPanel";
+import { TRIAL_BUILD } from "@/lib/trial-build";
 
 export default function HomePage() {
   return (
@@ -6,27 +8,32 @@ export default function HomePage() {
       <section className="page-intro">
         <h1>Florida condo deal screening</h1>
         <p>
-          A lightweight, file-based workspace for screening properties before
-          deeper diligence. Structured facts live in TypeScript data files;
-          original memos and notes stay available as reference.
+          Structured screening for a small number of opportunities — not a CRM
+          or collaboration platform. Facts live in TypeScript data files; memos
+          and notes stay as reference.
+        </p>
+        <p className="muted-note" style={{ marginTop: "0.65rem" }}>
+          Pilot build — file-based screens only.
         </p>
       </section>
 
       <section className="home-cta">
         <h2>Start here</h2>
         <p>
-          Browse screened properties, review Florida condo risk flags, or
-          generate a stub for the next address.
+          Open a screened deal to review risk flags, missing diligence, and the
+          buy / track / pass outcome.
         </p>
         <div className="home-cta__actions">
           <Link href="/properties" className="button-primary">
             View properties
           </Link>
           <Link href="/intake" className="button-secondary">
-            New property intake
+            Generate property stub (developer)
           </Link>
         </div>
       </section>
+
+      {TRIAL_BUILD ? <PilotEvaluationPanel /> : null}
     </main>
   );
 }

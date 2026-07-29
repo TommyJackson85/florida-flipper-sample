@@ -21,6 +21,7 @@ import {
   isPropertyPinned,
   setPropertyPinnedInSession,
 } from "@/lib/property-pinning";
+import { showDemoWorkspaceChrome } from "@/lib/trial-build";
 import { StatusPill } from "./StatusPill";
 
 type PropertyListCardProps = {
@@ -50,8 +51,9 @@ export function PropertyListCard({
   const missingCount = countMissingDiligenceItems(property);
   const sources = summarizeSources(property.sources);
   const showStage = !isSample && Boolean(property.stage);
-  const tags = getPropertyTags(property).slice(0, 3);
-  const isPinned = pinned || isPropertyPinned(property);
+  const chrome = showDemoWorkspaceChrome();
+  const tags = chrome ? getPropertyTags(property).slice(0, 3) : [];
+  const isPinned = chrome && (pinned || isPropertyPinned(property));
   const milestone = isSample ? null : nextMilestone(property.milestones);
   const milestoneUrgency = milestone
     ? milestoneUrgencyLabel(milestone)

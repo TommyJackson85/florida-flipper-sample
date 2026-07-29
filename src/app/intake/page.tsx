@@ -191,15 +191,14 @@ export default function IntakePage() {
   return (
     <main className="page-stack">
       <section className="page-intro">
-        <h1>Property intake</h1>
+        <h1>Property stub generator</h1>
         <p>
-          Enter a new address to generate a TypeScript stub or open a one-way
-          Sample demo shell in this browser tab. Copy + register still saves
-          nothing until you paste a file under{" "}
-          <code>src/data/properties</code> and update{" "}
-          <code>index.ts</code>. For association / tax / identifier sections,
-          copy <code>_template.ts</code> and merge the identity fields from this
-          stub.
+          Developer / operator tool: generate TypeScript for the repo. This does
+          not save a deal in the app — copy the stub into{" "}
+          <code>src/data/properties</code> and register it in{" "}
+          <code>index.ts</code>. Optional: open a one-tab Sample shell for
+          layout practice. For association / tax / identifier sections, copy{" "}
+          <code>_template.ts</code> and merge identity fields from this stub.
         </p>
       </section>
 
