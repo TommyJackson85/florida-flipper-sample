@@ -24,6 +24,13 @@ export function recordPropertyView(propertyId: string): void {
   emit();
 }
 
+/** Clears the in-memory recently-viewed list for this JS session. */
+export function clearRecentPropertyIds(): void {
+  if (recentIds.length === 0) return;
+  recentIds = [];
+  emit();
+}
+
 export function subscribeRecentPropertyIds(
   listener: () => void
 ): () => void {

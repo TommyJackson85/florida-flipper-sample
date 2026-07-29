@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { resetDemoData } from "@/lib/demo-reset";
 
 function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
@@ -9,10 +10,19 @@ function isTypingTarget(target: EventTarget | null): boolean {
   return target.isContentEditable;
 }
 
+const RESET_CONFIRM =
+  "Clear this tab’s pins, archives, tags, intake stub, and recents, then reload to the seeded sample state? Unsaved on-screen toggles will be lost.";
+
 export function WorkspaceHelp() {
   const [open, setOpen] = useState(false);
   const titleId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
+
+  function handleResetDemoData() {
+    if (!window.confirm(RESET_CONFIRM)) return;
+    resetDemoData();
+    window.location.reload();
+  }
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -160,7 +170,25 @@ export function WorkspaceHelp() {
                   <li>
                     No command palette, shared pipelines, or live sharing links
                   </li>
+                  <li>
+                    Reset does not change TypeScript seed files on disk
+                  </li>
                 </ul>
+              </section>
+
+              <section className="workspace-help__reset">
+                <h3>Reset demo data</h3>
+                <p className="muted-note" style={{ margin: "0 0 0.65rem" }}>
+                  Restore this tab to the default seeded sample state after
+                  testing. Clears session overlays and reloads the page.
+                </p>
+                <button
+                  type="button"
+                  className="doc-state-actions__btn"
+                  onClick={handleResetDemoData}
+                >
+                  Reset demo data
+                </button>
               </section>
             </div>
 
