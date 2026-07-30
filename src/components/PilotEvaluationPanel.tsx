@@ -80,7 +80,8 @@ export function PilotEvaluationPanel() {
       </ul>
       <p className="muted-note">
         <strong>Operator log:</strong> After the session, paste the template into{" "}
-        <code>notes/pilot/sessions/</code> so outcomes stay in the repo.
+        <code>notes/pilot/sessions/</code> so outcomes stay in the repo. Operators:
+        follow <code>notes/pilot/RUNBOOK.md</code>.
       </p>
       <div
         className="doc-state-actions"

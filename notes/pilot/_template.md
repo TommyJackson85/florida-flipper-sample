@@ -25,6 +25,17 @@
 
 -
 
+## Classification
+
+- Bugs:
+-
+- Confusion (wording / IA):
+-
+- Feature requests (park if CRM-shaped):
+-
+- Product insights (screening value):
+-
+
 ## Outcome / next follow-up
 
 -

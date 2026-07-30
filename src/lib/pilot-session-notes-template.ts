@@ -29,6 +29,17 @@ export const PILOT_SESSION_NOTES_TEMPLATE = `# Pilot session — YYYY-MM-DD
 
 -
 
+## Classification
+
+- Bugs:
+-
+- Confusion (wording / IA):
+-
+- Feature requests (park if CRM-shaped):
+-
+- Product insights (screening value):
+-
+
 ## Outcome / next follow-up
 
 -

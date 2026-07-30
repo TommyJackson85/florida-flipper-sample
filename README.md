@@ -7,7 +7,7 @@ Structured condo screening workspace for evaluating a small number of opportunit
 | Keep in | Put here |
 |---|---|
 | `memos/`, `notes/`, `sources/`, `screenshots/` | Narrative research, URLs-in-progress, screenshots, long-form reasoning |
-| `notes/pilot/` | Operator pilot-session notes and outcomes (not property diligence) |
+| `notes/pilot/` | Operator pilot runbook, session notes, and outcomes (not property diligence) |
 | `src/data/properties/<id>.ts` | Stable, repeated facts that power the UI (address, taxes, association, risk flags, screen status) |
 
 Do not invent underwriting numbers. If HOA, rent, insurance, or returns are unverified, leave them `null` / `"unknown"` and record conflicts as notes.
