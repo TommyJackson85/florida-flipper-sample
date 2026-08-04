@@ -15,7 +15,7 @@ This memo is an initial screen for 7863 Niagara Ave #1921, Tampa, Florida 33617.
 - Size: ≈1,324 sq ft heated; ≈1,469 sq ft gross (incl. porches/utility)
 - Year built: 1981
 - Current listing price: $150,000
-- County 2026 market/assessed value: ≈$133,832 (no exemptions; taxable value aligned across districts)
+- County 2026 market / assessed value: $133,832 (no exemptions; taxable value aligned across districts; this is the figure used for screening)
 - Ownership interest: 1.3931% undivided interest in River Oaks Condominium II common elements, expenses, and surplus
 - Parcel number (PIN): U-28-28-19-1KZ-000019-01921.0
 - Folio: 039053-0332
@@ -37,9 +37,9 @@ This memo is an initial screen for 7863 Niagara Ave #1921, Tampa, Florida 33617.
 
 ## Missing diligence items
 
-**Association / governance (needs US contact)**  
+**Association / governance**  
 - Confirm with association/management that River Oaks Condominium II Association, Inc. is the same entity as “RIVER OAKS CONDO II ASSN INC” (CTMH Managing Entity license MA00002021) and that Unit 1921 is within this project.  
-- Obtain estoppel and the most recent condo questionnaire for Unit 1921, covering delinquencies, rental restrictions, and litigation.
+- Estoppel and the most recent condo questionnaire for Unit 1921 have been received on this screen (no file stored in the app). Review them for delinquencies, rental restrictions, and litigation; keep other association packet items open.
 
 **Reserves, SIRS, and structural (law-driven expectations vs. status)**  
 - Obtain latest approved budget and reserve schedule; classify reserves as fully funded / partially funded / minimally funded relative to the reserve study.  
@@ -99,7 +99,7 @@ Recent annual tax history:
 - 2012: $560.52 (paid)  
 - 2011: $558.26 (paid)
 
-## Association snapshot (Sunbiz)
+## Association snapshot (Sunbiz / DBPR)
 
 - Legal name: River Oaks Condominium II Association, Inc.  
 - Entity type: Florida not-for-profit corporation  
@@ -111,8 +111,23 @@ Recent annual tax history:
 - Registered agent: Richard Balderston, 1806 South Ridge Dr, Valrico, FL 33594  
 - Officers: President (Shareka Sanchez), Vice President (Michael Gordon), Treasurer (Louis Balderston), Secretary (Delicia Seymore), Director (Earl Mason, Sr.)  
 - Annual reports: Filed consistently, with recent reports on 02/02/2024, 02/12/2025, and 03/24/2026  
+- Managing entity (DBPR): RIVER OAKS CONDO II ASSN INC, CTMH license MA00002021, Approved; related condo project PR1P004549 Approved through 01/01/2027  
+- Manager (listing / notes): Blue Ribbon Property Management LLC (813-683-9374); confirm against association and DBPR records  
+- HOA dues (unverified): listing figures conflict — Zillow/Redfin ~$499/month vs other brokerages ~$376/month; do not underwrite either figure until confirmed with association or estoppel  
+- Official records pattern: recurring association collection activity across units/phases (liens, lis pendens, judgments, satisfactions); consistent with an older larger condo, but still warrants review of current delinquencies and financial posture  
 
-Operationally, this presents as a normal, long-standing 1980s Tampa-area condo 
+Active Sunbiz entity with named manager and an approved DBPR managing-entity summary. Collection activity is visible in the public record; material litigation and reserve/SIRS packets remain open.
+
+## Sources / references
+
+- Listing: Zillow — https://www.zillow.com/homedetails/7863-Niagara-Ave-1921-Tampa-FL-33617/44934581_zpid/ (primary listing used for selection notes)  
+- Tax collector / tax account: A0390530332 (Hillsborough); stable public URL still pending paste  
+- County property appraiser / folio: 039053-0332 / PIN U-28-28-19-1KZ-000019-01921.0; stable public URL still pending paste  
+- Sunbiz entity search: River Oaks Condominium II Association, Inc., document 756255 (facts captured above; URL pending paste)  
+- Florida DBPR condo / association lookup: managing entity and project summaries captured above; stable URL pending paste  
+- Hillsborough Clerk / Official Records: collection-activity notes captured from record review; stable search URL pending paste  
+- Floodplain map (Hillsborough): https://experience.arcgis.com/experience/74ef91c9e1f54b38addfc101844be769/page/FloodplainPage?org=hillsborough — search 7863 Niagara Ave, Tampa, FL 33617; notes say no reported flood by the house, flood risk exists in the neighbourhood  
+- Supporting files: `notes/property-01-notes.md`, `sources/property-01-sources.md`
 
 ## Recommendation
 

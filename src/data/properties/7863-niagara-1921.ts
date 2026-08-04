@@ -210,7 +210,7 @@ export const property7863Niagara1921: PropertyScreen = {
       title: "Association / governance",
       items: [
         "Confirm River Oaks Condominium II Association, Inc. matches RIVER OAKS CONDO II ASSN INC and that Unit 1921 is within the same project.",
-        "Obtain estoppel and most recent condo questionnaire for Unit 1921.",
+        "Review received estoppel and condo questionnaire for Unit 1921 (delinquencies, rental restrictions, litigation); other association packet items remain open.",
       ],
     },
     {

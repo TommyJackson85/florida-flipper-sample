@@ -1,4 +1,4 @@
-# Sample Property #1 — Notes
+# 7863 Niagara Ave #1921 — Notes
 
 ## Basic selection notes from Zillow
 - Address: 7863 Niagara Ave #1921, Tampa, FL 33617
@@ -28,12 +28,14 @@
 ## Financial / pricing
 - List price: $150,000
 - MLS ID: TB8502534
-- Price per sq ft: ~ $113/sq ft (Zillow/Redfin) vs. ~ $102/sq ft (Century 21)
-- Estimated value (Zestimate): ~ $151,700
 - Annual property tax (most recent): $1,811 (tax year 2025)
-- Tax assessed value (recent): ~ $153,949
+- County market / assessed value (screening figure): $133,832 (no exemptions; taxable value aligned across districts)
 - Ownership type: Condominium
 - Listing terms accepted: Cash and conventional financing only
+
+### Secondary context
+- Estimated value (Zestimate): ~ $151,700
+- Price per sq ft: varies by source (~ $102–$113/sq ft)
 
 ## Public record identifiers
 - APN (Redfin public record): 0390530332
