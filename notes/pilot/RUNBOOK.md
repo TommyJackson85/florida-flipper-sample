@@ -13,11 +13,11 @@ Related:
 
 ## 1. Purpose / success
 
-**Learn whether the screening screen helps someone track Florida condo diligence** (Track vs Pass contrast, risk flags, missing docs) — not whether they like every UI widget.
+**Learn whether the screening screen helps someone track Florida condo diligence** (Track outcome, risk flags, missing docs) — not whether they like every UI widget.
 
 Success signals:
 
-- They can state Niagara as **Track** and Fowler as **Pass** in their own words
+- They can state Niagara as **Track** in their own words and name what still blocks buy/pass
 - They notice durable facts vs this-tab toggles
 - Feedback answers: would this change how they track diligence?
 
@@ -44,8 +44,8 @@ Ignore for success: requests for boards, sharing, auth, or multi-user CRM.
 ## 3. Prep (before the call)
 
 - [ ] `TRIAL_BUILD` is `true` (`src/lib/trial-build.ts`)
-- [ ] `npm run dev` (or deployed build) loads Home without Help / board / pin chrome
-- [ ] Confirm deals open: Niagara (Track), Fowler (Pass); Cypress shows as Sample shell
+- [ ] `npm run dev` (or deployed build) loads Home without Help / board / pin tools
+- [ ] Confirm **Properties** lists only Niagara (**Track**)
 - [ ] Open this runbook + a blank session note (copy template from Home or `_template.md`)
 - [ ] Optional: mailto draft available for them; you still take structured notes
 
@@ -59,7 +59,7 @@ Use roughly this framing — then stop talking:
 > I’ll give you a short task. Think out loud. I won’t coach unless you’re stuck.  
 > Some toggles on the screen are demo-only and don’t save. The durable facts live in the deal data file.
 
-Do **not** pitch stub generator, status/print URLs, or hidden demo workspace tools.
+Do **not** pitch stub generator, status/print URLs, or extra workspace tools.
 
 ---
 
@@ -69,10 +69,8 @@ Hold until they ask or the task is done:
 
 - How to add a property via TypeScript / Stub generator
 - That `/status` exists but is out of pilot build
-- Pin, archive, board, import/export, Help tools (hidden in trial)
+- Pin, archive, board, import/export, Help tools (out of this pilot)
 - Your roadmap or “we could add…”
-
-If they wander toward Cypress as a second underwriting file, clarify once: **Sample shell only**.
 
 ---
 
@@ -81,10 +79,8 @@ If they wander toward Cypress as a second underwriting file, clarify once: **Sam
 Give this task verbatim (or point them at Home’s script):
 
 1. Open **View properties** → **7863 Niagara Ave #1921** (**Track**).
-2. Open **2200 E Fowler Ave #B12** (**Pass**).
-3. On each live deal: read outcome, overview, risk flags, missing docs / known missing; skim tax, association, screening (pro forma may be unset).
-4. Notice Cypress is a **Sample** identity shell — not a screening comparison.
-5. Optional later: Stub generator — creates TypeScript; does not save a deal in the app.
+2. Read outcome, overview, risk flags, missing docs / known missing; skim tax, association, screening (pro forma may be unset).
+3. Optional later: Stub generator — creates TypeScript; does not save a deal in the app.
 
 Timebox: **15–20 minutes**. Prefer observation over tutorial.
 
@@ -94,7 +90,7 @@ Timebox: **15–20 minutes**. Prefer observation over tutorial.
 
 While they work, jot:
 
-- Where do they hesitate or misread outcome (Track vs Pass)?
+- Where do they hesitate or misread the Track outcome / open diligence?
 - Do they treat session document toggles as “saved”?
 - Do they look for CRM features (assign, share, pipeline)?
 - What do they praise without prompting?
@@ -108,7 +104,7 @@ Do not rescue immediately. If stuck >60s on navigation, one nudge: “Start from
 Ask in this order (also on Home / mailto):
 
 1. Would this screen change how you track condo diligence?
-2. Was Track vs Pass contrast clear?
+2. Was the Track outcome and open diligence clear?
 3. What was clearest / most confusing?
 4. What’s missing before you’d use this on a live deal?
 5. Would you use again? (Yes / No / Maybe — why?)
@@ -147,7 +143,7 @@ One file per session. Do not overwrite prior sessions. Keep property diligence i
 - [ ] Trial build verified  
 - [ ] Opening script said  
 - [ ] Task given without over-coaching  
-- [ ] Track vs Pass observed  
+- [ ] Niagara Track screen observed  
 - [ ] Post questions asked  
 - [ ] Feedback classified  
 - [ ] Session note filed under `notes/pilot/sessions/`  

@@ -63,7 +63,7 @@ The MVP is successful if a pilot user can:
 - Navigate from Home to Properties to a seeded deal screen without explanation.
 - Review identity, tax, association, risk flags, missing documents, and sources.
 - Read a memo or notes section that feels credible and useful.
-- Distinguish Track, Pass, and Sample outcomes without confusion.
+- Understand Niagara’s Track outcome and open diligence without confusion.
 - Complete a pilot flow in under 15 minutes.
 - Give feedback about trust, clarity, workflow, or business value rather than feature breadth.
 
@@ -76,7 +76,7 @@ A strong result is not “more features.” A strong result is a user saying, �
 ### In scope
 - Property list.
 - Deal screen.
-- Screening outcomes: Track, Pass, Sample.
+- Screening outcome labels (Track / Pass / Sample).
 - Property snapshot and identifiers.
 - Tax information.
 - Association information.
@@ -124,31 +124,29 @@ The application is intentionally split into two layers.
 ### A. Visible screening MVP
 What pilot users should see:
 - Home thesis.
-- Properties list.
-- Niagara as a Track example.
-- Fowler as a Pass example.
+- Properties list (Niagara — Track).
 - Pilot panel.
 - Runbook and notes guidance.
 
-### B. Dormant CRM shell
-What still exists in the repo but should be hidden in trial mode:
+### B. Held back from the trial
+These remain in the repo for later iteration, but are not part of the pilot experience:
 - Board or pipeline views.
 - Pins, tags, stages, and archive controls.
 - Bulk actions.
 - Presets.
 - Help tools for import/export.
 - Diagnostics.
-- Status, print, and export chrome.
+- Status, print, and export surfaces.
 - Attachments and post-close surfaces.
 
-The visible product should feel like a screening tool. The dormant shell should not be part of the pilot story.
+The visible product should feel like a screening tool. Extra workspace tools stay out of the pilot story.
 
 ---
 
 ## 8. User Flow
 
 ### Primary pilot flow
-Home → Properties → Niagara → memo / notes → optional Fowler comparison
+Home → Properties → Niagara → memo / notes
 
 ### Secondary developer flow
 Home → Intake / add new property file → register a `.ts` seed file
@@ -169,15 +167,14 @@ The hero workflow is reading screening screens. The secondary workflow is develo
 The product should support a trial mode flag such as `TRIAL_BUILD`.
 
 When trial mode is on:
-- Demo and workspace chrome are hidden or demoted.
+- Extra workspace tools stay out of view.
 - The deal screen is the center of the experience.
-- The properties list stays simple.
+- The properties list stays simple — Niagara is the seeded deal for the pilot.
 - Only screening-relevant sections remain prominent.
 
 When trial mode is off:
-- Developer-oriented chrome may become visible again.
+- Internal workspace tools may become visible again for development.
 - This does not change the MVP definition.
-- This is for internal iteration only.
 
 Trial mode exists to protect the pilot story, not to fake product maturity.
 
@@ -200,7 +197,7 @@ This is a deliberate product constraint, not a temporary shortcut. The file-base
 ## 11. Seeded Properties
 
 ### Niagara
-A credible Track case.
+A credible Track case — the deal used for the pilot.
 
 Requirements:
 - Realistic memo.
@@ -209,22 +206,8 @@ Requirements:
 - Track outcome is believable and not overly polished.
 - Feels like a real property the operator would actually keep working on.
 
-### Fowler
-A credible Pass case.
-
-Requirements:
-- Real folio and identifier style.
-- Specific reasons to pass.
-- No obvious demo data.
-- The reasons to walk should be legible and grounded in screening logic.
-
-### Cypress
-A clearly labeled Sample shell.
-
-Requirements:
-- Clearly marked as sample.
-- Not part of the main pilot story.
-- Can exist for structural completeness, but should not distract from Niagara and Fowler.
+### Other seeds (non-trial fixtures)
+The repo may keep additional seed files for internal testing. They are not part of the pilot path and should not appear in trial navigation, eval scripts, or runbook tasks.
 
 ---
 
@@ -253,9 +236,8 @@ Solo operator or technical partner.
 3. Go to Properties.
 4. Open Niagara.
 5. Review risk flags, missing documents, and memo.
-6. Optionally open Fowler for contrast.
-7. Optionally show developer intake only if relevant.
-8. Capture feedback in the notes template.
+6. Optionally show developer intake only if relevant.
+7. Capture feedback in the notes template.
 
 ### What to record
 - Bugs.
@@ -318,21 +300,20 @@ Those can be future products or later phases, but they are not MVP work.
 If seeded properties feel fake, users will not trust the screening output.
 
 ### Scope risk
-It is easy to drift back into CRM behavior because the repo still contains dormant workspace code.
+It is easy to drift back into CRM behavior if workspace tools reappear in the pilot build.
 
 ### File-based friction
 Editing TypeScript to save a deal is acceptable for this MVP, but must be explained clearly so users do not assume persistence exists.
 
-### Sample clutter
-Cypress or any sample shell can distract from the pilot story if not labeled carefully.
+### Extra-seed distraction
+Additional internal seed files must stay out of the trial experience, or the pilot story gets noisy.
 
 ---
 
 ## 17. Open Questions
 
 - Does Niagara need stronger realism before pilot?
-- Is Fowler believable enough as a Pass case?
-- Does Cypress need to be hidden in trial mode?
+- Should later pilots ever include a second seeded outcome for contrast?
 - Which one gated feature, if any, is worth reopening after pilots?
 - How much copy is needed to explain file-based saving without confusing users?
 

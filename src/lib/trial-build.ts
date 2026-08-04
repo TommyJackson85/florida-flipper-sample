@@ -1,12 +1,12 @@
 /**
  * Trial-build surface flag.
  *
- * Product stance: a structured condo screening workspace for a small number of
- * opportunities — not a full CRM or collaboration platform.
+ * Product stance: structured condo screening for a small number of
+ * opportunities — not a CRM or collaboration platform.
  *
- * When true, demo CRM chrome stays in the codebase but is not mounted so the
- * screening deal path leads for pilots. Flip to false to restore the full
- * demo workspace shell.
+ * When true, the pilot experience is screening-first: Niagara is the seeded
+ * deal, and extra workspace tools stay out of view. Flip to false for the
+ * full internal demo workspace.
  */
 export const TRIAL_BUILD = true;
 

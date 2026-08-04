@@ -1,4 +1,4 @@
-import { getAllProperties } from "@/data/properties";
+import { getCatalogProperties } from "@/data/properties";
 import { INTAKE_STUB_SESSION_KEY } from "@/lib/intake-property-stub";
 import { ARCHIVED_IDS_SESSION_KEY } from "@/lib/property-archive";
 import { PINNED_IDS_SESSION_KEY } from "@/lib/property-pinning";
@@ -177,7 +177,7 @@ function checkIntakeStubIdentity(
 
   const stubId = intakeStub.id;
   if (typeof stubId === "string" && stubId.trim()) {
-    const collision = getAllProperties().some(
+    const collision = getCatalogProperties().some(
       (property) => property.id === stubId.trim()
     );
     if (collision) {
@@ -358,7 +358,7 @@ function diagnoseOverlaysAndCatalog(
   overlays: OverlaySnapshot
 ): DiagnosticIssue[] {
   const issues: DiagnosticIssue[] = [];
-  const catalog = getAllProperties();
+  const catalog = getCatalogProperties();
   const knownIds = knownIdSet(catalog, overlays.intakeStub);
 
   checkDuplicateCatalogIds(issues, catalog);

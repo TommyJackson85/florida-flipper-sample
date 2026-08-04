@@ -20,8 +20,8 @@ export default function HomePage() {
       <section className="home-cta">
         <h2>Start here</h2>
         <p>
-          Open a screened deal to review risk flags, missing diligence, and the
-          buy / track / pass outcome.
+          Open the seeded Niagara deal to review risk flags, missing diligence,
+          and the Track screening outcome.
         </p>
         <div className="home-cta__actions">
           <Link href="/properties" className="button-primary">

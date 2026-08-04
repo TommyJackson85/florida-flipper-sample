@@ -12,9 +12,9 @@ export default function PropertiesPage() {
         <p>
           {TRIAL_BUILD ? (
             <>
-              Open a deal to review buy / track / pass, risk flags, and missing
-              diligence. Durable facts live in the file-backed screen — not in
-              this-tab toggles. {properties.length} propert
+              Open the seeded Niagara deal to review Track outcome, risk flags,
+              and missing diligence. Durable facts live in the file-backed
+              screen — not in this-tab toggles. {properties.length} propert
               {properties.length === 1 ? "y" : "ies"} in this set; add another
               via a TypeScript file under <code>src/data/properties</code> and{" "}
               <code>index.ts</code>. Pilot script is on Home.
