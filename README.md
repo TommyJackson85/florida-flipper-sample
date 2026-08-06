@@ -4,7 +4,7 @@ Structured condo screening workspace for evaluating a small number of opportunit
 
 **Live site (GitHub Pages):** https://tommyjackson85.github.io/florida-flipper-sample/
 
-The Pages site is the static export under `docs/` (`docs/index.html`). Local development still uses `npm run dev`.
+The site entry is `docs/index.html` (static Next export). GitHub Pages deploys that folder via Actions on push to `main`. Local development still uses `npm run dev`.
 
 ## Workflow
 
@@ -13,7 +13,7 @@ The Pages site is the static export under `docs/` (`docs/index.html`). Local dev
 | `memos/`, `notes/`, `sources/`, `screenshots/` | Narrative research, URLs-in-progress, screenshots, long-form reasoning |
 | `notes/pilot/` | Operator pilot runbook, session notes, and outcomes (not property diligence) |
 | `src/data/properties/<id>.ts` | Stable, repeated facts that power the UI (address, taxes, association, risk flags, screen status) |
-| `docs/` | GitHub Pages static export (`index.html`) plus product markdown (`PRD.md`, `DEVELOPMENT_PLAN.md`) |
+| `docs/` | GitHub Pages entry (`index.html` + assets) plus product markdown (`PRD.md`, `DEVELOPMENT_PLAN.md`) |
 
 Do not invent underwriting numbers. If HOA, rent, insurance, or returns are unverified, leave them `null` / `"unknown"` and record conflicts as notes.
 
