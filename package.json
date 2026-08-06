@@ -7,6 +7,7 @@
     "dev:clean": "rm -rf .next && next dev",
     "clean": "rm -rf .next",
     "build": "next build",
+    "export:pages": "GITHUB_PAGES=true next build && node scripts/publish-github-pages.mjs",
     "start": "next start",
     "lint": "next lint"
   },

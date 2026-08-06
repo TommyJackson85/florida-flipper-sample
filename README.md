@@ -2,6 +2,10 @@
 
 Structured condo screening workspace for evaluating a small number of opportunities — not a full CRM or collaboration platform. File-based only (no database or auth).
 
+**Live site (GitHub Pages):** https://tommyjackson85.github.io/florida-flipper-sample/
+
+The Pages site is the static export under `docs/` (`docs/index.html`). Local development still uses `npm run dev`.
+
 ## Workflow
 
 | Keep in | Put here |
@@ -9,6 +13,7 @@ Structured condo screening workspace for evaluating a small number of opportunit
 | `memos/`, `notes/`, `sources/`, `screenshots/` | Narrative research, URLs-in-progress, screenshots, long-form reasoning |
 | `notes/pilot/` | Operator pilot runbook, session notes, and outcomes (not property diligence) |
 | `src/data/properties/<id>.ts` | Stable, repeated facts that power the UI (address, taxes, association, risk flags, screen status) |
+| `docs/` | GitHub Pages static export (`index.html`) plus product markdown (`PRD.md`, `DEVELOPMENT_PLAN.md`) |
 
 Do not invent underwriting numbers. If HOA, rent, insurance, or returns are unverified, leave them `null` / `"unknown"` and record conflicts as notes.
 
@@ -33,10 +38,11 @@ Do not invent underwriting numbers. If HOA, rent, insurance, or returns are unve
 ## Scripts
 
 ```bash
-npm run dev        # start local app
-npm run build      # production build check
-npm run clean      # delete .next cache only
-npm run dev:clean  # clear .next, then start dev
+npm run dev           # start local app
+npm run build         # production build check
+npm run export:pages  # build + publish static site into docs/ for GitHub Pages
+npm run clean         # delete .next cache only
+npm run dev:clean     # clear .next, then start dev
 ```
 
 ## Troubleshooting local runtime errors
