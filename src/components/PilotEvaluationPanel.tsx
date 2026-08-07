@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { CopyPilotNotesTemplateButton } from "@/components/CopyPilotNotesTemplateButton";
 import { SectionCard } from "@/components/property/SectionCard";
 
@@ -8,69 +7,34 @@ const FEEDBACK_MAILTO =
     [
       "Deal Screen pilot feedback",
       "",
-      "1. Would this screen change how you track condo diligence?",
+      "1. Was the screening format clear and trustworthy?",
       "",
-      "2. What was clearest / most confusing?",
+      "2. If you could enter one of your own deals and receive a screen like this, what minimum information would you be willing to provide?",
       "",
-      "3. What’s missing before you’d use this on a live deal?",
+      "3. What was missing, confusing, or hard to trust?",
       "",
     ].join("\n")
   );
 
 export function PilotEvaluationPanel() {
   return (
-    <SectionCard
-      title="How to evaluate this pilot"
-      subtitle="Short script for early users — learning about screening usefulness, not product polish."
-    >
+    <SectionCard title="What to do">
       <p className="muted-note" style={{ marginTop: 0 }}>
-        <strong>Who:</strong> Operators screening a few Florida condo deals —
-        not CRM or team workflows.
+        Open the sample deal screen and review it as if you were deciding
+        whether to continue diligence. Check the recommendation, risk flags,
+        missing documents, tax, association information, and sources.
       </p>
       <p className="muted-note">
-        <strong>Task (about 15–20 min):</strong> work one live Track screen —
-        Niagara — and decide whether the deal screen is useful for diligence.
-      </p>
-      <ol className="pilot-eval__steps">
-        <li>
-          Open{" "}
-          <Link href="/properties">View properties</Link>, then{" "}
-          <Link href="/properties/7863-niagara-1921">
-            7863 Niagara Ave #1921
-          </Link>{" "}
-          <strong>Track</strong> — public facts usable; association packet still
-          blocks buy/pass.
-        </li>
-        <li>
-          Read screen outcome, overview, condo risk flags, missing documents /
-          known missing; skim tax, association, and screening checklist (pro
-          forma stays unset where unknown).
-        </li>
-        <li>
-          Optional:{" "}
-          <Link href="/intake">Stub generator</Link> — creates TypeScript for
-          the repo; it does not save a deal in the app.
-        </li>
-      </ol>
-      <p className="muted-note">
-        <strong>Real vs session:</strong> Seed / file-backed facts are the
-        product. Document toggles and sample stubs stay in this browser tab
-        only.
-      </p>
-      <p className="muted-note">
-        <strong>Feedback that matters</strong> (reply by email or notes — nothing
-        is captured in-app):
+        <strong>Afterwards, tell us:</strong>
       </p>
       <ul className="pilot-eval__feedback">
-        <li>Would this screen change how you track condo diligence?</li>
-        <li>Was the Track outcome and open diligence clear?</li>
-        <li>What’s missing before you’d use this on a live deal?</li>
+        <li>Was the screening format clear and trustworthy?</li>
+        <li>
+          If you could enter one of your own deals and receive a screen like
+          this, what minimum information would you be willing to provide?
+        </li>
+        <li>What was missing, confusing, or hard to trust?</li>
       </ul>
-      <p className="muted-note">
-        <strong>Operator log:</strong> After the session, paste the template into{" "}
-        <code>notes/pilot/sessions/</code> so outcomes stay in the repo. Operators:
-        follow <code>notes/pilot/RUNBOOK.md</code>.
-      </p>
       <div
         className="doc-state-actions"
         style={{ marginTop: "0.75rem" }}

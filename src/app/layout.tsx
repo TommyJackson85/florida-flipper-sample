@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
 import Link from "next/link";
 import { WorkspaceHelp } from "@/components/WorkspaceHelp";
-import { showDemoWorkspaceChrome } from "@/lib/trial-build";
+import { TRIAL_BUILD, showDemoWorkspaceChrome } from "@/lib/trial-build";
 import "./globals.css";
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -30,10 +30,12 @@ export default function RootLayout({
             <Link href="/" className="site-brand">
               Deal Screen
             </Link>
-            <nav className="site-nav">
-              <Link href="/">Home</Link>
+            <nav className="site-nav" aria-label="Main">
+              {TRIAL_BUILD ? null : <Link href="/">Home</Link>}
               <Link href="/properties">Properties</Link>
-              <Link href="/intake">Stub generator</Link>
+              {TRIAL_BUILD ? null : (
+                <Link href="/intake">Stub generator</Link>
+              )}
               {showDemoWorkspaceChrome() ? <WorkspaceHelp /> : null}
             </nav>
           </div>
