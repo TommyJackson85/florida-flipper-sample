@@ -534,55 +534,55 @@ export function PropertyList({ properties }: PropertyListProps) {
           </>
         ) : null}
 
-        <div className="intake-form" style={{ marginTop: "0.85rem" }}>
-          <label>
-            Search
-            <input
-              type="search"
-              value={query}
-              onChange={(event) => {
-                clearPresetHighlight();
-                setQuery(event.target.value);
-              }}
-              placeholder="Search address, city, ZIP, community…"
-              aria-label="Search properties"
-            />
-          </label>
-        </div>
-
-        <p className="muted-note" style={{ marginTop: "0.65rem" }}>
-          Kind
-        </p>
-        <div
-          className="doc-state-actions"
-          role="group"
-          aria-label="Filter by kind"
-        >
-          {KIND_FILTERS.map((option) => {
-            const pressed = kindFilter === option;
-            return (
-              <button
-                key={option}
-                type="button"
-                className={
-                  pressed
-                    ? "doc-state-actions__btn doc-state-actions__btn--active"
-                    : "doc-state-actions__btn"
-                }
-                aria-pressed={pressed}
-                onClick={() => {
-                  clearPresetHighlight();
-                  setKindFilter(option);
-                }}
-              >
-                {kindFilterLabel(option)}
-              </button>
-            );
-          })}
-        </div>
-
         {showDemoWorkspaceChrome() ? (
           <>
+            <div className="intake-form" style={{ marginTop: "0.85rem" }}>
+              <label>
+                Search
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(event) => {
+                    clearPresetHighlight();
+                    setQuery(event.target.value);
+                  }}
+                  placeholder="Search address, city, ZIP, community…"
+                  aria-label="Search properties"
+                />
+              </label>
+            </div>
+
+            <p className="muted-note" style={{ marginTop: "0.65rem" }}>
+              Kind
+            </p>
+            <div
+              className="doc-state-actions"
+              role="group"
+              aria-label="Filter by kind"
+            >
+              {KIND_FILTERS.map((option) => {
+                const pressed = kindFilter === option;
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    className={
+                      pressed
+                        ? "doc-state-actions__btn doc-state-actions__btn--active"
+                        : "doc-state-actions__btn"
+                    }
+                    aria-pressed={pressed}
+                    onClick={() => {
+                      clearPresetHighlight();
+                      setKindFilter(option);
+                    }}
+                  >
+                    {kindFilterLabel(option)}
+                  </button>
+                );
+              })}
+            </div>
+
             <p className="muted-note" style={{ marginTop: "0.65rem" }}>
               Pinned
             </p>
@@ -706,7 +706,7 @@ export function PropertyList({ properties }: PropertyListProps) {
           </>
         ) : null}
 
-        {viewMode === "list" ? (
+        {showDemoWorkspaceChrome() && viewMode === "list" ? (
           <>
             <p className="muted-note" style={{ marginTop: "0.65rem" }}>
               Sort
@@ -741,21 +741,23 @@ export function PropertyList({ properties }: PropertyListProps) {
           </>
         ) : null}
 
-        <p className="muted-note" style={{ marginTop: "0.65rem" }}>
-          Showing {visible.length} of {pool.length}
-          {filtersActive ? (
-            <>
-              {" · "}
-              <button
-                type="button"
-                className="doc-state-actions__btn"
-                onClick={clearFilters}
-              >
-                Clear filters
-              </button>
-            </>
-          ) : null}
-        </p>
+        {showDemoWorkspaceChrome() ? (
+          <p className="muted-note" style={{ marginTop: "0.65rem" }}>
+            Showing {visible.length} of {pool.length}
+            {filtersActive ? (
+              <>
+                {" · "}
+                <button
+                  type="button"
+                  className="doc-state-actions__btn"
+                  onClick={clearFilters}
+                >
+                  Clear filters
+                </button>
+              </>
+            ) : null}
+          </p>
+        ) : null}
       </section>
 
       {visible.length === 0 ? (

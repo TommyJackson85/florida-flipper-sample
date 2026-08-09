@@ -1,4 +1,5 @@
 import { PropertyList } from "@/components/property/PropertyList";
+import { TrialPropertyList } from "@/components/property/TrialPropertyList";
 import { getAllProperties } from "@/data/properties";
 import { TRIAL_BUILD } from "@/lib/trial-build";
 
@@ -11,14 +12,7 @@ export default function PropertiesPage() {
         <h1>Screened properties</h1>
         <p>
           {TRIAL_BUILD ? (
-            <>
-              Open the seeded Niagara deal to review Track outcome, risk flags,
-              and missing diligence. Durable facts live in the file-backed
-              screen — not in this-tab toggles. {properties.length} propert
-              {properties.length === 1 ? "y" : "ies"} in this set; add another
-              via a TypeScript file under <code>src/data/properties</code> and{" "}
-              <code>index.ts</code>. Pilot script is on Home.
-            </>
+            <>Review properties with an initial Florida condo screening.</>
           ) : (
             <>
               {properties.length} propert
@@ -32,7 +26,11 @@ export default function PropertiesPage() {
         </p>
       </section>
 
-      <PropertyList properties={properties} />
+      {TRIAL_BUILD ? (
+        <TrialPropertyList properties={properties} />
+      ) : (
+        <PropertyList properties={properties} />
+      )}
     </main>
   );
 }
