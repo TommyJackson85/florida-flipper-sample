@@ -1,4 +1,5 @@
 import type { PropertyScreen } from "@/types/property";
+import { getCatalogProperties } from "@/data/properties";
 
 export const INTAKE_STUB_SESSION_KEY = "flippers.intakePropertyStub.v1";
 
@@ -22,6 +23,17 @@ export function slugify(value: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
   return slug || "new-property";
+}
+
+/** Session stubs must never reuse a catalog property id (e.g. Niagara). */
+function ensureNonCatalogId(id: string): string {
+  const catalogIds = new Set(
+    getCatalogProperties().map((property) => property.id)
+  );
+  if (!catalogIds.has(id)) {
+    return id;
+  }
+  return `${id}-session-stub`;
 }
 
 const unknownRiskFlags = {
@@ -63,7 +75,7 @@ export function buildPropertyFromIntake(
   options?: { forceSample?: boolean }
 ): PropertyScreen {
   const isSample = options?.forceSample ? true : form.isSample;
-  const id = slugify(`${form.address}-${form.zip}`);
+  const id = ensureNonCatalogId(slugify(`${form.address}-${form.zip}`));
   let title =
     form.title.trim() ||
     `Deal Screen — ${form.address.trim() || "Address"}`;
@@ -148,7 +160,7 @@ export function duplicatePropertyAsDemoStub(
   source: PropertyScreen
 ): PropertyScreen {
   const baseId = source.id.replace(/-demo-copy(-\d+)?$/, "");
-  const id = `${baseId}-demo-copy`;
+  const id = ensureNonCatalogId(`${baseId}-demo-copy`);
   const addressLabel = source.address || baseId;
   let title = `SAMPLE — Copy of ${addressLabel}`;
   if (source.title && !source.title.toUpperCase().includes("SAMPLE")) {

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { PropertyScreen } from "@/types/property";
 import { formatMoney } from "@/lib/format";
-import { showDemoDealExtras } from "@/lib/trial-build";
+import { TRIAL_BUILD, showDemoDealExtras } from "@/lib/trial-build";
 import { ArchivePropertyButton } from "./ArchivePropertyButton";
 import { AssociationCard } from "./AssociationCard";
 import { ClosingReadinessCard } from "./ClosingReadinessCard";
@@ -24,6 +24,7 @@ import { ScreeningCard } from "./ScreeningCard";
 import { SectionCard } from "./SectionCard";
 import { SourcesCard } from "./SourcesCard";
 import { TaxHistoryCard } from "./TaxHistoryCard";
+import { TrialPropertyDealScreen } from "./TrialPropertyDealScreen";
 
 type PropertyDealScreenProps = {
   property: PropertyScreen;
@@ -40,6 +41,18 @@ export function PropertyDealScreen({
 }: PropertyDealScreenProps) {
   const isSample = Boolean(property.isSample);
   const demoExtras = showDemoDealExtras();
+
+  if (TRIAL_BUILD && !isSample) {
+    return (
+      <TrialPropertyDealScreen
+        property={property}
+        backHref={backHref}
+        backLabel={
+          backLabel === "← All properties" ? "← Properties" : backLabel
+        }
+      />
+    );
+  }
 
   return (
     <main className="page-stack">
@@ -74,7 +87,7 @@ export function PropertyDealScreen({
       <MilestoneTimelineCard property={property} />
 
       {isSample ? null : <RiskFlagsCard property={property} />}
-      <ClosingReadinessCard property={property} />
+      {demoExtras ? <ClosingReadinessCard property={property} /> : null}
       {demoExtras ? <PostCloseWorkspaceCard property={property} /> : null}
       <MissingDocumentsCard property={property} />
       {demoExtras ? <PropertyAttachmentsCard property={property} /> : null}
@@ -147,7 +160,7 @@ export function PropertyDealScreen({
 
       {isSample ? null : (
         <>
-          <ScreeningCard property={property} />
+          {demoExtras ? <ScreeningCard property={property} /> : null}
 
           <div className="split-panel">
             <SectionCard title="Strengths">

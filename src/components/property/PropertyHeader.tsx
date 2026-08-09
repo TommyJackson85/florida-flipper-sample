@@ -35,7 +35,7 @@ export function PropertyHeader({ property }: PropertyHeaderProps) {
           </p>
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-          {isSample ? <StatusPill label="Sample" tone="warn" /> : null}
+          {isSample ? <StatusPill label="Example data" tone="warn" /> : null}
           {showSessionPills ? <PinnedStatusPill property={property} /> : null}
           {showSessionPills ? (
             <ArchivedStatusPill property={property} />

@@ -10,6 +10,11 @@ export function generateStaticParams() {
   return getAllProperties().map((property) => ({ id: property.id }));
 }
 
+/**
+ * Catalog detail routes always render the file-backed seed.
+ * Session intake stubs live only at /properties/intake-stub and must never
+ * overlay /properties/<catalog-id> (including Niagara).
+ */
 export default async function PropertyDetailPage({
   params,
 }: PropertyDetailPageProps) {

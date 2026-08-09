@@ -16,7 +16,7 @@ export function DuplicateDemoStubButton({
 }: DuplicateDemoStubButtonProps) {
   const router = useRouter();
 
-  function duplicate() {
+  function loadExample() {
     const stub = duplicatePropertyAsDemoStub(property);
     saveIntakeStubToSession(stub);
     router.push("/properties/intake-stub");
@@ -27,19 +27,19 @@ export function DuplicateDemoStubButton({
       <div
         className="doc-state-actions"
         role="group"
-        aria-label="Demo duplicate actions"
+        aria-label="Example deal actions"
       >
         <button
           type="button"
-          className="doc-state-actions__btn"
-          onClick={duplicate}
+          className="button-secondary"
+          onClick={loadExample}
         >
-          Duplicate as demo stub
+          Load example deal
         </button>
       </div>
       <p className="muted-note" style={{ marginTop: "0.35rem" }}>
-        Opens a Sample copy in this tab only — does not change the original or
-        save to the repo.
+        Opens an <strong>Example data</strong> copy in this tab only — does not
+        change the original deal or save anything permanently.
       </p>
     </div>
   );
