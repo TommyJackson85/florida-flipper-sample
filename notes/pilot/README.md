@@ -8,9 +8,10 @@ you capture outcomes here after (or during) a session so learning is not lost.
 ## Workflow
 
 1. Follow the operator runbook (`RUNBOOK.md`).
-2. Run the Home pilot script (`How to evaluate this pilot`).
-3. Let the tester use **Draft feedback email** if useful; take your own notes live.
-4. After the session, copy `notes/pilot/_template.md` (or use **Copy session notes template** on Home) into:
+2. Point testers at Home → **Share feedback** (Google Form when
+   `NEXT_PUBLIC_PILOT_FEEDBACK_FORM_URL` is set; otherwise email draft).
+3. Let the tester use **Draft feedback email** for screenshots / longer notes if useful; take your own notes live.
+4. After the session, copy `notes/pilot/_template.md` into:
 
    `notes/pilot/sessions/YYYY-MM-DD-<slug>.md`
 
