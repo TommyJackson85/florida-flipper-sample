@@ -13,6 +13,8 @@ import {
 import { DetailList } from "./DetailList";
 import { SectionCard } from "./SectionCard";
 import { StatusPill } from "./StatusPill";
+import { PilotEndOfReviewFeedback } from "./PilotEndOfReviewFeedback";
+import { showPilotEndOfReviewFeedback } from "@/lib/pilot-feedback";
 
 type TrialPropertyDealScreenProps = {
   property: PropertyScreen;
@@ -616,6 +618,10 @@ export function TrialPropertyDealScreen({
       <SectionCard title="Track rationale">
         <p style={{ marginTop: 0 }}>{TRACK_RATIONALE}</p>
       </SectionCard>
+
+      {showPilotEndOfReviewFeedback(property) ? (
+        <PilotEndOfReviewFeedback />
+      ) : null}
     </main>
   );
 }

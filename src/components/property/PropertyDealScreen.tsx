@@ -25,6 +25,8 @@ import { SectionCard } from "./SectionCard";
 import { SourcesCard } from "./SourcesCard";
 import { TaxHistoryCard } from "./TaxHistoryCard";
 import { TrialPropertyDealScreen } from "./TrialPropertyDealScreen";
+import { PilotEndOfReviewFeedback } from "./PilotEndOfReviewFeedback";
+import { showPilotEndOfReviewFeedback } from "@/lib/pilot-feedback";
 
 type PropertyDealScreenProps = {
   property: PropertyScreen;
@@ -185,6 +187,10 @@ export function PropertyDealScreen({
           <SourcesCard property={property} />
         </>
       )}
+
+      {showPilotEndOfReviewFeedback(property) ? (
+        <PilotEndOfReviewFeedback />
+      ) : null}
     </main>
   );
 }
