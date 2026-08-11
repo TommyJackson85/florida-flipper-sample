@@ -65,20 +65,9 @@ npm ci
 npm run dev
 ```
 
-## Pilot feedback form (optional)
+## Pilot feedback
 
-Home → **Share feedback** opens a Google Form when configured. The app only links
-out; it does not submit responses.
-
-1. Create the form in Google Forms (include property reviewed, Track outcome, and your questions).
-2. Use Google Forms’ **Get pre-filled link** (responder `viewform` URL — not the editor URL).
-3. Copy `.env.example` to `.env.local` (local) or set the same variable in your host/CI build env:
-
-```bash
-NEXT_PUBLIC_PILOT_FEEDBACK_FORM_URL=https://docs.google.com/forms/d/e/REPLACE_WITH_PREFILLED_FORM_URL/viewform
-```
-
-4. Restart `npm run dev` / rebuild so Next.js picks up `NEXT_PUBLIC_*`.
-
-Until a real URL replaces the placeholder, the primary form button stays hidden and
-**Draft feedback email** remains available.
+After reviewing Niagara (or Fowler when visible), the deal screen shows
+**Finish your review** → **Give feedback**, which opens the Google Form in an
+in-app dialog. The app only embeds the form; it does not collect or store
+responses. Feedback is not asked on the Home page.

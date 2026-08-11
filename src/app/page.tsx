@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { PilotEvaluationPanel } from "@/components/PilotEvaluationPanel";
 import { TRIAL_BUILD } from "@/lib/trial-build";
 
 /** Seeded sample deal shown in trial — example output, not the product itself. */
@@ -49,8 +48,6 @@ export default function HomePage() {
           )}
         </div>
       </section>
-
-      {TRIAL_BUILD ? <PilotEvaluationPanel /> : null}
     </main>
   );
 }
