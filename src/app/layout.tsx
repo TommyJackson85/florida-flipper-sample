@@ -12,7 +12,7 @@ const ibmPlexSans = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Deal Screen",
+  title: "Condo Clear",
   description:
     "Structured condo screening for a small number of opportunities — not a CRM.",
 };
@@ -28,7 +28,7 @@ export default function RootLayout({
         <header className="site-header">
           <div className="site-header-inner">
             <Link href="/" className="site-brand">
-              Deal Screen
+              Condo Clear
             </Link>
             <nav className="site-nav" aria-label="Main">
               {TRIAL_BUILD ? null : <Link href="/">Home</Link>}

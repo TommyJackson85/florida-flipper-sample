@@ -8,17 +8,19 @@ export default function HomePage() {
   return (
     <main className="page-stack">
       <section className="page-intro">
-        <h1>Florida condo deal screening</h1>
+        <h1>Condo Clear: Florida Condo Due Diligence, Simplified.</h1>
         <p>
-          Helps you review a Florida condo opportunity — risk flags, missing
-          diligence, and a clear recommended next step. Built for solo
-          operators, not a CRM.
+          Review your next Florida condo opportunity in minutes. We highlight
+          risk flags, catch missing diligence, and recommend your next step.
+          Built for solo investors who need quick answers, not a CRM.
         </p>
         {TRIAL_BUILD ? (
-          <p className="muted-note" style={{ marginTop: "0.65rem" }}>
-            This pilot shows a completed sample deal. We are testing whether
-            this screening format would help you evaluate your own Florida condo
-            opportunities.
+          <p
+            className="muted-note"
+            style={{ marginTop: "0.65rem", fontStyle: "italic" }}
+          >
+            This pilot features a completed sample deal. Take a look and let us
+            know if this format would help you close safer, faster deals.
           </p>
         ) : (
           <p className="muted-note" style={{ marginTop: "0.65rem" }}>
