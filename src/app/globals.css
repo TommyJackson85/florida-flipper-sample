@@ -562,6 +562,29 @@ a.trial-property-card * {
   gap: 12px;
 }
 
+.pilot-review-guidance {
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: var(--soft);
+}
+
+.pilot-review-guidance h2 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.pilot-review-guidance p {
+  margin: 0;
+  max-width: 640px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
 .recommendation-banner__top {
   display: flex;
   justify-content: space-between;

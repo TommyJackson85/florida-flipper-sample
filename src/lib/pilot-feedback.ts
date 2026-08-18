@@ -30,3 +30,11 @@ export function showPilotEndOfReviewFeedback(property: {
   if (property.isSample) return false;
   return PILOT_END_OF_REVIEW_PROPERTY_IDS.has(property.id);
 }
+
+/** Same pilot examples as end-of-review feedback — Niagara and Fowler only. */
+export function showPilotReviewGuidance(property: {
+  id: string;
+  isSample?: boolean;
+}): boolean {
+  return showPilotEndOfReviewFeedback(property);
+}

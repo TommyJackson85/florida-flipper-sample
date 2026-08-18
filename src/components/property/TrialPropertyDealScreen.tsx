@@ -14,6 +14,7 @@ import { DetailList } from "./DetailList";
 import { SectionCard } from "./SectionCard";
 import { StatusPill } from "./StatusPill";
 import { PilotEndOfReviewFeedback } from "./PilotEndOfReviewFeedback";
+import { PilotReviewGuidance } from "./PilotReviewGuidance";
 import { showPilotEndOfReviewFeedback } from "@/lib/pilot-feedback";
 
 type TrialPropertyDealScreenProps = {
@@ -184,6 +185,8 @@ export function TrialPropertyDealScreen({
           Association diligence remains open.
         </p>
       </header>
+
+      <PilotReviewGuidance property={property} />
 
       {/* 4. Screening recommendation */}
       <section className="recommendation-banner">

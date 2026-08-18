@@ -26,6 +26,7 @@ import { SourcesCard } from "./SourcesCard";
 import { TaxHistoryCard } from "./TaxHistoryCard";
 import { TrialPropertyDealScreen } from "./TrialPropertyDealScreen";
 import { PilotEndOfReviewFeedback } from "./PilotEndOfReviewFeedback";
+import { PilotReviewGuidance } from "./PilotReviewGuidance";
 import { showPilotEndOfReviewFeedback } from "@/lib/pilot-feedback";
 
 type PropertyDealScreenProps = {
@@ -74,6 +75,7 @@ export function PropertyDealScreen({
       ) : null}
 
       <PropertyHeader property={property} />
+      <PilotReviewGuidance property={property} />
       <PropertyOverviewCard property={property} />
       {demoExtras ? <PropertyTagsCard property={property} /> : null}
       {demoExtras ? (
