@@ -74,8 +74,8 @@ export function PropertyDealScreen({
         </>
       ) : null}
 
-      <PropertyHeader property={property} />
       <PilotReviewGuidance property={property} />
+      <PropertyHeader property={property} />
       <PropertyOverviewCard property={property} />
       {demoExtras ? <PropertyTagsCard property={property} /> : null}
       {demoExtras ? (

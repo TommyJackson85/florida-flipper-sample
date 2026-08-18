@@ -159,6 +159,8 @@ export function TrialPropertyDealScreen({
         {backLabel}
       </Link>
 
+      <PilotReviewGuidance property={property} />
+
       {/* 1–3. Header + one Track badge + supporting line */}
       <header className="property-header">
         <p className="property-header__eyebrow">
@@ -185,8 +187,6 @@ export function TrialPropertyDealScreen({
           Association diligence remains open.
         </p>
       </header>
-
-      <PilotReviewGuidance property={property} />
 
       {/* 4. Screening recommendation */}
       <section className="recommendation-banner">

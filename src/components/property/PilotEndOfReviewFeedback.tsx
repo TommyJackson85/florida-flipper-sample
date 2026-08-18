@@ -55,7 +55,7 @@ export function PilotEndOfReviewFeedback() {
   return (
     <>
       <section
-        className="pilot-end-review"
+        className="pilot-highlight pilot-end-review"
         aria-labelledby={headingId}
       >
         <h2 id={headingId} className="pilot-end-review__heading">

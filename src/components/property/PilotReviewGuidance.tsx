@@ -15,7 +15,7 @@ export function PilotReviewGuidance({ property }: PilotReviewGuidanceProps) {
   }
 
   return (
-    <section className="pilot-review-guidance">
+    <section className="pilot-highlight">
       <h2>Review this Florida condo opportunity</h2>
       <p>
         Review the recommendation, risk flags, and missing diligence for this
