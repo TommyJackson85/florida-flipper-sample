@@ -1305,6 +1305,349 @@ a.doc-state-actions__btn {
   line-height: 1.55;
 }
 
+/* Niagara pilot deal screen — denser layout */
+.niagara-pilot {
+  gap: 12px;
+}
+
+.niagara-pilot .section-card {
+  padding: 16px;
+}
+
+.niagara-pilot .section-card__body {
+  margin-top: 10px;
+}
+
+.niagara-pilot .detail-grid {
+  gap: 8px;
+}
+
+.niagara-pilot .detail-item {
+  padding: 8px 10px;
+}
+
+.niagara-pilot__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 14px;
+  align-items: start;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.niagara-pilot__row-title {
+  margin: 0;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.niagara-pilot__row .status-pill {
+  justify-self: end;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Blue intro banner */
+.pilot-intro-banner {
+  border: 1px solid #c2d4ee;
+  border-radius: 12px;
+  padding: 18px 20px;
+  background: linear-gradient(180deg, #e9f0fa 0%, #e2ecf9 100%);
+}
+
+.pilot-intro-banner__eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.pilot-intro-banner__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.pilot-intro-banner h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2vw + 1rem, 1.9rem);
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.pilot-intro-banner__location {
+  margin: 6px 0 0;
+  color: #33507a;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pilot-intro-banner__body {
+  margin: 12px 0 0;
+  max-width: 760px;
+  color: #33415a;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Investor summary */
+.niagara-pilot__summary {
+  display: grid;
+  gap: 0;
+}
+
+.niagara-pilot__next-gate {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--soft);
+  border: 1px solid var(--border-soft);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #374151;
+}
+
+/* Unverified inputs */
+.pilot-unverified {
+  border: 1px solid #f3d7ac;
+  border-radius: 12px;
+  padding: 16px 18px;
+  background: #fff8ef;
+}
+
+.pilot-unverified__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.pilot-unverified__head h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
+.pilot-unverified__lede {
+  margin: 8px 0 12px;
+  color: #6b4b1f;
+  font-size: 13.5px;
+  line-height: 1.45;
+  max-width: 720px;
+}
+
+.pilot-unverified__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.pilot-unverified__item {
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) 1fr;
+  gap: 4px 16px;
+  padding: 10px 12px;
+  border: 1px solid #f0dcbb;
+  border-radius: 8px;
+  background: #fffdf9;
+}
+
+.pilot-unverified__label {
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+.pilot-unverified__detail {
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: #4b5563;
+}
+
+@media (max-width: 560px) {
+  .pilot-unverified__item {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* Diligence checklist */
+.pilot-checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  overflow: hidden;
+  counter-reset: pilot-step;
+}
+
+.pilot-checklist__item {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--soft);
+}
+
+.pilot-checklist__item:last-child {
+  border-bottom: none;
+}
+
+.pilot-checklist__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 14px;
+  align-items: center;
+}
+
+.pilot-checklist__label {
+  font-weight: 600;
+  font-size: 14px;
+  min-width: 0;
+}
+
+.pilot-checklist__label::before {
+  counter-increment: pilot-step;
+  content: counter(pilot-step) ". ";
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.pilot-checklist__note {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* Accordions */
+.pilot-accordions {
+  display: grid;
+  gap: 8px;
+}
+
+.pilot-accordion {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.pilot-accordion[open] {
+  border-color: #cfd6df;
+}
+
+.pilot-accordion__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.pilot-accordion__summary::-webkit-details-marker {
+  display: none;
+}
+
+.pilot-accordion__summary::after {
+  content: "+";
+  margin-left: auto;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.pilot-accordion[open] > .pilot-accordion__summary::after {
+  content: "–";
+}
+
+.pilot-accordion__summary:hover {
+  background: var(--soft);
+}
+
+.pilot-accordion__summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.pilot-accordion__title {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.pilot-accordion__hint {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.pilot-accordion__body {
+  padding: 4px 16px 16px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.pilot-accordion__body > *:first-child {
+  margin-top: 12px;
+}
+
+.niagara-pilot__facts {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.niagara-pilot__fact {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: var(--soft);
+}
+
+.niagara-pilot__fact dt {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+}
+
+.niagara-pilot__fact dd {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.niagara-pilot__facts + .detail-grid {
+  margin-top: 12px;
+}
+
+@media (max-width: 520px) {
+  .niagara-pilot__row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .niagara-pilot__row .status-pill {
+    justify-self: start;
+  }
+}
+
 @media print {
   .site-header,
   .print-hide {
