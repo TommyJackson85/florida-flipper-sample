@@ -1,0 +1,17 @@
+{
+  "name": "Deal Screen (florida-flipper-sample)",
+  "user": "ubuntu",
+  "install": "npm ci",
+  "terminals": [
+    {
+      "name": "next-dev",
+      "command": "npm run dev"
+    }
+  ],
+  "ports": [
+    {
+      "name": "Next dev server",
+      "port": 3000
+    }
+  ]
+}
