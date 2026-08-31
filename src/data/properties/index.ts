@@ -3,6 +3,7 @@ import { property2200EFowlerAveB12 } from "./2200-e-fowler-ave-b12";
 import { property4821CypressHammockDr33617 } from "./4821-cypress-hammock-dr-33617";
 import { property7863Niagara1921 } from "./7863-niagara-1921";
 import { TRIAL_BUILD } from "@/lib/trial-build";
+import { TRIAL_HIDDEN_PROPERTY_IDS } from "./catalog";
 
 /**
  * Register properties here (file-based only — no DB).
@@ -26,12 +27,6 @@ export const properties: PropertyScreen[] = [
   property2200EFowlerAveB12,
   property4821CypressHammockDr33617,
 ];
-
-/** Non-trial fixtures omitted from list and routes when TRIAL_BUILD is true. */
-const TRIAL_HIDDEN_PROPERTY_IDS = new Set([
-  "2200-e-fowler-ave-b12",
-  "4821-cypress-hammock-dr-33617",
-]);
 
 export function getCatalogProperties(): PropertyScreen[] {
   return properties;
@@ -60,3 +55,10 @@ export {
   property7863Niagara1921,
   property4821CypressHammockDr33617,
 };
+
+export {
+  PROPERTY_CATALOG,
+  PILOT_FEEDBACK_PROPERTY_IDS,
+  TRIAL_HIDDEN_PROPERTY_IDS,
+} from "./catalog";
+export type { PropertyCatalogEntry, PropertyCatalogTier } from "./catalog";

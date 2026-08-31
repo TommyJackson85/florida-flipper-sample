@@ -3,6 +3,8 @@
  * The app never submits to Google Forms itself — the iframe posts to Google.
  */
 
+import { PILOT_FEEDBACK_PROPERTY_IDS } from "@/data/properties/catalog";
+
 /** Google Form document id for the pilot feedback questionnaire. */
 export const PILOT_FEEDBACK_FORM_ID =
   "100PIDFDsuvWrhZQShY8TTWkbp6TqdQVLzf4dKpeeWP0";
@@ -13,11 +15,25 @@ export const PILOT_FEEDBACK_FORM_ID =
  */
 export const PILOT_FEEDBACK_EMBEDDED_FORM_URL = `https://docs.google.com/forms/d/${PILOT_FEEDBACK_FORM_ID}/viewform?embedded=true`;
 
-/** Catalog ids that get the end-of-review embedded feedback CTA. */
-const PILOT_END_OF_REVIEW_PROPERTY_IDS = new Set([
-  "7863-niagara-1921",
-  "2200-e-fowler-ave-b12",
-]);
+/** User-facing copy for pilot orientation and end-of-review feedback UI. */
+export const PILOT_FEEDBACK_COPY = {
+  guidance: {
+    heading: "Review this Florida condo opportunity",
+    body:
+      "Review the recommendation, risk flags, and missing diligence for this sample property. Condo Clear offers a quick screening view for solo investors — not a CRM. When you finish, the short review questionnaire is at the bottom of this page.",
+  },
+  endOfReview: {
+    heading: "Finish your review",
+    body:
+      "You’ve reviewed this sample property’s screening outcome, risks, and missing diligence. Tell us what was clear, what felt unreliable, and what you would need for a real deal. It takes about two minutes.",
+    cta: "Give feedback",
+  },
+  modal: {
+    title: "Pilot feedback",
+    closeLabel: "Close feedback form",
+    iframeTitle: "Florida Condo Screening MVP pilot feedback form",
+  },
+} as const;
 
 /**
  * Niagara (Track) and Fowler (Pass) only — never Cypress / Sample shells.
@@ -28,7 +44,7 @@ export function showPilotEndOfReviewFeedback(property: {
   isSample?: boolean;
 }): boolean {
   if (property.isSample) return false;
-  return PILOT_END_OF_REVIEW_PROPERTY_IDS.has(property.id);
+  return PILOT_FEEDBACK_PROPERTY_IDS.has(property.id);
 }
 
 /** Same pilot examples as end-of-review feedback — Niagara and Fowler only. */

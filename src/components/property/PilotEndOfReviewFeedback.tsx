@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { PILOT_FEEDBACK_EMBEDDED_FORM_URL } from "@/lib/pilot-feedback";
+import {
+  PILOT_FEEDBACK_COPY,
+  PILOT_FEEDBACK_EMBEDDED_FORM_URL,
+} from "@/lib/pilot-feedback";
 
 /**
  * Compact end-of-review CTA. The Google Form iframe mounts only after the
@@ -59,12 +62,10 @@ export function PilotEndOfReviewFeedback() {
         aria-labelledby={headingId}
       >
         <h2 id={headingId} className="pilot-end-review__heading">
-          Finish your review
+          {PILOT_FEEDBACK_COPY.endOfReview.heading}
         </h2>
         <p className="pilot-end-review__body">
-          You’ve reviewed this sample property’s screening outcome, risks, and
-          missing diligence. Tell us what was clear, what felt unreliable, and
-          what you would need for a real deal. It takes about two minutes.
+          {PILOT_FEEDBACK_COPY.endOfReview.body}
         </p>
         <button
           ref={triggerRef}
@@ -74,7 +75,7 @@ export function PilotEndOfReviewFeedback() {
           aria-expanded={dialogOpen}
           onClick={openFeedbackDialog}
         >
-          Give feedback
+          {PILOT_FEEDBACK_COPY.endOfReview.cta}
         </button>
       </section>
 
@@ -92,12 +93,12 @@ export function PilotEndOfReviewFeedback() {
             onClick={(event) => event.stopPropagation()}
           >
             <div className="pilot-feedback-modal__header">
-              <h2 id={titleId}>Pilot feedback</h2>
+              <h2 id={titleId}>{PILOT_FEEDBACK_COPY.modal.title}</h2>
               <button
                 ref={closeRef}
                 type="button"
                 className="button-secondary"
-                aria-label="Close feedback form"
+                aria-label={PILOT_FEEDBACK_COPY.modal.closeLabel}
                 onClick={closeFeedbackDialog}
               >
                 Close
@@ -108,7 +109,7 @@ export function PilotEndOfReviewFeedback() {
               <iframe
                 className="pilot-feedback-modal__iframe"
                 src={PILOT_FEEDBACK_EMBEDDED_FORM_URL}
-                title="Florida Condo Screening MVP pilot feedback form"
+                title={PILOT_FEEDBACK_COPY.modal.iframeTitle}
               />
             </div>
           </div>
