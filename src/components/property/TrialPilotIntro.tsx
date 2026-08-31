@@ -12,13 +12,17 @@ export function TrialPilotIntro({ address }: TrialPilotIntroProps) {
         Pilot sample deal and feedback
       </h2>
       <p className="trial-pilot-intro__body">
-        This page shows a fixed sample dataset for {address} in Tampa — compiled
-        from public records and listing sources for pilot review, not live MLS or
-        association data. Scroll the full screening report below, then use the
-        short questionnaire at the bottom (~45 seconds) to tell us whether this
-        format would help on a real condo deal. Responses go to the Condo Clear
-        Google Form; this app does not store answers. Preliminary screening only
-        — not legal, engineering, insurance, or investment advice.
+        Review this sample condo screening report for {address}, Tampa. It uses
+        public records and listing data for pilot testing only—not live MLS or
+        association data.
+      </p>
+      <p className="trial-pilot-intro__body">
+        Then complete the 45-second questionnaire below. Your feedback helps us
+        improve Condo Clear for real deals.
+      </p>
+      <p className="trial-pilot-intro__body">
+        Preliminary screening only—not legal, engineering, insurance, or
+        investment advice.
       </p>
     </aside>
   );
