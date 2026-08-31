@@ -11,6 +11,8 @@ const pagesBase = "/florida-flipper-sample";
  */
 const nextConfig: NextConfig = {
   output: "export",
+  /** Allow Cloudflare quick tunnels (trycloudflare.com) to load /_next/* in dev. */
+  allowedDevOrigins: ["*.trycloudflare.com"],
   ...(isGithubPages
     ? {
         basePath: pagesBase,
