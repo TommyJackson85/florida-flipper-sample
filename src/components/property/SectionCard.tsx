@@ -1,14 +1,20 @@
 import type { ReactNode } from "react";
 
 type SectionCardProps = {
+  id?: string;
   title: string;
   subtitle?: string;
   children: ReactNode;
 };
 
-export function SectionCard({ title, subtitle, children }: SectionCardProps) {
+export function SectionCard({
+  id,
+  title,
+  subtitle,
+  children,
+}: SectionCardProps) {
   return (
-    <section className="section-card">
+    <section id={id} className="section-card">
       <div>
         <h2>{title}</h2>
         {subtitle ? <p className="section-card__subtitle">{subtitle}</p> : null}

@@ -1,5 +1,5 @@
 /**
- * Pilot feedback helpers for the end-of-deal-review embedded Google Form.
+ * Pilot feedback helpers for the embedded Google Form survey.
  * The app never submits to Google Forms itself — the iframe posts to Google.
  */
 
@@ -15,23 +15,40 @@ export const PILOT_FEEDBACK_FORM_ID =
  */
 export const PILOT_FEEDBACK_EMBEDDED_FORM_URL = `https://docs.google.com/forms/d/${PILOT_FEEDBACK_FORM_ID}/viewform?embedded=true`;
 
-/** User-facing copy for pilot orientation and end-of-review feedback UI. */
+/** Stable page anchors for scroll + focus from feedback CTAs. */
+export const PILOT_FEEDBACK_SURVEY_ID = "pilot-feedback-survey";
+export const PILOT_FEEDBACK_SURVEY_HEADING_ID = "pilot-feedback-survey-heading";
+
+/** Measured from the embedded form at common widths, plus a safety buffer. */
+export const PILOT_FEEDBACK_FORM_HEIGHT_STEPS = [
+  { minWidth: 720, height: 2026 },
+  { minWidth: 520, height: 2100 },
+  { minWidth: 430, height: 2208 },
+  { minWidth: 0, height: 2380 },
+] as const;
+
+/** Pick iframe height from measured steps so the form fits without internal scroll. */
+export function pilotFeedbackFormHeightForWidth(width: number): number {
+  for (const step of PILOT_FEEDBACK_FORM_HEIGHT_STEPS) {
+    if (width >= step.minWidth) return step.height;
+  }
+  return PILOT_FEEDBACK_FORM_HEIGHT_STEPS[
+    PILOT_FEEDBACK_FORM_HEIGHT_STEPS.length - 1
+  ].height;
+}
+
+export const PILOT_FEEDBACK_CALLOUT_HEADING =
+  "Would this help on a real condo deal?";
+export const PILOT_FEEDBACK_CALLOUT_BODY =
+  "Help shape Condo Clear with a 45-second pilot survey.";
+export const PILOT_FEEDBACK_CALLOUT_BUTTON = "Give 45-second feedback";
+
+/** User-facing copy for pilot orientation in methodology panels. */
 export const PILOT_FEEDBACK_COPY = {
   guidance: {
-    heading: "Review this Florida condo opportunity",
+    heading: "Review this Florida condo sample",
     body:
-      "Review the recommendation, risk flags, and missing diligence for this sample property. Condo Clear offers a quick screening view for solo investors — not a CRM. When you finish, the short review questionnaire is at the bottom of this page.",
-  },
-  endOfReview: {
-    heading: "Finish your review",
-    body:
-      "You’ve reviewed this sample property’s screening outcome, risks, and missing diligence. Tell us what was clear, what felt unreliable, and what you would need for a real deal. It takes about two minutes.",
-    cta: "Give feedback",
-  },
-  modal: {
-    title: "Pilot feedback",
-    closeLabel: "Close feedback form",
-    iframeTitle: "Florida Condo Screening MVP pilot feedback form",
+      "Review the preliminary screening status, deal blockers, risk flags, and missing association documents for this sample property. Condo Clear offers a quick screening view for solo investors — not a CRM. When you finish, the short review questionnaire is at the bottom of this page.",
   },
 } as const;
 

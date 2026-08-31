@@ -1,120 +1,126 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useId } from "react";
 import {
-  PILOT_FEEDBACK_COPY,
-  PILOT_FEEDBACK_EMBEDDED_FORM_URL,
+  PILOT_FEEDBACK_CALLOUT_BODY,
+  PILOT_FEEDBACK_CALLOUT_BUTTON,
+  PILOT_FEEDBACK_CALLOUT_HEADING,
+  PILOT_FEEDBACK_SURVEY_HEADING_ID,
+  PILOT_FEEDBACK_SURVEY_ID,
 } from "@/lib/pilot-feedback";
+import { PilotFeedbackSurveyFrame } from "./PilotFeedbackSurveyFrame";
+
+function prefersReducedMotion(): boolean {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function focusSurveyHeading() {
+  const heading = document.getElementById(PILOT_FEEDBACK_SURVEY_HEADING_ID);
+  if (!heading) return;
+  if (!heading.hasAttribute("tabindex")) {
+    heading.tabIndex = -1;
+  }
+  heading.focus({ preventScroll: true });
+}
+
+/** Smooth-scroll to the embedded survey, then move keyboard focus to its heading. */
+export function scrollToPilotFeedbackSurvey() {
+  const survey = document.getElementById(PILOT_FEEDBACK_SURVEY_ID);
+  if (!survey) return;
+
+  const reduced = prefersReducedMotion();
+  survey.scrollIntoView({
+    behavior: reduced ? "auto" : "smooth",
+    block: "start",
+  });
+
+  if (reduced) {
+    focusSurveyHeading();
+    return;
+  }
+
+  let finished = false;
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    focusSurveyHeading();
+  };
+
+  document.addEventListener("scrollend", finish, { once: true });
+  window.setTimeout(finish, 700);
+}
+
+type PilotFeedbackCalloutProps = {
+  /** Optional id when multiple callouts are on the page */
+  id?: string;
+};
 
 /**
- * Compact end-of-review CTA. The Google Form iframe mounts only after the
- * user clicks “Give feedback” — never on page load, scroll, or a timer.
+ * Compact feedback CTA. Scrolls to the embedded survey — never opens a modal.
  */
-export function PilotEndOfReviewFeedback() {
-  // Intentionally false: dialog stays closed until the CTA is activated.
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const headingId = useId();
-  const titleId = useId();
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const previouslyOpenRef = useRef(false);
-
-  useEffect(() => {
-    if (!dialogOpen) {
-      if (previouslyOpenRef.current) {
-        triggerRef.current?.focus();
-      }
-      previouslyOpenRef.current = false;
-      return;
-    }
-
-    previouslyOpenRef.current = true;
-    closeRef.current?.focus();
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        setDialogOpen(false);
-      }
-    }
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [dialogOpen]);
-
-  function openFeedbackDialog() {
-    setDialogOpen(true);
-  }
-
-  function closeFeedbackDialog() {
-    setDialogOpen(false);
-  }
+export function PilotFeedbackCallout({ id }: PilotFeedbackCalloutProps) {
+  const reactId = useId();
+  const headingId = id ? `${id}-heading` : `${reactId}-heading`;
 
   return (
-    <>
-      <section
-        className="pilot-highlight pilot-end-review"
-        aria-labelledby={headingId}
-      >
-        <h2 id={headingId} className="pilot-end-review__heading">
-          {PILOT_FEEDBACK_COPY.endOfReview.heading}
+    <aside
+      id={id}
+      className="pilot-feedback-callout"
+      aria-labelledby={headingId}
+    >
+      <div className="pilot-feedback-callout__copy">
+        <h2 id={headingId} className="pilot-feedback-callout__heading">
+          {PILOT_FEEDBACK_CALLOUT_HEADING}
         </h2>
-        <p className="pilot-end-review__body">
-          {PILOT_FEEDBACK_COPY.endOfReview.body}
+        <p className="pilot-feedback-callout__body">
+          {PILOT_FEEDBACK_CALLOUT_BODY}
         </p>
-        <button
-          ref={triggerRef}
-          type="button"
-          className="button-primary"
-          aria-haspopup="dialog"
-          aria-expanded={dialogOpen}
-          onClick={openFeedbackDialog}
-        >
-          {PILOT_FEEDBACK_COPY.endOfReview.cta}
-        </button>
-      </section>
+      </div>
+      <button
+        type="button"
+        className="button-primary pilot-feedback-callout__button"
+        onClick={scrollToPilotFeedbackSurvey}
+      >
+        {PILOT_FEEDBACK_CALLOUT_BUTTON}
+      </button>
+    </aside>
+  );
+}
 
-      {dialogOpen ? (
-        <div
-          className="pilot-feedback-modal"
-          role="presentation"
-          onClick={closeFeedbackDialog}
-        >
-          <div
-            className="pilot-feedback-modal__dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={titleId}
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="pilot-feedback-modal__header">
-              <h2 id={titleId}>{PILOT_FEEDBACK_COPY.modal.title}</h2>
-              <button
-                ref={closeRef}
-                type="button"
-                className="button-secondary"
-                aria-label={PILOT_FEEDBACK_COPY.modal.closeLabel}
-                onClick={closeFeedbackDialog}
-              >
-                Close
-              </button>
-            </div>
-            <div className="pilot-feedback-modal__body">
-              {/* Iframe exists only while the dialog is open (user-initiated). */}
-              <iframe
-                className="pilot-feedback-modal__iframe"
-                src={PILOT_FEEDBACK_EMBEDDED_FORM_URL}
-                title={PILOT_FEEDBACK_COPY.modal.iframeTitle}
-              />
-            </div>
-          </div>
-        </div>
-      ) : null}
-    </>
+/**
+ * Embedded Google Form survey at the bottom of the deal page.
+ * Mounted in-page only — no modal, no auto-open popup.
+ */
+export function PilotFeedbackSurvey() {
+  return (
+    <section
+      id={PILOT_FEEDBACK_SURVEY_ID}
+      className="pilot-feedback-survey"
+      aria-labelledby={PILOT_FEEDBACK_SURVEY_HEADING_ID}
+    >
+      <h2
+        id={PILOT_FEEDBACK_SURVEY_HEADING_ID}
+        className="pilot-feedback-survey__heading"
+      >
+        Pilot feedback survey
+      </h2>
+      <p className="pilot-feedback-survey__lede muted-note">
+        About 45 seconds. Responses go to the Condo Clear pilot form — this app
+        does not store your answers.
+      </p>
+      <PilotFeedbackSurveyFrame />
+    </section>
+  );
+}
+
+/**
+ * Bottom-of-page feedback block: callout immediately above the embedded survey.
+ */
+export function PilotEndOfReviewFeedback() {
+  return (
+    <div className="pilot-feedback-footer">
+      <PilotFeedbackCallout id="pilot-feedback-callout-footer" />
+      <PilotFeedbackSurvey />
+    </div>
   );
 }
