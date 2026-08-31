@@ -173,10 +173,6 @@ export function TrialPropertyDealScreen({
       <InvestorDealSummary property={property} />
       <UnverifiedUnderwritingInputs />
 
-      {showPilotEndOfReviewFeedback(property) ? (
-        <PilotFeedbackCallout id="pilot-feedback-callout-top" />
-      ) : null}
-
       <BeforeYouUnderwriteChecklist property={property} />
 
       <ReportAccordion
