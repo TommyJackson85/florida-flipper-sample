@@ -175,6 +175,10 @@ export function TrialPropertyDealScreen({
 
       <BeforeYouUnderwriteChecklist property={property} />
 
+      {showPilotEndOfReviewFeedback(property) ? (
+        <PilotFeedbackCallout id="pilot-feedback-callout-pre-accordion" />
+      ) : null}
+
       <ReportAccordion
         panels={[
           {

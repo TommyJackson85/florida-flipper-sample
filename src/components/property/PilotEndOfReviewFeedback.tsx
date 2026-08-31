@@ -114,12 +114,11 @@ export function PilotFeedbackSurvey() {
 }
 
 /**
- * Bottom-of-page feedback block: callout immediately above the embedded survey.
+ * Bottom-of-page embedded survey (CTA sits above accordions on the deal screen).
  */
 export function PilotEndOfReviewFeedback() {
   return (
     <div className="pilot-feedback-footer">
-      <PilotFeedbackCallout id="pilot-feedback-callout-footer" />
       <PilotFeedbackSurvey />
     </div>
   );
