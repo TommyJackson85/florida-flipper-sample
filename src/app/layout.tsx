@@ -23,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={ibmPlexSans.variable}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={ibmPlexSans.variable} suppressHydrationWarning>
         <header className="site-header">
           <div className="site-header-inner">
             <Link href="/" className="site-brand">
