@@ -10,12 +10,38 @@ type InvestorDealSummaryProps = {
 
 const SCREENING_PILL = "Hold — association diligence required";
 
+/** Real-deal priority gates — lead with Reserves / SIRS / inspection. */
 const PRIMARY_BLOCKERS = [
-  "Budget, reserves, and SIRS status are unverified",
-  "Milestone or structural inspection status is an open item",
-  "Special assessments and capital projects are unconfirmed",
-  "Master insurance posture is unknown",
-  "HOA dues are unverified — listing sources conflict",
+  {
+    item: "Reserves / SIRS status",
+    status: "Unverified",
+    tone: "bad" as const,
+    note: "Approved budget, reserve schedule, and SIRS status not in hand.",
+  },
+  {
+    item: "Milestone / structural inspection",
+    status: "Open item",
+    tone: "bad" as const,
+    note: "No building/phase inspection report obtained yet.",
+  },
+  {
+    item: "Special assessments / capital projects",
+    status: "Unconfirmed",
+    tone: "warn" as const,
+    note: "Current or recent assessments not confirmed with association records.",
+  },
+  {
+    item: "Master insurance posture",
+    status: "Unknown",
+    tone: "neutral" as const,
+    note: "Association and unit insurance not researched on this screen.",
+  },
+  {
+    item: "HOA dues",
+    status: "Unverified",
+    tone: "warn" as const,
+    note: "Listing sources conflict (~$376 vs ~$499/month).",
+  },
 ] as const;
 
 function countMissingAssociationDocuments(property: PropertyScreen): number {
@@ -34,7 +60,8 @@ function hoaDuesSummary(property: PropertyScreen): string {
 }
 
 /**
- * Investor-first summary: screening status, key metrics, and primary blockers.
+ * Investor-first summary: screening status, spreadsheet-style metrics,
+ * and primary blockers led by Reserves / SIRS / inspection.
  */
 export function InvestorDealSummary({ property }: InvestorDealSummaryProps) {
   const openRisks = countOpenRiskFlags(property.condoRiskFlags);
@@ -45,6 +72,39 @@ export function InvestorDealSummary({ property }: InvestorDealSummaryProps) {
       ?.amount;
 
   const cityStateZip = `${property.city}, ${property.state} ${property.zip}`;
+
+  const metricRows = [
+    {
+      item: "Asking price",
+      status: "From listing",
+      tone: "good" as const,
+      value: formatMoney(property.pricing?.listingPrice),
+    },
+    {
+      item: "Annual property tax",
+      status: "From county record",
+      tone: "good" as const,
+      value: formatMoney(annualTax, { maximumFractionDigits: 2 }),
+    },
+    {
+      item: "HOA dues",
+      status: "Unverified",
+      tone: "warn" as const,
+      value: hoaDuesSummary(property),
+    },
+    {
+      item: "Open risk flags",
+      status: "Open item",
+      tone: "warn" as const,
+      value: String(openRisks),
+    },
+    {
+      item: "Missing association documents",
+      status: "Missing",
+      tone: "bad" as const,
+      value: String(missingDocs),
+    },
+  ];
 
   return (
     <section className="investor-summary" aria-label="Investor deal summary">
@@ -62,6 +122,7 @@ export function InvestorDealSummary({ property }: InvestorDealSummaryProps) {
         <p className="investor-summary__explanation">
           Association financial, structural, insurance, and assessment records
           remain unverified, so deal numbers are not ready for underwriting.
+          On a real deal, start with reserves, SIRS, and inspection status.
         </p>
         <p className="investor-summary__disclaimer muted-note">
           Preliminary public-record screen only. This is not legal, engineering,
@@ -69,75 +130,92 @@ export function InvestorDealSummary({ property }: InvestorDealSummaryProps) {
         </p>
       </header>
 
+      <SectionCard
+        title="Verify first — reserves, SIRS, and inspection"
+        subtitle="Highest-priority association gates for underwriting this condo. Treat these before secondary cost inputs."
+      >
+        <div className="screening-sheet-wrap">
+          <table className="data-table screening-sheet">
+            <thead>
+              <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Status</th>
+                <th scope="col">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {PRIMARY_BLOCKERS.slice(0, 2).map((row) => (
+                <tr key={row.item} className="screening-sheet__priority-row">
+                  <td className="screening-sheet__item">{row.item}</td>
+                  <td>
+                    <StatusPill label={row.status} tone={row.tone} />
+                  </td>
+                  <td>{row.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </SectionCard>
+
       <SectionCard title="Key deal metrics">
-        <dl className="investor-metrics">
-          <div className="investor-metric">
-            <dt className="investor-metric__term trial-status-row">
-              <span className="investor-metric__label trial-status-row__title">
-                Asking price
-              </span>
-              <StatusPill label="From listing" tone="good" />
-            </dt>
-            <dd className="investor-metric__value">
-              {formatMoney(property.pricing?.listingPrice)}
-            </dd>
-          </div>
-
-          <div className="investor-metric">
-            <dt className="investor-metric__term trial-status-row">
-              <span className="investor-metric__label trial-status-row__title">
-                HOA dues
-              </span>
-              <StatusPill label="Unverified" tone="warn" />
-            </dt>
-            <dd className="investor-metric__value">{hoaDuesSummary(property)}</dd>
-          </div>
-
-          <div className="investor-metric">
-            <dt className="investor-metric__term trial-status-row">
-              <span className="investor-metric__label trial-status-row__title">
-                Annual property tax
-              </span>
-              <StatusPill label="From county record" tone="good" />
-            </dt>
-            <dd className="investor-metric__value">
-              {formatMoney(annualTax, { maximumFractionDigits: 2 })}
-            </dd>
-          </div>
-
-          <div className="investor-metric">
-            <dt className="investor-metric__term trial-status-row">
-              <span className="investor-metric__label trial-status-row__title">
-                Open risk flags
-              </span>
-              <StatusPill label="Open item" tone="warn" />
-            </dt>
-            <dd className="investor-metric__value">{openRisks}</dd>
-          </div>
-
-          <div className="investor-metric">
-            <dt className="investor-metric__term trial-status-row">
-              <span className="investor-metric__label trial-status-row__title">
-                Missing association documents
-              </span>
-              <StatusPill label="Missing" tone="bad" />
-            </dt>
-            <dd className="investor-metric__value">{missingDocs}</dd>
-          </div>
-        </dl>
+        <div className="screening-sheet-wrap">
+          <table className="data-table screening-sheet">
+            <thead>
+              <tr>
+                <th scope="col">Metric</th>
+                <th scope="col">Status</th>
+                <th scope="col">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {metricRows.map((row) => (
+                <tr key={row.item}>
+                  <td className="screening-sheet__item">{row.item}</td>
+                  <td>
+                    <StatusPill label={row.status} tone={row.tone} />
+                  </td>
+                  <td>{row.value}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </SectionCard>
 
       <SectionCard
         title="Primary deal blockers"
-        subtitle="Deal blockers are association gaps that prevent reliable underwriting right now — not a final property judgment."
+        subtitle="Association gaps that prevent reliable underwriting right now — not a final property judgment. Ordered by real-deal priority."
       >
-        <ol className="investor-blockers">
-          {PRIMARY_BLOCKERS.map((blocker) => (
-            <li key={blocker} className="investor-blocker">
-              {blocker}
-            </li>
-          ))}
-        </ol>
+        <div className="screening-sheet-wrap">
+          <table className="data-table screening-sheet">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Blocker</th>
+                <th scope="col">Status</th>
+                <th scope="col">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {PRIMARY_BLOCKERS.map((row, index) => (
+                <tr
+                  key={row.item}
+                  className={
+                    index < 2 ? "screening-sheet__priority-row" : undefined
+                  }
+                >
+                  <td>{index + 1}</td>
+                  <td className="screening-sheet__item">{row.item}</td>
+                  <td>
+                    <StatusPill label={row.status} tone={row.tone} />
+                  </td>
+                  <td>{row.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </SectionCard>
     </section>
   );

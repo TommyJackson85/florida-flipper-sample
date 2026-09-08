@@ -1,12 +1,30 @@
 import { SectionCard } from "./SectionCard";
 import { StatusPill } from "./StatusPill";
 
+/** Led by Reserves / SIRS / inspection — the gates pilots called most important. */
 const UNVERIFIED_ROWS = [
+  {
+    label: "Reserve / SIRS status",
+    status: "Not verified",
+    tone: "bad" as const,
+    value:
+      "Approved budget, reserve schedule, and Structural Integrity Reserve Study status not obtained.",
+    priority: true,
+  },
+  {
+    label: "Milestone / structural inspection",
+    status: "Not verified",
+    tone: "bad" as const,
+    value:
+      "No milestone or similar building/phase inspection report on this screen.",
+    priority: true,
+  },
   {
     label: "Monthly HOA dues",
     status: "Unverified",
     tone: "warn" as const,
     value: "Conflicting listing figures — about $376 vs $499/month",
+    priority: false,
   },
   {
     label: "Listing-data discrepancy",
@@ -14,56 +32,68 @@ const UNVERIFIED_ROWS = [
     tone: "warn" as const,
     value:
       "$123 per month between listed figures ($1,476 if annualized). Listing-data spread only — not verified dues and not a cost forecast.",
-  },
-  {
-    label: "Reserve / SIRS status",
-    status: "Not verified",
-    tone: "neutral" as const,
-    value: "Not verified",
+    priority: false,
   },
   {
     label: "Assessments / capital projects",
     status: "Not verified",
     tone: "neutral" as const,
     value: "Not verified",
+    priority: false,
   },
   {
     label: "Master insurance",
     status: "Not verified",
     tone: "neutral" as const,
     value: "Not verified",
+    priority: false,
   },
   {
     label: "Litigation / claims",
     status: "Not verified",
     tone: "neutral" as const,
     value: "Not verified",
+    priority: false,
   },
 ] as const;
 
 /**
- * Static panel of underwriting inputs that remain unverified on the sample deal.
+ * Spreadsheet-style panel of underwriting inputs still unverified on the sample deal.
  */
 export function UnverifiedUnderwritingInputs() {
   return (
     <SectionCard
       id="unverified-underwriting-inputs"
       title="Underwriting inputs still unverified"
-      subtitle="Listing-data gaps and association items that still block reliable carrying-cost inputs — not estimates or advice."
+      subtitle="Reserves, SIRS, and inspection status lead this sheet — then listing-data and secondary association gaps. Not estimates or advice."
     >
-      <dl className="unverified-inputs">
-        {UNVERIFIED_ROWS.map((row) => (
-          <div key={row.label} className="unverified-inputs__row">
-            <div className="unverified-inputs__main trial-status-row">
-              <dt className="unverified-inputs__label trial-status-row__title">
-                {row.label}
-              </dt>
-              <StatusPill label={row.status} tone={row.tone} />
-            </div>
-            <dd className="unverified-inputs__value">{row.value}</dd>
-          </div>
-        ))}
-      </dl>
+      <div className="screening-sheet-wrap">
+        <table className="data-table screening-sheet">
+          <thead>
+            <tr>
+              <th scope="col">Input</th>
+              <th scope="col">Status</th>
+              <th scope="col">Detail</th>
+            </tr>
+          </thead>
+          <tbody>
+            {UNVERIFIED_ROWS.map((row) => (
+              <tr
+                key={row.label}
+                className={
+                  row.priority ? "screening-sheet__priority-row" : undefined
+                }
+              >
+                <td className="screening-sheet__item">{row.label}</td>
+                <td>
+                  <StatusPill label={row.status} tone={row.tone} />
+                </td>
+                <td>{row.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <p className="unverified-inputs__note muted-note">
         Until association records confirm these items, monthly carrying costs,
         cash needed at closing, and other underwriting inputs can change. This

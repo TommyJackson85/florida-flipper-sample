@@ -14,6 +14,7 @@ type ChecklistItem = {
   note: string;
   evidenceLabel: string;
   evidenceHref: string;
+  priority?: boolean;
 };
 
 function buildChecklistItems(property: PropertyScreen): ChecklistItem[] {
@@ -32,14 +33,6 @@ function buildChecklistItems(property: PropertyScreen): ChecklistItem[] {
 
   return [
     {
-      label: "Current approved association budget",
-      status: budget?.state === "requested" ? "Requested" : "Missing",
-      tone: budget?.state === "requested" ? "warn" : "bad",
-      note: budget?.note ?? "Open item: requested, packet not in hand.",
-      evidenceLabel: "Document evidence",
-      evidenceHref: "#evidence-missing-documents",
-    },
-    {
       label:
         "Reserve schedule and Structural Integrity Reserve Study (SIRS), if applicable",
       status: "Missing",
@@ -50,6 +43,7 @@ function buildChecklistItems(property: PropertyScreen): ChecklistItem[] {
           : "Missing on this screen — both remain required before underwriting.",
       evidenceLabel: "Document evidence",
       evidenceHref: "#evidence-missing-documents",
+      priority: true,
     },
     {
       label: "Milestone or structural inspection report, if applicable",
@@ -60,6 +54,15 @@ function buildChecklistItems(property: PropertyScreen): ChecklistItem[] {
         "Missing: no building/phase inspection report on this screen.",
       evidenceLabel: "Risk flags",
       evidenceHref: "#evidence-risk-flags",
+      priority: true,
+    },
+    {
+      label: "Current approved association budget",
+      status: budget?.state === "requested" ? "Requested" : "Missing",
+      tone: budget?.state === "requested" ? "warn" : "bad",
+      note: budget?.note ?? "Open item: requested, packet not in hand.",
+      evidenceLabel: "Document evidence",
+      evidenceHref: "#evidence-missing-documents",
     },
     {
       label: "Current estoppel or condominium questionnaire",
@@ -114,7 +117,8 @@ function buildChecklistItems(property: PropertyScreen): ChecklistItem[] {
 }
 
 /**
- * Pre-underwriting checklist mapped to missing documents and risk flags.
+ * Pre-underwriting checklist as a spreadsheet-style sheet.
+ * Reserves / SIRS and inspection lead the list.
  */
 export function BeforeYouUnderwriteChecklist({
   property,
@@ -125,22 +129,39 @@ export function BeforeYouUnderwriteChecklist({
     <SectionCard
       id="before-you-underwrite"
       title="Before you underwrite"
-      subtitle="Request and review these association records before treating listing or public figures as underwriting inputs."
+      subtitle="Request and review these association records before treating listing or public figures as underwriting inputs. Reserves, SIRS, and inspection come first."
     >
-      <ul className="underwrite-checklist">
-        {items.map((item) => (
-          <li key={item.label} className="underwrite-checklist__item">
-            <div className="underwrite-checklist__main trial-status-row">
-              <span className="underwrite-checklist__label">{item.label}</span>
-              <StatusPill label={item.status} tone={item.tone} />
-            </div>
-            <p className="underwrite-checklist__note">{item.note}</p>
-            <p className="underwrite-checklist__evidence">
-              <a href={item.evidenceHref}>{item.evidenceLabel}</a>
-            </p>
-          </li>
-        ))}
-      </ul>
+      <div className="screening-sheet-wrap">
+        <table className="data-table screening-sheet">
+          <thead>
+            <tr>
+              <th scope="col">Record / ask</th>
+              <th scope="col">Status</th>
+              <th scope="col">Notes</th>
+              <th scope="col">Evidence</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item) => (
+              <tr
+                key={item.label}
+                className={
+                  item.priority ? "screening-sheet__priority-row" : undefined
+                }
+              >
+                <td className="screening-sheet__item">{item.label}</td>
+                <td>
+                  <StatusPill label={item.status} tone={item.tone} />
+                </td>
+                <td>{item.note}</td>
+                <td>
+                  <a href={item.evidenceHref}>{item.evidenceLabel}</a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <p className="underwrite-checklist__disclaimer muted-note">
         Confirm association details with the association, manager, estoppel, and
         qualified professionals. Preliminary public-record screen only. This is
